@@ -20,8 +20,8 @@ public struct Literal<Collection : BidirectionalCollection> where
 extension Literal : Pattern {
 	
 	public func matches(proceedingFrom origin: Match<Collection>) -> AnyIterator<Match<Collection>> {
-		if origin.remainingCollection.starts(with: literal) {
-			return one(origin.advancingInputPosition(distance: literal.distance(from: literal.startIndex, to: literal.endIndex)))
+		if origin.collectionFollowingInputPosition.starts(with: literal) {
+			return one(origin.movingInputPosition(distance: literal.distance(from: literal.startIndex, to: literal.endIndex)))
 		} else {
 			return none()
 		}

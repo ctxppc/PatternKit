@@ -6,13 +6,13 @@ extension CharacterSet : Pattern {
 	
 	public func matches(proceedingFrom origin: Match<String.CharacterView>) -> AnyIterator<Match<String.CharacterView>> {
 		
-		guard let character = origin.remainingCollection.first else { return none() }
+		guard let character = origin.collectionFollowingInputPosition.first else { return none() }
 		
 		let scalars = String(character).unicodeScalars
 		guard scalars.count == 1 else { return none() }
 		
 		if contains(scalars.first!) {
-			return one(origin.advancingInputPosition(distance: 1))
+			return one(origin.movingInputPosition(distance: 1))
 		} else {
 			return none()
 		}
@@ -31,9 +31,9 @@ public struct UnicodeScalarSetPattern {
 extension UnicodeScalarSetPattern : Pattern {
 	
 	public func matches(proceedingFrom origin: Match<String.UnicodeScalarView>) -> AnyIterator<Match<String.UnicodeScalarView>> {
-		guard let scalar = origin.remainingCollection.first else { return none() }
+		guard let scalar = origin.collectionFollowingInputPosition.first else { return none() }
 		if characterSet.contains(scalar) {
-			return one(origin.advancingInputPosition(distance: 1))
+			return one(origin.movingInputPosition(distance: 1))
 		} else {
 			return none()
 		}

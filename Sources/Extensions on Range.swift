@@ -7,7 +7,7 @@ extension Range {
 	/// - Parameter other: The other range.
 	///
 	/// - Returns: `true` if `other` is fully contained within `self`, `false` otherwise.
-	public func contains(other: Range) -> Bool {
+	public func contains(_ other: Range) -> Bool {
 		return lowerBound <= other.lowerBound && upperBound >= other.upperBound
 	}
 	

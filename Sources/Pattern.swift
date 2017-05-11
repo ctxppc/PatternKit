@@ -46,9 +46,10 @@ extension BidirectionalCollection where Iterator.Element : Equatable {
 	///
 	/// - Returns: A lazily computed sequence of matches of `pattern` over `self`.
 	public func matches<P : Pattern>(for pattern: P) -> LazyFilterSequence<AnyIterator<Match<Self>>> where P.Collection == Self {
-		return pattern.matches(proceedingFrom: Match(for: self)).lazy.filter { candidateMatch in
-			candidateMatch.remainingRange.isEmpty
-		}
+		return pattern
+			.matches(proceedingFrom: Match(for: self))
+			.lazy
+			.filter { candidateMatch in candidateMatch.indicesFollowingInputPosition.isEmpty }
 	}
 		
 }

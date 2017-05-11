@@ -35,86 +35,116 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	/// The collection on which the match applies.
 	public let matchingCollection: Collection
 	
-	/// The position in the collection up to where matching has been performed and from where further matching has to be done.
+	/// The position in the matching collection that,
+	/// * within the context of forward matching, represents the next element (if any) to be matched, and
+	/// * within the context of backward matching, represents the element in the collection (if any) that follows the next element to be matched.
 	///
-	/// The input position is equal to `matchingCollection.startIndex` before any matching has done and equal to `matchingCollection.endIndex` when the complete collection has been consumed.
+	/// - Invariant: `matchingCollection.indices.contains(inputPosition)`
 	public private(set) var inputPosition: Collection.Index
 	
-	/// The range of indices that has already been matched.
+	/// The indices before the input position.
 	///
-	/// - Invariant: `matchingCollection.contains(completedRange)`
-	public var completedRange: Range<Collection.Index> {
+	/// Within the context of forward matching, this range represents the elements that have been already matched. Within the context of backward matching, this range represents the elements that are yet to be matched.
+	public var indicesPrecedingInputPosition: Range<Collection.Index> {
 		return matchingCollection.startIndex..<inputPosition
 	}
 	
-	/// The range of indices that remains to be matched.
+	/// The indices at and after input position.
 	///
-	/// A pattern that cannot match any subsequence within its entry state's remaining range cannot produce successor states (which results in backtracking of the pattern matcher).
-	///
-	/// - Invariant: `matchingCollection.contains(remainingRange)`
-	public var remainingRange: Range<Collection.Index> {
+	/// Within the context of forward matching, this range represents the elements that are yet to be matched. Within the context of backward matching, this range represents the elements that have already been matched.
+	public var indicesFollowingInputPosition: Range<Collection.Index> {
 		return inputPosition..<matchingCollection.endIndex
 	}
 	
-	/// The subsequence of the collection that remains to be matched.
+	/// The collection of elements before the input position.
 	///
-	/// A pattern that cannot match any subsequence within its entry state's remaining collection cannot produce successor states (which results in backtracking of the pattern matcher).
-	///
-	/// - Invariant: `matchingCollection.contains(remainingIndex)`
-	public var remainingCollection: Collection.SubSequence {
-		return matchingCollection[remainingRange]
+	/// Within the context of forward matching, this collection contains the elements that have been already matched. Within the context of backward matching, this collection contains the elements that are yet to be matched.
+	public var collectionPrecedingInputPosition: Collection.SubSequence {
+		return matchingCollection[indicesPrecedingInputPosition]
 	}
 	
-	/// Moves the input position forward over a given range, ensuring not to skip any subsequence.
+	/// The collection of elements at and after the input position.
 	///
-	/// - Requires: The range begins exactly at the input position, i.e., `range.lowerBound == remainingRange.lowerBound`.
-	/// - Requires: The range ends before or at the collection's end index, i.e., `range.upperBound <= remainingRange.upperBound`.
-	///
-	/// - Postcondition: `remainingIndex.lowerBound == range.upperBound`
-	///
-	/// - Parameter range: The range over which to move the input position.
-	public mutating func advanceInputPosition(over range: Range<Collection.Index>) {
-		precondition(range.lowerBound == remainingRange.lowerBound, "Skipped over subsequence")
-		precondition(range.upperBound <= remainingRange.upperBound, "Input position out of bounds")
-		inputPosition = range.upperBound
+	/// Within the context of forward matching, this collection contains the elements that are yet to be matched. Within the context of backward matching, this collection contains the elements that have been already matched.
+	public var collectionFollowingInputPosition: Collection.SubSequence {
+		return matchingCollection[indicesFollowingInputPosition]
 	}
 	
-	/// Returns a match whose input position is moved forward over a given range, ensuring not to skip any subsequence.
+	/// Moves the input position forward over a given range of matched elements, ensuring no elements are skipped over.
 	///
-	/// - Requires: The range begins exactly at the input position, i.e., `range.lowerBound == remainingRange.lowerBound`.
-	/// - Requires: The range ends before or at the collection's end index, i.e., `range.upperBound <= remainingRange.upperBound`.
+	/// - Requires: The range begins at the input position, i.e., `range.lowerBound == remainingRange.lowerBound`.
+	/// - Requires: The range ends before the collection's end index, i.e., `range.upperBound < remainingRange.upperBound`.
 	///
-	/// - Parameter range: The range over which to move the input position.
+	/// - Postcondition: `inputPosition == matchingCollection.index(after: range.upperBound)`
 	///
-	/// - Returns: A match whose input position is moved forward over `range`.
-	public func advancingInputPosition(over range: Range<Collection.Index>) -> Match {
+	/// - Parameter range: The range representing the elements that have been matched.
+	public mutating func advanceInputPosition(over range: ClosedRange<Collection.Index>) {
+		precondition(range.lowerBound == inputPosition, "Skipped over subsequence")
+		precondition(range.upperBound < matchingCollection.endIndex, "Input position out of bounds")
+		inputPosition = matchingCollection.index(after: range.upperBound)
+	}
+	
+	/// Returns a match whose input position is moved forward over a given range of processed elements, ensuring no elements are skipped over.
+	///
+	/// - Requires: The range begins at the input position, i.e., `range.lowerBound == remainingRange.lowerBound`.
+	/// - Requires: The range ends before the collection's end index, i.e., `range.upperBound < remainingRange.upperBound`.
+	///
+	/// - Parameter range: The range representing the elements that have been matched.
+	///
+	/// - Returns: A match where `inputPosition == matchingCollection.index(after: range.upperBound)`.
+	public func advancingInputPosition(over range: ClosedRange<Collection.Index>) -> Match {
 		var match = self
 		match.advanceInputPosition(over: range)
 		return match
 	}
 	
-	/// Moves the input position forward over a given distance.
+	/// Moves the input position backward over a given range of matched elements, ensuring no elements are skipped over.
 	///
-	/// - Requires: `distance >= 0`
+	/// - Requires: The range begins at or after the collection's start index, i.e., `range.lowerBound >= matchingCollection.startIndex`.
+	/// - Requires: The range ends before the input position, i.e., `range.upperBound < inputPosition`.
+	///
+	/// - Postcondition: `inputPosition == range.lowerBound`
+	///
+	/// - Parameter range: The range representing the elements that have been matched.
+	public mutating func recedeInputPosition(over range: ClosedRange<Collection.Index>) {
+		precondition(range.lowerBound >= matchingCollection.startIndex, "Input position out of bounds")
+		precondition(range.upperBound < inputPosition, "Skipped over subsequence")
+		inputPosition = range.lowerBound
+	}
+	
+	/// Moves the input position backward over a given range of matched elements, ensuring no elements are skipped over.
+	///
+	/// - Requires: The range begins at or after the collection's start index, i.e., `range.lowerBound >= matchingCollection.startIndex`.
+	/// - Requires: The range ends before the input position, i.e., `range.upperBound < inputPosition`.
+	///
+	/// - Postcondition: `inputPosition == range.lowerBound`
+	///
+	/// - Parameter range: The range representing the elements that have been matched.
+	public func recedingInputPosition(over range: ClosedRange<Collection.Index>) -> Match {
+		var match = self
+		match.recedeInputPosition(over: range)
+		return match
+	}
+	
+	/// Moves the input position forward or backward over a given distance.
+	///
 	/// - Requires: The new input position does not exceed the collection's bounds.
 	///
-	/// - Parameter distance: The distance over which to move the input position.
-	public mutating func advanceInputPosition(distance: Collection.IndexDistance) {
-		precondition(distance >= 0, "Negative distance")
+	/// - Parameter distance: The distance over which to move the input position. If negative, the input position is moved backward.
+	public mutating func moveInputPosition(distance: Collection.IndexDistance) {
 		matchingCollection.formIndex(&inputPosition, offsetBy: distance)
 	}
 	
-	/// Returns a match whose input position is moved forward over a given distance.
+	/// Returns a match whose input position is moved forward or backward over a given distance.
 	///
-	/// - Requires: `distance >= 0`
 	/// - Requires: The new input position does not exceed the collection's bounds.
 	///
-	/// - Parameter distance: The distance over which to move the input position.
+	/// - Parameter distance: The distance over which to move the input position. If negative, the input position is moved backward.
 	///
-	/// - Returns: A match whose input position is moved forward over `distance`.
-	public func advancingInputPosition(distance: Collection.IndexDistance) -> Match {
+	/// - Returns: A match whose input position is moved over `distance`.
+	public func movingInputPosition(distance: Collection.IndexDistance) -> Match {
 		var match = self
-		match.advanceInputPosition(distance: distance)
+		match.moveInputPosition(distance: distance)
 		return match
 	}
 	
@@ -123,6 +153,7 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	
 	/// Captures a range for a token.
 	///
+	/// - Requires: The range is within the collection's bounds.
 	/// - Requires: `capturedRange(for: token) == nil`
 	///
 	/// - Postcondition: `capturedRange(for: token) == range`
@@ -130,12 +161,14 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	/// - Parameter range: The captured range.
 	/// - Parameter token: The token that captured the range.
 	internal mutating func capture<P : Pattern>(_ range: Range<Collection.Index>, for token: Token<P>) {
+		precondition((matchingCollection.startIndex..<matchingCollection.endIndex).contains(range), "Captured range out of bounds")
 		let previousRange = capturedRangesByToken.updateValue(range, forKey: ObjectIdentifier(token))
 		precondition(previousRange == range || previousRange == nil, "Multiple distinct captures for token")
 	}
 	
 	/// Returns a match with a range captured for a token.
 	///
+	/// - Requires: The range is within the collection's bounds.
 	/// - Requires: `capturedRange(for: token) == nil`
 	///
 	/// - Parameter range: The captured range.

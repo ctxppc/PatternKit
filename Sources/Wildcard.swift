@@ -6,8 +6,8 @@ public struct Wildcard<Collection : BidirectionalCollection> where Collection.It
 extension Wildcard : Pattern {
 	
 	public func matches(proceedingFrom origin: Match<Collection>) -> AnyIterator<Match<Collection>> {
-		guard !origin.remainingRange.isEmpty else { return none() }
-		return one(origin.advancingInputPosition(distance: 1))
+		guard !origin.indicesFollowingInputPosition.isEmpty else { return none() }
+		return one(origin.movingInputPosition(distance: 1))
 	}
 	
 }
