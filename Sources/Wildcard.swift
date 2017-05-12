@@ -5,9 +5,9 @@ public struct Wildcard<Collection : BidirectionalCollection> where Collection.It
 
 extension Wildcard : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<Collection>) -> AnyIterator<Match<Collection>> {
-		guard !origin.indicesFollowingInputPosition.isEmpty else { return none() }
-		return one(origin.movingInputPosition(distance: 1))
+	public func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>> {
+		guard !base.remainingElements(direction: direction).isEmpty else { return none() }
+		return one(base.movingInputPosition(distance: 1, direction: direction))
 	}
 	
 }

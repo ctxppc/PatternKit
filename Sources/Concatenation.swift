@@ -24,30 +24,39 @@ extension Concatenation : Pattern {
 	
 	public typealias Collection = LeadingPattern.Collection
 	
-	public func matches(proceedingFrom origin: Match<Collection>) -> AnyIterator<Match<Collection>> {
+	public func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>> {
 		
-		var iteratorOfLeadingPattern = leadingPattern.matches(proceedingFrom: origin)
-		guard let firstMatchForLeadingPattern = iteratorOfLeadingPattern.next() else { return none() }
-		var matchForLeadingPattern = firstMatchForLeadingPattern
-		
-		func makeIteratorOfTrailingPattern() -> AnyIterator<Match<Collection>> {
-			return trailingPattern.matches(proceedingFrom: matchForLeadingPattern)
-		}
-		var iteratorOfTrailingPattern = makeIteratorOfTrailingPattern()
-		
-		func next() -> Match<Collection>? {
-			if let matchForTrailingPattern = iteratorOfTrailingPattern.next() {				// Next match in trailing found
-				return matchForTrailingPattern
-			} else if let nextMatchForLeadingPattern = iteratorOfLeadingPattern.next() {	// Next match in leading found
-				matchForLeadingPattern = nextMatchForLeadingPattern
-				iteratorOfTrailingPattern = makeIteratorOfTrailingPattern()
-				return next()
-			} else {																		// Both subpatterns exhausted
-				return nil
+		func makeIterator<A : Pattern, B : Pattern>(firstPattern: A, secondPattern: B) -> AnyIterator<Match<Collection>> where A.Collection == Collection, B.Collection == Collection {
+			
+			var iteratorOfFirstPattern = firstPattern.matches(base: base, direction: direction)
+			guard let firstMatchForFirstPattern = iteratorOfFirstPattern.next() else { return none() }
+			var matchForFirstPattern = firstMatchForFirstPattern
+			
+			func makeIteratorOfSecondPattern() -> AnyIterator<Match<Collection>> {
+				return secondPattern.matches(base: matchForFirstPattern, direction: direction)
 			}
+			var iteratorOfSecondPattern = makeIteratorOfSecondPattern()
+			
+			func next() -> Match<Collection>? {
+				if let matchForSecondPattern = iteratorOfSecondPattern.next() {				// Next match in second pattern found
+					return matchForSecondPattern
+				} else if let nextMatchForFirstPattern = iteratorOfFirstPattern.next() {	// Next match in first pattern found
+					matchForFirstPattern = nextMatchForFirstPattern
+					iteratorOfSecondPattern = makeIteratorOfSecondPattern()
+					return next()
+				} else {																	// Both patterns exhausted
+					return nil
+				}
+			}
+			
+			return AnyIterator(next)
+			
 		}
 		
-		return AnyIterator(next)
+		switch direction {
+			case .forward:	return makeIterator(firstPattern: leadingPattern, secondPattern: trailingPattern)
+			case .backward:	return makeIterator(firstPattern: trailingPattern, secondPattern: leadingPattern)
+		}
 		
 	}
 	

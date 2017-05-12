@@ -14,7 +14,7 @@ public struct BackwardAssertion<AssertingPattern : Pattern> {
 
 extension BackwardAssertion : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<AssertingPattern.Collection>) -> AnyIterator<Match<AssertingPattern.Collection>> {
+	public func matches(base: Match<AssertingPattern.Collection>, direction: MatchingDirection) -> AnyIterator<Match<AssertingPattern.Collection>> {
 		unimplemented	// TODO
 	}
 	

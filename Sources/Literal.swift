@@ -3,7 +3,9 @@
 /// A pattern that matches an exact subsequence.
 public struct Literal<Collection : BidirectionalCollection> where
 	Collection.Iterator.Element : Equatable,
-	Collection.Iterator.Element == Collection.SubSequence.Iterator.Element {
+	Collection.Iterator.Element == Collection.SubSequence.Iterator.Element,
+	Collection.IndexDistance == Collection.SubSequence.IndexDistance,
+	Collection.SubSequence : BidirectionalCollection {
 	
 	/// Creates a literal-matching pattern.
 	///
@@ -19,12 +21,15 @@ public struct Literal<Collection : BidirectionalCollection> where
 
 extension Literal : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<Collection>) -> AnyIterator<Match<Collection>> {
-		if origin.collectionFollowingInputPosition.starts(with: literal) {
-			return one(origin.movingInputPosition(distance: literal.distance(from: literal.startIndex, to: literal.endIndex)))
-		} else {
-			return none()
+	public func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>> {
+		
+		switch direction {
+			case .forward:	guard base.remainingElements(direction: .forward).starts(with: literal) else { return none() }
+			case .backward:	guard base.remainingElements(direction: .forward).ends(with: literal) else { return none() }
 		}
+		
+		return one(base.movingInputPosition(distance: literal.count, direction: direction))
+		
 	}
 	
 }
@@ -57,6 +62,14 @@ extension UnicodeScalarStringLiteral : ExpressibleByStringLiteral {
 	
 }
 
+extension UnicodeScalarStringLiteral : Pattern {
+	
+	public func matches(base: Match<String.UnicodeScalarView>, direction: MatchingDirection) -> AnyIterator<Match<String.UnicodeScalarView>> {
+		return innerLiteral.matches(base: base, direction: direction)
+	}
+	
+}
+
 public struct StringLiteral {
 	
 	/// Creates a Unicode scalar string literal pattern.
@@ -81,6 +94,14 @@ extension StringLiteral : ExpressibleByStringLiteral {
 	
 	public init(unicodeScalarLiteral value: String) {
 		innerLiteral = Literal(value.characters)
+	}
+	
+}
+
+extension StringLiteral : Pattern {
+	
+	public func matches(base: Match<String.CharacterView>, direction: MatchingDirection) -> AnyIterator<Match<String.CharacterView>> {
+		return innerLiteral.matches(base: base, direction: direction)
 	}
 	
 }

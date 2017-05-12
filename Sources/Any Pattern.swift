@@ -11,12 +11,12 @@ public struct AnyPattern<Collection : BidirectionalCollection> where Collection.
 	///
 	/// - Parameter pattern: The pattern
 	public init<PatternType : Pattern>(_ pattern: PatternType) where PatternType.Collection == Collection {
-		matchGenerator = PatternType.matches(pattern)
+		matchGenerator = PatternType.matches(base:direction:)(pattern)
 		self.pattern = pattern
 	}
 	
-	/// A generator of iterators, given an origin match.
-	fileprivate let matchGenerator: (Match<Collection>) -> AnyIterator<Match<Collection>>
+	/// A generator of iterators, given a base match and direction.
+	fileprivate let matchGenerator: (Match<Collection>, MatchingDirection) -> AnyIterator<Match<Collection>>
 	
 	/// The type-erased pattern.
 	///
@@ -27,8 +27,8 @@ public struct AnyPattern<Collection : BidirectionalCollection> where Collection.
 
 extension AnyPattern : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<Collection>) -> AnyIterator<Match<Collection>> {
-		return matchGenerator(origin)
+	public func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>> {
+		return matchGenerator(base, direction)
 	}
 	
 }

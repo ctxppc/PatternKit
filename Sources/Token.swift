@@ -16,11 +16,14 @@ public final class Token<Subpattern : Pattern> {
 
 extension Token : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<Subpattern.Collection>) -> AnyIterator<Match<Subpattern.Collection>> {
-		let innerIterator = subpattern.matches(proceedingFrom: origin)
+	public func matches(base: Match<Subpattern.Collection>, direction: MatchingDirection) -> AnyIterator<Match<Subpattern.Collection>> {
+		let innerIterator = subpattern.matches(base: base, direction: direction)
 		return AnyIterator {
 			guard let innerMatch = innerIterator.next() else { return nil }
-			return innerMatch.capturing(origin.inputPosition..<innerMatch.inputPosition, for: self)
+			switch direction {
+				case .forward:	return innerMatch.capturing(base.inputPosition..<innerMatch.inputPosition, for: self)
+				case .backward:	return innerMatch.capturing(innerMatch.inputPosition..<base.inputPosition, for: self)
+			}
 		}
 	}
 	

@@ -15,13 +15,14 @@ public protocol Pattern {
 	/// The iterator type for matches.
 //	associatedtype MatchIterator : IteratorProtocol where MatchIterator.Element == Match<Collection>			// TODO: Add in Swift 4
 	
-	/// Returns an iterator of matches.
+	/// Returns an iterator of matches that result from performing matching.
 	///
-	/// - Parameter origin: The match from which the pattern is to proceed with further pattern matching.
+	/// - Parameter base: The match on which to base successor matches.
+	/// - Parameter direction: The direction of matching.
 	///
-	/// - Returns: An iterator of matches.
-	func matches(proceedingFrom origin: Match<Collection>) -> AnyIterator<Match<Collection>>					// TODO: Remove in Swift 4
-//	func matches(proceedingFrom origin: Match<Collection>) -> MatchIterator										// TODO: Add in Swift 4
+	/// - Returns: An iterator of matches. Every returned match must have the same `matchingCollection` as `origin.matchingCollection`.
+	func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>>		// TODO: Remove in Swift 4
+//	func matches(base: Match<Collection>, direction: MatchingDirection) -> MatchIterator						// TODO: Add in Swift 4
 	
 }
 
@@ -47,9 +48,9 @@ extension BidirectionalCollection where Iterator.Element : Equatable {
 	/// - Returns: A lazily computed sequence of matches of `pattern` over `self`.
 	public func matches<P : Pattern>(for pattern: P) -> LazyFilterSequence<AnyIterator<Match<Self>>> where P.Collection == Self {
 		return pattern
-			.matches(proceedingFrom: Match(for: self))
+			.matches(base: Match(for: self), direction: .forward)
 			.lazy
-			.filter { candidateMatch in candidateMatch.indicesFollowingInputPosition.isEmpty }
+			.filter { candidateMatch in candidateMatch.remainingElements(direction: .forward).isEmpty }
 	}
 		
 }

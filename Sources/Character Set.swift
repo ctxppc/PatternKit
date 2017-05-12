@@ -4,18 +4,14 @@ import Foundation
 
 extension CharacterSet : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<String.CharacterView>) -> AnyIterator<Match<String.CharacterView>> {
+	public func matches(base: Match<String.CharacterView>, direction: MatchingDirection) -> AnyIterator<Match<String.CharacterView>> {
 		
-		guard let character = origin.collectionFollowingInputPosition.first else { return none() }
+		guard let character = base.remainingElements(direction: direction).first else { return none() }
 		
 		let scalars = String(character).unicodeScalars
-		guard scalars.count == 1 else { return none() }
+		guard let scalar = scalars.first, scalars.count == 1, contains(scalar) else { return none() }
 		
-		if contains(scalars.first!) {
-			return one(origin.movingInputPosition(distance: 1))
-		} else {
-			return none()
-		}
+		return one(base.movingInputPosition(distance: 1, direction: direction))
 		
 	}
 	
@@ -30,10 +26,10 @@ public struct UnicodeScalarSetPattern {
 
 extension UnicodeScalarSetPattern : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<String.UnicodeScalarView>) -> AnyIterator<Match<String.UnicodeScalarView>> {
-		guard let scalar = origin.collectionFollowingInputPosition.first else { return none() }
+	public func matches(base: Match<String.UnicodeScalarView>, direction: MatchingDirection) -> AnyIterator<Match<String.UnicodeScalarView>> {
+		guard let scalar = base.remainingElements(direction: direction).first else { return none() }
 		if characterSet.contains(scalar) {
-			return one(origin.movingInputPosition(distance: 1))
+			return one(base.movingInputPosition(distance: 1, direction: direction))
 		} else {
 			return none()
 		}
