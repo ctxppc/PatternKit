@@ -48,9 +48,11 @@ public struct Repeating<RepeatedPattern : Pattern> {
 
 extension Repeating : Pattern {
 	
-	public func matches(proceedingFrom origin: Match<RepeatedPattern.Collection>) -> AnyIterator<Match<RepeatedPattern.Collection>> {
+	public func matches(base: Match<RepeatedPattern.Collection>, direction: MatchingDirection) -> AnyIterator<Match<RepeatedPattern.Collection>> {
 		
-		var tree = MultiplicationTree(origin: origin, repeatedPattern: repeatedPattern)
+		unimplemented	// TODO
+		
+		var tree = MultiplicationTree(origin: base, repeatedPattern: repeatedPattern)
 		
 		func lazyMatches() -> AnyIterator<Match<RepeatedPattern.Collection>> {
 			
@@ -195,7 +197,7 @@ private struct MultiplicationTree<Collection : BidirectionalCollection, Repeated
 				for currentMultiplicity in matchesByMultiplicity.endIndex...multiplicity {
 					
 					let matchesOfCurrentMultiplicity = matchesOfPreviousMultiplicity.flatMap { (originMatchForCurrentMultiplicity: Match<Collection>) -> AnyIterator<Match<Collection>> in
-						return repeatedPattern.matches(proceedingFrom: originMatchForCurrentMultiplicity)
+						return repeatedPattern.matches(base: originMatchForCurrentMultiplicity, direction: .forward)	// FIXME: Direction
 					}
 					
 					guard !matchesOfCurrentMultiplicity.isEmpty else {	// Max multiplicity reached!

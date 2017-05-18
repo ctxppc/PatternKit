@@ -78,6 +78,6 @@ private enum Iterator<Collection : BidirectionalCollection> {
 	case done
 }
 
-public func |<MainPattern : Pattern, AlternativePattern : Pattern>(l: MainPattern, r: AlternativePattern) -> Alternation<MainPattern, AlternativePattern> {
+public func |<MainPattern, AlternativePattern>(l: MainPattern, r: AlternativePattern) -> Alternation<MainPattern, AlternativePattern> {
 	return Alternation(l, r)
 }

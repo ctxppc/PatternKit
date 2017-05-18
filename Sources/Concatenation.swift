@@ -64,7 +64,7 @@ extension Concatenation : Pattern {
 
 infix operator •
 
-public func •<L : Pattern, R : Pattern>(l: L, r: R) -> Concatenation<L, R> {
+public func •<L, R>(l: L, r: R) -> Concatenation<L, R> {
 	return Concatenation(l, r)
 }
 
@@ -74,12 +74,12 @@ public func •<C : RangeReplaceableCollection>(l: Literal<C>, r: Literal<C>) ->
 	return l
 }
 
-public func •<C : RangeReplaceableCollection, P : Pattern>(l: Literal<C>, r: Concatenation<Literal<C>, P>) -> Concatenation<Literal<C>, P> {
+public func •<C : RangeReplaceableCollection, P>(l: Literal<C>, r: Concatenation<Literal<C>, P>) -> Concatenation<Literal<C>, P> {
 	let newLiteral = l.literal.appending(contentsOf: r.leadingPattern.literal)
 	return Concatenation(Literal(newLiteral), r.trailingPattern)
 }
 
-public func •<C : RangeReplaceableCollection, P : Pattern>(l: Concatenation<P, Literal<C>>, r: Literal<C>) -> Concatenation<P, Literal<C>> {
+public func •<C : RangeReplaceableCollection, P>(l: Concatenation<P, Literal<C>>, r: Literal<C>) -> Concatenation<P, Literal<C>> {
 	let newLiteral = l.trailingPattern.literal.appending(contentsOf: r.literal)
 	return Concatenation(l.leadingPattern, Literal(newLiteral))
 }
