@@ -50,14 +50,12 @@ extension Repeating : Pattern {
 	
 	public func matches(base: Match<RepeatedPattern.Collection>, direction: MatchingDirection) -> AnyIterator<Match<RepeatedPattern.Collection>> {
 		
-		unimplemented	// TODO
-		
-		var tree = MultiplicationTree(origin: base, repeatedPattern: repeatedPattern)
+		var cycleMatcher = CycleMatcher(repeatedPattern: repeatedPattern, base: base, direction: direction)
 		
 		func lazyMatches() -> AnyIterator<Match<RepeatedPattern.Collection>> {
 			
 			var currentMultiplicity = multiplicityRange.lowerBound
-			var iteratorForCurrentMultiplicity = tree[multiplicity: currentMultiplicity].makeIterator()
+			var iteratorForCurrentMultiplicity = cycleMatcher[multiplicity: currentMultiplicity].makeIterator()
 			
 			return AnyIterator {
 				if let matchForCurrentMultiplicity = iteratorForCurrentMultiplicity.next() {
@@ -67,7 +65,7 @@ extension Repeating : Pattern {
 					currentMultiplicity += 1
 					guard currentMultiplicity <= self.multiplicityRange.upperBound else { return nil }
 					
-					iteratorForCurrentMultiplicity = tree[multiplicity: currentMultiplicity].makeIterator()
+					iteratorForCurrentMultiplicity = cycleMatcher[multiplicity: currentMultiplicity].makeIterator()
 					
 					guard let firstMatchForCurrentMultiplicity = iteratorForCurrentMultiplicity.next() else { return nil }
 					return firstMatchForCurrentMultiplicity
@@ -79,13 +77,13 @@ extension Repeating : Pattern {
 		
 		func eagerMatches() -> AnyIterator<Match<RepeatedPattern.Collection>> {
 			
-			tree.precompute(upToMultiplicity: multiplicityRange.upperBound)
-			let maximumMultiplicity = tree.computedMaximalMultiplicity ?? multiplicityRange.upperBound
+			cycleMatcher.precompute(upToMultiplicity: multiplicityRange.upperBound)
+			let maximumMultiplicity = cycleMatcher.reachedMaximalMultiplicity ?? multiplicityRange.upperBound
 			
 			guard maximumMultiplicity >= multiplicityRange.lowerBound else { return none() }
 			
 			var currentMultiplicity = maximumMultiplicity
-			var iteratorForCurrentMultiplicity = tree[multiplicity: currentMultiplicity].makeIterator()
+			var iteratorForCurrentMultiplicity = cycleMatcher[multiplicity: currentMultiplicity].makeIterator()
 			
 			return AnyIterator {
 				if let matchForCurrentMultiplicity = iteratorForCurrentMultiplicity.next() {
@@ -95,7 +93,7 @@ extension Repeating : Pattern {
 					currentMultiplicity -= 1
 					guard currentMultiplicity >= self.multiplicityRange.lowerBound else { return nil }
 					
-					iteratorForCurrentMultiplicity = tree[multiplicity: currentMultiplicity].makeIterator()
+					iteratorForCurrentMultiplicity = cycleMatcher[multiplicity: currentMultiplicity].makeIterator()
 					
 					return iteratorForCurrentMultiplicity.next()!
 					
@@ -106,12 +104,12 @@ extension Repeating : Pattern {
 		
 		func possessiveMatches() -> AnyIterator<Match<RepeatedPattern.Collection>> {
 			
-			tree.precompute(upToMultiplicity: multiplicityRange.upperBound)
-			let maximumMultiplicity = tree.computedMaximalMultiplicity ?? multiplicityRange.upperBound
+			cycleMatcher.precompute(upToMultiplicity: multiplicityRange.upperBound)
+			let maximumMultiplicity = cycleMatcher.reachedMaximalMultiplicity ?? multiplicityRange.upperBound
 			
 			guard maximumMultiplicity >= multiplicityRange.lowerBound else { return none() }
 			
-			return AnyIterator(tree[multiplicity: maximumMultiplicity].makeIterator())
+			return AnyIterator(cycleMatcher[multiplicity: maximumMultiplicity].makeIterator())
 			
 		}
 		
@@ -131,83 +129,103 @@ postfix operator *?
 postfix operator +?
 postfix operator /?
 
-public postfix func *<P : Pattern>(o: P) -> Repeating<P> {
+/// Forms an arbitrarily and eagerly repeated pattern over a given pattern.
+public postfix func *<P>(o: P) -> Repeating<P> {
 	return Repeating(o)
 }
 
-public postfix func +<P : Pattern>(o: P) -> Repeating<P> {
+/// Forms an arbitrarily and eagerly repeated pattern over a given pattern that must match at least once.
+public postfix func +<P>(o: P) -> Repeating<P> {
 	return Repeating(o, min: 1)
 }
 
-public postfix func *?<P : Pattern>(o: P) -> Repeating<P> {
+/// Forms an arbitrarily and lazily repeated pattern over a given pattern.
+public postfix func *?<P>(o: P) -> Repeating<P> {
 	return Repeating(o, tendency: .lazy)
 }
 
-public postfix func +?<P : Pattern>(o: P) -> Repeating<P> {
+/// Forms an arbitrarily and lazily repeated pattern over a given pattern that must match at least once.
+public postfix func +?<P>(o: P) -> Repeating<P> {
 	return Repeating(o, min: 1, tendency: .lazy)
 }
 
-public postfix func /?<P : Pattern>(o: P) -> Repeating<P> {
+/// Forms an eagerly but optionally matched pattern over a given pattern.
+public postfix func /?<P>(o: P) -> Repeating<P> {
 	return Repeating(o, max: 1)
 }
 
-private struct MultiplicationTree<Collection : BidirectionalCollection, RepeatedPattern : Pattern> where RepeatedPattern.Collection == Collection {
+/// Forms a matched pattern over a given pattern that cannot backtrack over itself.
+public func atomic<P>(pattern: P) -> Repeating<P> {
+	return Repeating(pattern, min: 1, max: 1, tendency: .possessive)
+}
+
+/// A structure that performs repeated matches and provides on-demand matches for any given multiplicity.
+private struct CycleMatcher<RepeatedPattern : Pattern> where RepeatedPattern.Collection : BidirectionalCollection {
 	
-	/// Creates a match multiplication tree.
+	/// Creates a cycle matcher.
 	///
-	/// - Parameter origin: The repeating pattern's origin.
-	/// - Parameter repeatedPattern: The repeated pattern.
-	init(origin: Match<Collection>, repeatedPattern: RepeatedPattern) {
-		matchesByMultiplicity = [[origin]]
-		computedMaximalMultiplicity = nil
+	/// - Parameter repeatedPattern: The pattern that performs matches in each cycle.
+	/// - Parameter base: The base match from where the first cycle is performed.
+	/// - Parameter direction: The direction in which matching is performed.
+	init(repeatedPattern: RepeatedPattern, base: Match<RepeatedPattern.Collection>, direction: MatchingDirection) {
 		self.repeatedPattern = repeatedPattern
+		self.direction = direction
+		self.matchesByMultiplicity = [[base]]
 	}
+	
+	/// The pattern that performs matches in each cycle.
+	let repeatedPattern: RepeatedPattern
+	
+	/// The direction in which matching is performed.
+	let direction: MatchingDirection
 	
 	/// The matches generated by the repeated pattern, by multiplicity.
 	///
-	/// - Invariant: The zeroth multiplicity contains exactly one match, namely the repeating pattern's origin match.
+	/// - Invariant: The zeroth multiplicity contains exactly one match, namely the base match.
 	/// - Invariant: No array *in* `matchesByMultiplicity` is empty.
-	private var matchesByMultiplicity: [[Match<Collection>]]
+	private var matchesByMultiplicity: [[Match<RepeatedPattern.Collection>]]
 	
-	/// The maximal multiplicity that is possible, or `nil` if it hasn't been computed yet.
+	/// The maximal multiplicity that is available, if that upper bound has been reached by the cycle matcher.
 	///
-	/// - Invariant: If set, `computedMaximalMultiplicity` ≥ 0.
-	private(set) var computedMaximalMultiplicity: Int?
-	
-	/// The repeated pattern.
-	private let repeatedPattern: RepeatedPattern
+	/// - Invariant: If `reachedMaximalMultiplicity` is not `nil`, `matchesByMultiplicity.count == reachedMaximalMultiplicity - 1`.
+	private(set) var reachedMaximalMultiplicity: Int?
 	
 	/// Accesses the sequence of matches at a given multiplicity.
 	///
 	/// - Requires: `multiplicity >= 0`
 	///
 	/// - Parameter multiplicity: The multiplicity.
-	subscript (multiplicity multiplicity: Int) -> [Match<Collection>] {
+	subscript (multiplicity multiplicity: Int) -> [Match<RepeatedPattern.Collection>] {
 		mutating get {
 			
-			let repeatedPattern = self.repeatedPattern
+			assert(multiplicity >= 0, "Negative multiplicity")
 			
-			if let maximalMultiplicity = computedMaximalMultiplicity, multiplicity > maximalMultiplicity {
-				return []
+			if let reachedMaximalMultiplicity = reachedMaximalMultiplicity {
+				guard multiplicity < reachedMaximalMultiplicity else { return [] }
 			}
 			
 			if !matchesByMultiplicity.indices.contains(multiplicity) {
-				assert(computedMaximalMultiplicity == nil, "Maximal multiplicity already computed yet we compute more multiplicities!")
-				var matchesOfPreviousMultiplicity = matchesByMultiplicity.last!
-				for currentMultiplicity in matchesByMultiplicity.endIndex...multiplicity {
+				
+				assert(reachedMaximalMultiplicity == nil, "Maximal multiplicity reached while entering in cycling mode")
+				
+				var matchesOfLastCycle = matchesByMultiplicity.last!
+				
+				for multiplicityOfCurrentCycle in matchesByMultiplicity.endIndex...multiplicity {
 					
-					let matchesOfCurrentMultiplicity = matchesOfPreviousMultiplicity.flatMap { (originMatchForCurrentMultiplicity: Match<Collection>) -> AnyIterator<Match<Collection>> in
-						return repeatedPattern.matches(base: originMatchForCurrentMultiplicity, direction: .forward)	// FIXME: Direction
+					let matchesOfCurrentCycle = matchesOfLastCycle.flatMap { baseMatchForCurrentCycle in
+						repeatedPattern.matches(base: baseMatchForCurrentCycle, direction: direction)
 					}
 					
-					guard !matchesOfCurrentMultiplicity.isEmpty else {	// Max multiplicity reached!
-						computedMaximalMultiplicity = currentMultiplicity - 1
+					if matchesOfCurrentCycle.isEmpty {
+						reachedMaximalMultiplicity = multiplicityOfCurrentCycle - 1
 						return []
+					} else {
+						matchesByMultiplicity.append(matchesOfCurrentCycle)
+						matchesOfLastCycle = matchesOfCurrentCycle
 					}
-					
-					matchesOfPreviousMultiplicity = matchesOfCurrentMultiplicity
 					
 				}
+				
 			}
 			
 			return matchesByMultiplicity[multiplicity]
