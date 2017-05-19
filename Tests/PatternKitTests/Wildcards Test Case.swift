@@ -18,4 +18,15 @@ class WildcardsTestCase : XCTestCase {
 		XCTAssert(![5, 6, 5].matches(Wildcard() • Wildcard()))
 	}
 	
+	func testHelloString() {
+		XCTAssert("hello".characters.matches(Wildcard() • Wildcard() • Wildcard() • Wildcard() • Wildcard()))
+		XCTAssert(!"hello".characters.matches(Wildcard() • Wildcard() • Wildcard() • Wildcard()))
+		XCTAssert(!"hello".characters.matches(Wildcard() • Wildcard() • Wildcard() • Wildcard() • Wildcard() • Wildcard()))
+	}
+	
+	func testEmptyString() {
+		XCTAssert(!"".characters.matches(Wildcard()))
+		XCTAssert(!"".characters.matches(Wildcard() • Wildcard()))
+	}
+	
 }

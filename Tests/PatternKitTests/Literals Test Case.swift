@@ -27,4 +27,17 @@ class LiteralsTestCase : XCTestCase {
 		XCTAssert(![5, 6].matches(Literal([6, 5])))
 	}
 	
+	func testHelloLiteral() {
+		XCTAssert(!"".characters.matches(Literal("hello".characters)))
+		XCTAssert("hello".characters.matches(Literal("hello".characters)))
+		XCTAssert(!"helloo".characters.matches(Literal("hello".characters)))
+		XCTAssert(!"ello".characters.matches(Literal("hello".characters)))
+	}
+	
+	func testEmptyStringLiteral() {
+		XCTAssert("".characters.matches(Literal("".characters)))
+		XCTAssert(!"h".characters.matches(Literal("".characters)))
+		XCTAssert(!"hello".characters.matches(Literal("".characters)))
+	}
+	
 }

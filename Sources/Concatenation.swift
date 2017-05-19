@@ -62,24 +62,42 @@ extension Concatenation : Pattern {
 	
 }
 
-infix operator •
+/// The general concatenation pattern.
+infix operator • : AdditionPrecedence
 
+/// Concatenates two arbitrary patterns.
 public func •<L, R>(l: L, r: R) -> Concatenation<L, R> {
 	return Concatenation(l, r)
 }
 
-public func •<C : RangeReplaceableCollection>(l: Literal<C>, r: Literal<C>) -> Literal<C> {
-	var l = l
-	l.literal.append(contentsOf: r.literal)
-	return l
+/// Concatenates an arbitrary pattern with a literal collection.
+public func •<P, C>(l: P, r: C) -> Concatenation<P, Literal<C>> {
+	return Concatenation(l, Literal(r))
 }
 
+/// Concatenates a literal collection with an arbitrary pattern.
+public func •<P, C>(l: C, r: P) -> Concatenation<Literal<C>, P> {
+	return Concatenation(Literal(l), r)
+}
+
+/// Concatenates two literals into a new literal.
+public func •<C : RangeReplaceableCollection>(l: Literal<C>, r: Literal<C>) -> Literal<C> {
+	return Literal(l.literal.appending(contentsOf: r.literal))
+}
+
+/// Concatenates a literal with another literal within a concatenation.
 public func •<C : RangeReplaceableCollection, P>(l: Literal<C>, r: Concatenation<Literal<C>, P>) -> Concatenation<Literal<C>, P> {
 	let newLiteral = l.literal.appending(contentsOf: r.leadingPattern.literal)
 	return Concatenation(Literal(newLiteral), r.trailingPattern)
 }
 
+/// Concatenates a literal within a concatenation with another literal.
 public func •<C : RangeReplaceableCollection, P>(l: Concatenation<P, Literal<C>>, r: Literal<C>) -> Concatenation<P, Literal<C>> {
 	let newLiteral = l.trailingPattern.literal.appending(contentsOf: r.literal)
 	return Concatenation(l.leadingPattern, Literal(newLiteral))
+}
+
+/// Concatenates a literal collection with another literal collection into a literal pattern.
+public func •<C : RangeReplaceableCollection>(l: C, r: C) -> Literal<C> {
+	return Literal(l.appending(contentsOf: r))
 }

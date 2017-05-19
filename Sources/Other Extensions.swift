@@ -37,9 +37,9 @@ var impossible: Never {
 ///		- mutator: A closure that performs mutation.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S>(of subject: S, mutator: (inout S) throws -> ()) rethrows -> S {
+func withCopy<S>(of subject: S, mutator: (inout S) throws -> Any) rethrows -> S {
 	var subject = subject
-	try mutator(&subject)
+	_ = try mutator(&subject)
 	return subject
 }
 
@@ -53,9 +53,9 @@ func withCopy<S>(of subject: S, mutator: (inout S) throws -> ()) rethrows -> S {
 ///		- argument: The argument to the subject-qualified mutator.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S, A>(of subject: S, mutator: (inout S) throws -> (A) -> (), argument: A) rethrows -> S {
+func withCopy<S, A>(of subject: S, mutator: (inout S) throws -> (A) -> Any, argument: A) rethrows -> S {
 	var subject = subject
-	try mutator(&subject)(argument)
+	_ = try mutator(&subject)(argument)
 	return subject
 }
 
@@ -70,9 +70,9 @@ func withCopy<S, A>(of subject: S, mutator: (inout S) throws -> (A) -> (), argum
 ///		- secondArgument: The second argument to the subject-qualified mutator.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S, A, B>(of subject: S, mutator: (inout S) throws -> (A, B) -> (), arguments firstArgument: A, _ secondArgument: B) rethrows -> S {
+func withCopy<S, A, B>(of subject: S, mutator: (inout S) throws -> (A, B) -> Any, arguments firstArgument: A, _ secondArgument: B) rethrows -> S {
 	var subject = subject
-	try mutator(&subject)(firstArgument, secondArgument)
+	_ = try mutator(&subject)(firstArgument, secondArgument)
 	return subject
 }
 
@@ -88,8 +88,8 @@ func withCopy<S, A, B>(of subject: S, mutator: (inout S) throws -> (A, B) -> (),
 ///		- thirdArgument: The third argument to the subject-qualified mutator.
 ///
 /// - Returns: A copy of `subject` after being mutated by `mutator`.
-func withCopy<S, A, B, C>(of subject: S, mutator: (inout S) throws -> (A, B, C) -> (), arguments firstArgument: A, _ secondArgument: B, _ thirdArgument: C) rethrows -> S {
+func withCopy<S, A, B, C>(of subject: S, mutator: (inout S) throws -> (A, B, C) -> Any, arguments firstArgument: A, _ secondArgument: B, _ thirdArgument: C) rethrows -> S {
 	var subject = subject
-	try mutator(&subject)(firstArgument, secondArgument, thirdArgument)
+	_ = try mutator(&subject)(firstArgument, secondArgument, thirdArgument)
 	return subject
 }
