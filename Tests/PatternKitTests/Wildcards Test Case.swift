@@ -6,27 +6,27 @@ import XCTest
 class WildcardsTestCase : XCTestCase {
 	
 	func testSingleWildcard() {
-		XCTAssert(![].matches(Wildcard<[Int]>()))
-		XCTAssert([5].matches(Wildcard()))
-		XCTAssert(![5, 6].matches(Wildcard()))
+		XCTAssert(![Int]().matches(one()))
+		XCTAssert([5].matches(one()))
+		XCTAssert(![5, 6].matches(one()))
 	}
 	
 	func testTwoWildcards() {
-		XCTAssert(![Int]().matches(Wildcard() • Wildcard()))
-		XCTAssert(![5].matches(Wildcard() • Wildcard()))
-		XCTAssert([5, 6].matches(Wildcard() • Wildcard()))
-		XCTAssert(![5, 6, 5].matches(Wildcard() • Wildcard()))
+		XCTAssert(![Int]().matches(one() • one()))
+		XCTAssert(![5].matches(one() • one()))
+		XCTAssert([5, 6].matches(one() • one()))
+		XCTAssert(![5, 6, 5].matches(one() • one()))
 	}
 	
 	func testHelloString() {
-		XCTAssert("hello".characters.matches(Wildcard() • Wildcard() • Wildcard() • Wildcard() • Wildcard()))
-		XCTAssert(!"hello".characters.matches(Wildcard() • Wildcard() • Wildcard() • Wildcard()))
-		XCTAssert(!"hello".characters.matches(Wildcard() • Wildcard() • Wildcard() • Wildcard() • Wildcard() • Wildcard()))
+		XCTAssert("hello".characters.matches(one() • one() • one() • one() • one()))
+		XCTAssert(!"hello".characters.matches(one() • one() • one() • one()))
+		XCTAssert(!"hello".characters.matches(one() • one() • one() • one() • one() • one()))
 	}
 	
 	func testEmptyString() {
-		XCTAssert(!"".characters.matches(Wildcard()))
-		XCTAssert(!"".characters.matches(Wildcard() • Wildcard()))
+		XCTAssert(!"".characters.matches(one()))
+		XCTAssert(!"".characters.matches(one() • one()))
 	}
 	
 }

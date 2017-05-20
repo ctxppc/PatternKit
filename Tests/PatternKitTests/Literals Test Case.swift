@@ -6,38 +6,38 @@ import XCTest
 class LiteralsTestCase : XCTestCase {
 	
 	func testEmptyCollection() {
-		XCTAssert([].matches(Literal([Int]())))
-		XCTAssert(![].matches(Literal([1])))
-		XCTAssert(![].matches(Literal([1, 2])))
+		XCTAssert([].matches(§[Int]()))
+		XCTAssert(![].matches(§[1]))
+		XCTAssert(![].matches(§[1, 2]))
 	}
 	
 	func testCollectionOfOne() {
-		XCTAssert([5].matches(Literal([5])))
-		XCTAssert(![5].matches(Literal([])))
-		XCTAssert(![5].matches(Literal([6])))
-		XCTAssert(![5].matches(Literal([5, 6])))
-		XCTAssert(![5].matches(Literal([6, 5])))
+		XCTAssert([5].matches(§[5]))
+		XCTAssert(![5].matches(§[]))
+		XCTAssert(![5].matches(§[6]))
+		XCTAssert(![5].matches(§[5, 6]))
+		XCTAssert(![5].matches(§[6, 5]))
 	}
 	
 	func testCollectionOfTwo() {
-		XCTAssert([5, 6].matches(Literal([5, 6])))
-		XCTAssert(![5, 6].matches(Literal([])))
-		XCTAssert(![5, 6].matches(Literal([5])))
-		XCTAssert(![5, 6].matches(Literal([6])))
-		XCTAssert(![5, 6].matches(Literal([6, 5])))
+		XCTAssert([5, 6].matches(§[5, 6]))
+		XCTAssert(![5, 6].matches(§[]))
+		XCTAssert(![5, 6].matches(§[5]))
+		XCTAssert(![5, 6].matches(§[6]))
+		XCTAssert(![5, 6].matches(§[6, 5]))
 	}
 	
 	func testHelloLiteral() {
-		XCTAssert(!"".characters.matches(Literal("hello".characters)))
-		XCTAssert("hello".characters.matches(Literal("hello".characters)))
-		XCTAssert(!"helloo".characters.matches(Literal("hello".characters)))
-		XCTAssert(!"ello".characters.matches(Literal("hello".characters)))
+		XCTAssert(!"".matches(§"hello"))
+		XCTAssert("hello".matches(§"hello"))
+		XCTAssert(!"helloo".matches(§"hello"))
+		XCTAssert(!"ello".matches(§"hello"))
 	}
 	
 	func testEmptyStringLiteral() {
-		XCTAssert("".characters.matches(Literal("".characters)))
-		XCTAssert(!"h".characters.matches(Literal("".characters)))
-		XCTAssert(!"hello".characters.matches(Literal("".characters)))
+		XCTAssert("".matches(§""))
+		XCTAssert(!"h".matches(§""))
+		XCTAssert(!"hello".matches(§""))
 	}
 	
 }
