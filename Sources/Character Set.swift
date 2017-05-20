@@ -16,36 +16,3 @@ extension CharacterSet : Pattern {
 	}
 	
 }
-
-public func ...(l: UnicodeScalar, r: UnicodeScalar) -> CharacterSet {
-	return CharacterSet(charactersIn: l...r)
-}
-
-public struct UnicodeScalarSetPattern {
-	
-	/// Creates a scalar set pattern.
-	init(_ characterSet: CharacterSet) {
-		self.characterSet = characterSet
-	}
-	
-	/// The characters that the pattern matches.
-	public var characterSet: CharacterSet
-	
-}
-
-extension UnicodeScalarSetPattern : Pattern {
-	
-	public func matches(base: Match<String.UnicodeScalarView>, direction: MatchingDirection) -> AnyIterator<Match<String.UnicodeScalarView>> {
-		guard let scalar = base.remainingElements(direction: direction).first else { return none() }
-		if characterSet.contains(scalar) {
-			return one(base.movingInputPosition(distance: 1, direction: direction))
-		} else {
-			return none()
-		}
-	}
-	
-}
-
-public func ...(l: UnicodeScalar, r: UnicodeScalar) -> UnicodeScalarSetPattern {
-	return UnicodeScalarSetPattern(l...r)
-}

@@ -1,14 +1,12 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-import Foundation
-
-/// A pattern that matches any one of two patterns.
+/// A pattern that matches two patterns separately.
 public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Collection == AlternativePattern.Collection {
 	
-	/// Creates an alternated pattern.
+	/// Creates a pattern that matches two patterns separately and sequentially.
 	///
-	/// - Parameter leadingPattern: The pattern that matches the first part of the concatenation.
-	/// - Parameter trailingPattern: The pattern that matches the part after the part matched by the leading pattern.
+	/// - Parameter mainPattern: The pattern whose matches are generated first.
+	/// - Parameter alternativePattern: The pattern whose matches are generated after those of the main pattern.
 	public init(_ mainPattern: MainPattern, _ alternativePattern: AlternativePattern) {
 		self.mainPattern = mainPattern
 		self.alternativePattern = alternativePattern
@@ -78,64 +76,4 @@ private enum Iterator<Collection : BidirectionalCollection> {
 	case matchingFirstPattern(iterator: AnyIterator<Match<Collection>>)
 	case matchingSecondPattern(iterator: AnyIterator<Match<Collection>>)
 	case done
-}
-
-/// Forms an alternation between two arbitrary patterns.
-public func |<L, R>(main: L, alternative: R) -> Alternation<L, R> {
-	return Alternation(main, alternative)
-}
-
-/// Forms an alternation between an arbitrary pattern and a literal collection.
-public func |<P, C>(pattern: P, collection: C) -> Alternation<P, Literal<C>> {
-	return Alternation(pattern, Literal(collection))
-}
-
-/// Forms an alternation between a literal collection and an arbitrary pattern.
-public func |<P, C>(collection: C, pattern: P) -> Alternation<Literal<C>, P> {
-	return Alternation(Literal(collection), pattern)
-}
-
-/// Forms an alternation between two literal collections.
-public func |<C>(firstCollection: C, secondCollection: C) -> Alternation<Literal<C>, Literal<C>> {
-	return Alternation(Literal(firstCollection), Literal(secondCollection))
-}
-
-/// Forms an alternation between two character sets.
-public func |(firstSet: CharacterSet, secondSet: CharacterSet) -> CharacterSet {
-	return firstSet.union(secondSet)
-}
-
-/// Forms an alternation between a character set and a character.
-public func |(set: CharacterSet, character: UnicodeScalar) -> CharacterSet {
-	return withCopy(of: set, mutator: CharacterSet.insert(_:), argument: character)
-}
-
-/// Forms an alternation between a character and a character set.
-public func |(character: UnicodeScalar, set: CharacterSet) -> CharacterSet {
-	return withCopy(of: set, mutator: CharacterSet.insert(_:), argument: character)
-}
-
-/// Forms an alternation between two characters.
-public func |(firstCharacter: UnicodeScalar, secondCharacter: UnicodeScalar) -> CharacterSet {
-	return CharacterSet([firstCharacter, secondCharacter])
-}
-
-/// Forms an alternation between two characters.
-public func |(firstCharacter: UnicodeScalar, secondCharacter: UnicodeScalar) -> UnicodeScalarSetPattern {
-	return UnicodeScalarSetPattern(CharacterSet([firstCharacter, secondCharacter]))
-}
-
-/// Forms an alternation between a character set and a character.
-public func |(set: UnicodeScalarSetPattern, character: UnicodeScalar) -> UnicodeScalarSetPattern {
-	return UnicodeScalarSetPattern(withCopy(of: set.characterSet, mutator: CharacterSet.insert(_:), argument: character))
-}
-
-/// Forms an alternation between a character and a character set.
-public func |(character: UnicodeScalar, set: UnicodeScalarSetPattern) -> UnicodeScalarSetPattern {
-	return UnicodeScalarSetPattern(withCopy(of: set.characterSet, mutator: CharacterSet.insert(_:), argument: character))
-}
-
-/// Forms an alternation between two character sets.
-public func |(firstSet: UnicodeScalarSetPattern, secondSet: UnicodeScalarSetPattern) -> UnicodeScalarSetPattern {
-	return UnicodeScalarSetPattern(firstSet.characterSet.union(secondSet.characterSet))
 }

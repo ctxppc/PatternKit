@@ -10,6 +10,7 @@ public struct Repeating<RepeatedPattern : Pattern> {
 	/// - Parameter repeatedPattern: The pattern that is repeated.
 	/// - Parameter lowerBound: The lower bound. The default is zero.
 	/// - Parameter upperBound: The upper bound, inclusive. The default is `Int.max`.
+	/// - Parameter tendency: The tendency of the repeating pattern to match its repeated pattern as few or as many times as possible within its multiplicity range. The default is eager matching.
 	public init(_ repeatedPattern: RepeatedPattern, min lowerBound: Int = 0, max upperBound: Int = .max, tendency: Tendency = .eager) {
 		precondition(lowerBound >= 0, "Negative lower bound")
 		self.repeatedPattern = repeatedPattern
@@ -121,42 +122,6 @@ extension Repeating : Pattern {
 		
 	}
 	
-}
-
-postfix operator *
-postfix operator +
-postfix operator *?
-postfix operator +?
-postfix operator /?
-
-/// Forms an arbitrarily and eagerly repeated pattern over a given pattern.
-public postfix func *<P>(o: P) -> Repeating<P> {
-	return Repeating(o)
-}
-
-/// Forms an arbitrarily and eagerly repeated pattern over a given pattern that must match at least once.
-public postfix func +<P>(o: P) -> Repeating<P> {
-	return Repeating(o, min: 1)
-}
-
-/// Forms an arbitrarily and lazily repeated pattern over a given pattern.
-public postfix func *?<P>(o: P) -> Repeating<P> {
-	return Repeating(o, tendency: .lazy)
-}
-
-/// Forms an arbitrarily and lazily repeated pattern over a given pattern that must match at least once.
-public postfix func +?<P>(o: P) -> Repeating<P> {
-	return Repeating(o, min: 1, tendency: .lazy)
-}
-
-/// Forms an eagerly but optionally matched pattern over a given pattern.
-public postfix func /?<P>(o: P) -> Repeating<P> {
-	return Repeating(o, max: 1)
-}
-
-/// Forms a matched pattern over a given pattern that cannot backtrack over itself.
-public func atomic<P>(pattern: P) -> Repeating<P> {
-	return Repeating(pattern, min: 1, max: 1, tendency: .possessive)
 }
 
 /// A structure that performs repeated matches and provides on-demand matches for any given multiplicity.
