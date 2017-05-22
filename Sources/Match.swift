@@ -3,25 +3,41 @@
 /// A conformance of a collection to a pattern.
 public struct Match<Collection : BidirectionalCollection> /* where Collection.Iterator.Element : Equatable */ {	// TODO: Add in Swift 4
 	
-	/// Creates a match for matching patterns on some collection, starting from the collection's first element.
+	/// Creates an initial match.
 	///
-	/// - Parameter collection: The collection on which the match applies.
-	internal init(for collection: Collection) {
-		matchingCollection = collection
-		inputPosition = collection.startIndex
+	/// - Postcondition: `remainingElements(direction: direction) == subject`
+	///
+	/// - Parameter subject: The collection on which the match applies.
+	/// - Parameter direction: The direction in which matching is to be performed. The default is forward matching.
+	public init(on subject: Collection, direction: MatchingDirection = .forward) {
+		switch direction {
+			case .forward:	self.init(on: subject, inputPosition: subject.startIndex)
+			case .backward:	self.init(on: subject, inputPosition: subject.endIndex)
+		}
+	}
+	
+	/// Creates a match with given input position.
+	///
+	/// - Requires: `inputPosition` is a valid index into `subject`.
+	///
+	/// - Parameter subject: The collection on which the match applies.
+	/// - Parameter inputPosition: The input position.
+	public init(on subject: Collection, inputPosition: Collection.Index) {
+		self.subject = subject
+		self.inputPosition = inputPosition
 		capturedRangesByToken = [:]
 	}
 	
 	/// The collection on which the match applies.
-	public let matchingCollection: Collection
+	public let subject: Collection
 	
-	/// The position in the matching collection that,
+	/// The position in the subject collection that,
 	/// * within the context of forward matching, represents the next element (if any) to be matched, and
 	/// * within the context of backward matching, represents the previous element (if any) that has been matched (in the direction of matching).
 	///
-	/// The collection is fully matched if the input position equals `matchingCollection.endIndex` during forward matching, and `matchingCollection.startIndex` during backward matching.
+	/// The collection is fully matched if the input position equals `subject.endIndex` during forward matching, and `subject.startIndex` during backward matching.
 	///
-	/// - Invariant: `matchingCollection.indices.contains(inputPosition)`
+	/// - Invariant: `subject.indices.contains(inputPosition)`
 	public private(set) var inputPosition: Collection.Index
 	
 	/// Returns a range of indices representing the elements that are yet to be matched.
@@ -31,8 +47,8 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	/// - Returns: A range of indices representing the elements that are yet to be matched.
 	public func remainingIndices(direction: MatchingDirection) -> Range<Collection.Index> {
 		switch direction {
-			case .forward:	return inputPosition..<matchingCollection.endIndex
-			case .backward:	return matchingCollection.startIndex..<inputPosition
+			case .forward:	return inputPosition..<subject.endIndex
+			case .backward:	return subject.startIndex..<inputPosition
 		}
 	}
 	
@@ -43,8 +59,8 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	/// - Returns: A range of indices representing the elements that have already been matched.
 	public func completedIndices(direction: MatchingDirection) -> Range<Collection.Index> {
 		switch direction {
-			case .forward:	return matchingCollection.startIndex..<inputPosition
-			case .backward:	return inputPosition..<matchingCollection.endIndex
+			case .forward:	return subject.startIndex..<inputPosition
+			case .backward:	return inputPosition..<subject.endIndex
 		}
 	}
 	
@@ -54,7 +70,7 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	///
 	/// - Returns: The elements that are yet to be matched.
 	public func remainingElements(direction: MatchingDirection) -> Collection.SubSequence {
-		return matchingCollection[remainingIndices(direction: direction)]
+		return subject[remainingIndices(direction: direction)]
 	}
 	
 	/// Returns the elements that have already been matched.
@@ -63,7 +79,7 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	///
 	/// - Returns: The elements that have already been matched.
 	public func matchedElements(direction: MatchingDirection) -> Collection.SubSequence {
-		return matchingCollection[completedIndices(direction: direction)]
+		return subject[completedIndices(direction: direction)]
 	}
 	
 	/// Marks elements at a given range as matched.
@@ -80,11 +96,11 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 			
 			case .forward:
 			precondition(range.lowerBound == inputPosition, "Skipped over subsequence")
-			precondition(range.upperBound < matchingCollection.endIndex, "Input position out of bounds")
-			inputPosition = matchingCollection.index(after: range.upperBound)
+			precondition(range.upperBound < subject.endIndex, "Input position out of bounds")
+			inputPosition = subject.index(after: range.upperBound)
 			
 			case .backward:
-			precondition(range.lowerBound >= matchingCollection.startIndex, "Input position out of bounds")
+			precondition(range.lowerBound >= subject.startIndex, "Input position out of bounds")
 			precondition(range.upperBound < inputPosition, "Skipped over subsequence")
 			inputPosition = range.lowerBound
 			
@@ -114,8 +130,8 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	public mutating func moveInputPosition(distance: Collection.IndexDistance, direction: MatchingDirection) {
 		precondition(distance >= 0, "Negative absolute distance.")
 		switch direction {
-			case .forward:	matchingCollection.formIndex(&inputPosition, offsetBy: distance)
-			case .backward:	matchingCollection.formIndex(&inputPosition, offsetBy: -distance)
+			case .forward:	subject.formIndex(&inputPosition, offsetBy: distance)
+			case .backward:	subject.formIndex(&inputPosition, offsetBy: -distance)
 		}
 	}
 	
@@ -134,7 +150,7 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	
 	/// Returns a match whose input position is set to the input position of a given match.
 	///
-	/// - Requires: `self.matchingCollection == other.matchingCollection`, as if `Collection` were to be `Equatable`.
+	/// - Requires: `self.subject == other.subject`, as if `Collection` were to be `Equatable`.
 	///
 	/// - Parameter other: The match from where to resume.
 	///
@@ -158,7 +174,7 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	/// - Parameter token: The token that captured the range.
 	internal mutating func capture<P : Pattern>(_ range: Range<Collection.Index>, for token: Token<P>) {
 		
-		precondition((matchingCollection.startIndex..<matchingCollection.endIndex).contains(range), "Captured range out of bounds")
+		precondition((subject.startIndex..<subject.endIndex).contains(range), "Captured range out of bounds")
 		
 		let token = ObjectIdentifier(token)
 		if let previousArray = capturedRangesByToken[token] {
@@ -196,7 +212,7 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 	///
 	/// - Returns: The subsequences captured by `token`.
 	public func capturedSubsequences<P : Pattern>(for token: Token<P>) -> [Collection.SubSequence] {
-		return capturedRanges(for: token).map { matchingCollection[$0] }
+		return capturedRanges(for: token).map { subject[$0] }
 	}
 	
 }

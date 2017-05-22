@@ -20,66 +20,56 @@ public protocol Pattern {
 	/// - Parameter base: The match on which to base successor matches.
 	/// - Parameter direction: The direction of matching.
 	///
-	/// - Returns: An iterator of matches. Every returned match must have the same `matchingCollection` as `origin.matchingCollection`.
+	/// - Returns: An iterator of matches. Every returned match must have the same `matchingCollection` as `base.matchingCollection`.
 	func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>>		// TODO: Remove in Swift 4
 //	func matches(base: Match<Collection>, direction: MatchingDirection) -> MatchIterator						// TODO: Add in Swift 4
 	
+	/// Determines the smallest index in `subject` equal to or greater than `inputPosition` that can be passed to `matches(base:direction:)`, in the context of forward matching.
+	///
+	/// This method may be used to quickly determine a start index for a match and thus skip ineligible parts of a collection. As an optimisation, it may underestimate and must not overestimate.
+	///
+	/// The default implementation returns `inputPosition`.
+	///
+	/// - Requires: `inputPosition` is a valid index into `subject`.
+	///
+	/// - Invariant: Every input position between `inputPosition` and this method's result value (the latter itself excluded) results in no matches being produced.
+	///
+	/// - Complexity: *O(n)*, where *n* is the length of the collection.
+	///
+	/// - Parameter subject: The collection on which the pattern is to be applied.
+	/// - Parameter inputPosition: The input position within the collection from where forward matching starts.
+	///
+	/// - Returns: The smallest index in `subject` equal to or greater than `inputPosition` that may result in matches. If the pattern cannot possibly generate matches from `inputPosition` onward, `subject.endIndex` may be returned.
+	func underestimatedSmallestInputPositionForForwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index
+	
+	/// Determines the largest index in `subject` equal to or smaller than `inputPosition` that can be passed to `matches(base:direction:)`, in the context of backward matching.
+	///
+	/// This method may be used to quickly determine a start index for a match and thus skip ineligible parts of a collection. As an optimisation, it may overestimate and must not underestimate.
+	///
+	/// The default implementation returns `inputPosition`.
+	///
+	/// - Requires: `inputPosition` is a valid index into `subject`.
+	///
+	/// - Invariant: Every input position between this method's result value and `inputPosition` (the latter itself excluded) results in no matches being produced.
+	///
+	/// - Complexity: *O(n)*, where *n* is the length of the collection.
+	///
+	/// - Parameter subject: The collection on which the pattern is to be applied.
+	/// - Parameter inputPosition: The input position within the collection from where backward matching starts.
+	///
+	/// - Returns: The smallest index in `subject` equal to or smaller than `inputPosition` that may result in matches. If the pattern cannot possibly generate matches between `inputPosition` and `subject.startIndex`, `subject.startIndex` may be returned.
+	func overestimatedLargestInputPositionForBackwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index
+	
 }
 
-extension BidirectionalCollection where Iterator.Element : Equatable {
+extension Pattern {
 	
-	/// Returns a Boolean value indicating whether the collection matches a pattern.
-	///
-	/// - Complexity: O(b^d) where *b* is the length of the largest sequential subpattern and *d* is the largest depth of recursion.
-	///
-	/// - Parameter pattern: The pattern to match against.
-	///
-	/// - Returns: `true` if `self` matches `pattern`.
-	public func matches<P : Pattern>(_ pattern: P) -> Bool where P.Collection == Self {
-		return matches(for: pattern).first() != nil
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index {
+		return inputPosition
 	}
 	
-	/// Returns a lazily computed sequence of matches of a pattern over the collection.
-	///
-	/// - Complexity: O(1) for making the sequence; O(b^d) for iterating over it, where *b* is the length of the largest sequential subpattern and *d* is the largest depth of recursion.
-	///
-	/// - Parameter pattern: The pattern to match against.
-	///
-	/// - Returns: A lazily computed sequence of matches of `pattern` over `self`.
-	public func matches<P : Pattern>(for pattern: P) -> LazyFilterSequence<AnyIterator<Match<Self>>> where P.Collection == Self {
-		return pattern
-			.matches(base: Match(for: self), direction: .forward)
-			.lazy
-			.filter { candidateMatch in candidateMatch.remainingElements(direction: .forward).isEmpty }
-	}
-		
-}
-
-extension String {
-	
-	/// Returns a Boolean value indicating whether the string matches a pattern.
-	///
-	/// - Complexity: O(b^d) where *b* is the length of the largest sequential subpattern and *d* is the largest depth of recursion.
-	///
-	/// - Parameter pattern: The pattern to match against.
-	///
-	/// - Returns: `true` if `self` matches `pattern`.
-	public func matches<P : Pattern>(_ pattern: P) -> Bool where P.Collection == CharacterView {
-		return matches(for: pattern).first() != nil
-	}
-	
-	/// Returns a lazily computed sequence of matches of a pattern over the string.
-	///
-	/// - Complexity: O(1) for making the sequence; O(b^d) for iterating over it, where *b* is the length of the largest sequential subpattern and *d* is the largest depth of recursion.
-	///
-	/// - Parameter pattern: The pattern to match against.
-	///
-	/// - Returns: A lazily computed sequence of matches of `pattern` over `self`.
-	public func matches<P : Pattern>(for pattern: P) -> LazyFilterSequence<AnyIterator<Match<CharacterView>>> where P.Collection == CharacterView {
-		return pattern
-			.matches(base: Match(for: self.characters), direction: .forward)
-			.lazy
-			.filter { candidateMatch in candidateMatch.remainingElements(direction: .forward).isEmpty }
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index {
+		return inputPosition
 	}
 	
 }

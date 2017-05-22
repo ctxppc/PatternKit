@@ -2,9 +2,9 @@
 
 /// A type-erased pattern on `Collection`.
 ///
-/// This pattern forwards its `matches(proceedingFrom:)` method to an arbitrary, underlying pattern on `Collection`, hiding the specifics of the underlying `Pattern` conformance.
+/// This pattern forwards its `matches(base:direction:)` method to an arbitrary, underlying pattern on `Collection`, hiding the specifics of the underlying `Pattern` conformance.
 ///
-/// Type-erased patterns are useful in dynamic contexts, e.g., when patterns are formed at runtime by an end user. Typed patterns (with typed subpatterns and so on) may be more efficient as they present optimisation opportunities for the compiler.
+/// Type-erased patterns are useful in dynamic contexts, e.g., when patterns are formed at runtime by an end user. Typed patterns (with typed subpatterns and so on) may be more efficient as they present optimisation opportunities to the compiler.
 public struct AnyPattern<Collection : BidirectionalCollection> where Collection.Iterator.Element : Equatable {
 	
 	/// Creates a type-erased container for a given pattern.
@@ -20,7 +20,7 @@ public struct AnyPattern<Collection : BidirectionalCollection> where Collection.
 	
 	/// The type-erased pattern.
 	///
-	/// Clients can add type information back by casting it (conditionally) to a reified type, e.g., `pattern as? LiteralPattern<String.CharacterView>`.
+	/// Clients can add type information back by casting `pattern` to a reified type, e.g., `pattern as? LiteralPattern<String.CharacterView>`.
 	public let pattern: Any
 	
 }

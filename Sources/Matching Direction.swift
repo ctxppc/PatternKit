@@ -9,5 +9,13 @@ public enum MatchingDirection {
 	/// Elements in a collection are matched from high to low indices.
 	case backward
 	
-}
+	/// The inverse direction.
+	public var inverse: MatchingDirection {
+		switch self {
+			case .forward:	return .backward
+			case .backward:	return .forward
+		}
+	}
 	
+}
+

@@ -69,6 +69,14 @@ extension Alternation : Pattern {
 		
 	}
 	
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: MainPattern.Collection, fromIndex inputPosition: MainPattern.Collection.Index) -> MainPattern.Collection.Index {
+		return min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
+	}
+	
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: MainPattern.Collection, fromIndex inputPosition: MainPattern.Collection.Index) -> MainPattern.Collection.Index {
+		return max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
+	}
+	
 }
 
 private enum Iterator<Collection : BidirectionalCollection> {

@@ -122,6 +122,14 @@ extension Repeating : Pattern {
 		
 	}
 	
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: RepeatedPattern.Collection, fromIndex inputPosition: RepeatedPattern.Collection.Index) -> RepeatedPattern.Collection.Index {
+		return repeatedPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
+	}
+	
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: RepeatedPattern.Collection, fromIndex inputPosition: RepeatedPattern.Collection.Index) -> RepeatedPattern.Collection.Index {
+		return repeatedPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
+	}
+	
 }
 
 /// A structure that performs repeated matches and provides on-demand matches for any given multiplicity.

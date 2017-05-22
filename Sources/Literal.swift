@@ -32,4 +32,6 @@ extension Literal : Pattern {
 		
 	}
 	
+	// TODO: Implement heuristics.
+	
 }

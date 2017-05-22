@@ -60,4 +60,12 @@ extension Concatenation : Pattern {
 		
 	}
 	
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: LeadingPattern.Collection, fromIndex inputPosition: LeadingPattern.Collection.Index) -> LeadingPattern.Collection.Index {
+		return leadingPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
+	}
+	
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: TrailingPattern.Collection, fromIndex inputPosition: TrailingPattern.Collection.Index) -> TrailingPattern.Collection.Index {
+		return trailingPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
+	}
+	
 }
