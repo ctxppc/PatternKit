@@ -12,26 +12,6 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 		capturedRangesByToken = [:]
 	}
 	
-	/// Creates a match that resumes matching from a match, but with additional captures from another match.
-	///
-	/// This initialiser can be used by patterns that don't advance the input position but do need to perform matching on a different range, like forward and backward assertions.
-	///
-	/// - Requires: For every captured token `token` in both `resumingMatch` and `capturesMatch`, `resumingMatch.capturedRange(for: token) == capturesMatch.capturedRange(for: token)`.
-	/// - Requires: `resumingMatch.matchingCollection == capturesMatch.matchingCollection`, if `Collection` conforms to `Equatable`. This constraint is currently *not* enforced.
-	///
-	/// - Parameter resumingMatch: The match from where to resume matching.
-	/// - Parameter capturesMatch: The match whose captures to merge with `resumingMatch`.
-	public init(resumingFrom resumingMatch: Match, withCapturesFrom capturesMatch: Match) {
-		
-		self = resumingMatch
-		
-		for (token, newRange) in capturesMatch.capturedRangesByToken {
-			let previousRange = capturedRangesByToken.updateValue(newRange, forKey: token)
-			precondition(previousRange == nil || previousRange == newRange, "Multiple distinct captures for token")
-		}
-		
-	}
-	
 	/// The collection on which the match applies.
 	public let matchingCollection: Collection
 	
@@ -152,54 +132,71 @@ public struct Match<Collection : BidirectionalCollection> /* where Collection.It
 		return withCopy(of: self, mutator: Match.moveInputPosition, arguments: distance, direction)
 	}
 	
+	/// Returns a match whose input position is set to the input position of a given match.
+	///
+	/// - Requires: `self.matchingCollection == other.matchingCollection`, as if `Collection` were to be `Equatable`.
+	///
+	/// - Parameter other: The match from where to resume.
+	///
+	/// - Returns: A copy of `self` such that `inputPosition = other.inputPosition`.
+	public func resuming(from other: Match) -> Match {
+		var result = self
+		result.inputPosition = other.inputPosition
+		return result
+	}
+	
 	/// The captured ranges, by the token that captured them.
-	private var capturedRangesByToken: [ObjectIdentifier : Range<Collection.Index>]
+	private var capturedRangesByToken: [ObjectIdentifier : [Range<Collection.Index>]]
 	
 	/// Captures a range for a token.
 	///
 	/// - Requires: The range is within the collection's bounds.
-	/// - Requires: `capturedRange(for: token) == nil`
 	///
-	/// - Postcondition: `capturedRange(for: token) == range`
+	/// - Postcondition: `capturedRanges(for: token).last == range`
 	///
 	/// - Parameter range: The captured range.
 	/// - Parameter token: The token that captured the range.
 	internal mutating func capture<P : Pattern>(_ range: Range<Collection.Index>, for token: Token<P>) {
+		
 		precondition((matchingCollection.startIndex..<matchingCollection.endIndex).contains(range), "Captured range out of bounds")
-		let previousRange = capturedRangesByToken.updateValue(range, forKey: ObjectIdentifier(token))
-		precondition(previousRange == range || previousRange == nil, "Multiple distinct captures for token")
+		
+		let token = ObjectIdentifier(token)
+		if let previousArray = capturedRangesByToken[token] {
+			capturedRangesByToken[token] = previousArray + [range]
+		} else {
+			capturedRangesByToken[token] = [range]
+		}
+		
 	}
 	
 	/// Returns a match with a range captured for a token.
 	///
 	/// - Requires: The range is within the collection's bounds.
-	/// - Requires: `capturedRange(for: token) == nil`
 	///
 	/// - Parameter range: The captured range.
 	/// - Parameter token: The token that captured the range.
 	///
-	/// - Returns: A match where `capturedRange(for: token) == range`.
+	/// - Returns: A match where `capturedRanges(for: token).last == range`.
 	internal func capturing<P : Pattern>(_ range: Range<Collection.Index>, for token: Token<P>) -> Match {
 		return withCopy(of: self, mutator: Match.capture(_:for:), arguments: range, token)
 	}
 	
-	/// Returns the range captured by a token.
+	/// Returns the ranges captured by a token.
 	///
 	/// - Parameter token: The token.
 	///
-	/// - Returns: The range captured by `token`, or `nil` if no such range has been captured.
-	public func capturedRange<P : Pattern>(for token: Token<P>) -> Range<Collection.Index>? {
-		return capturedRangesByToken[ObjectIdentifier(token)]
+	/// - Returns: The ranges captured by `token`.
+	public func capturedRanges<P : Pattern>(for token: Token<P>) -> [Range<Collection.Index>] {
+		return capturedRangesByToken[ObjectIdentifier(token)] ?? []
 	}
 	
-	/// Returns the subsequence captured by a token.
+	/// Returns the subsequences captured by a token.
 	///
 	/// - Parameter token: The token.
 	///
-	/// - Returns: The subsequence captured by `token`, or `nil` if no such subsequence has been captured.
-	public func capturedSubsequence<P : Pattern>(for token: Token<P>) -> Collection.SubSequence? {
-		guard let range = capturedRange(for: token) else { return nil }
-		return matchingCollection[range]
+	/// - Returns: The subsequences captured by `token`.
+	public func capturedSubsequences<P : Pattern>(for token: Token<P>) -> [Collection.SubSequence] {
+		return capturedRanges(for: token).map { matchingCollection[$0] }
 	}
 	
 }
