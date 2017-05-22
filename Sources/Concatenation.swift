@@ -3,6 +3,8 @@
 /// A pattern that matches two patterns sequentially.
 public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern> where LeadingPattern.Collection == TrailingPattern.Collection {
 	
+	public typealias Collection = LeadingPattern.Collection
+	
 	/// Creates a concatenated pattern.
 	///
 	/// - Parameter leadingPattern: The pattern that matches the first part of the concatenation.
@@ -18,53 +20,40 @@ public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern>
 	/// The pattern that matches the part after the part matched by the leading pattern.
 	public var trailingPattern: TrailingPattern
 	
+	/// Returns a forward match iterator.
+	///
+	/// - Parameter base: The base match.
+	///
+	/// - Returns: A forward match iterator with base `base`.
+	public func makeForwardMatchIterator(base: Match<Collection>) -> ConcatenationMatchIterator<LeadingPattern, TrailingPattern> {
+		return ConcatenationMatchIterator(firstPattern: leadingPattern, secondPattern: trailingPattern, baseMatch: base, direction: .forward)
+	}
+	
+	/// Returns a backward match iterator.
+	///
+	/// - Parameter base: The base match.
+	///
+	/// - Returns: A backward match iterator with base `base`.
+	public func makeBackwardMatchIterator(base: Match<Collection>) -> ConcatenationMatchIterator<TrailingPattern, LeadingPattern> {
+		return ConcatenationMatchIterator(firstPattern: trailingPattern, secondPattern: leadingPattern, baseMatch: base, direction: .backward)
+	}
+	
 }
 
 extension Concatenation : Pattern {
 	
-	public typealias Collection = LeadingPattern.Collection
-	
 	public func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>> {
-		
-		func makeIterator<A : Pattern, B : Pattern>(firstPattern: A, secondPattern: B) -> AnyIterator<Match<Collection>> where A.Collection == Collection, B.Collection == Collection {
-			
-			var iteratorOfFirstPattern = firstPattern.matches(base: base, direction: direction)
-			guard let firstMatchForFirstPattern = iteratorOfFirstPattern.next() else { return none() }
-			var matchForFirstPattern = firstMatchForFirstPattern
-			
-			func makeIteratorOfSecondPattern() -> AnyIterator<Match<Collection>> {
-				return secondPattern.matches(base: matchForFirstPattern, direction: direction)
-			}
-			var iteratorOfSecondPattern = makeIteratorOfSecondPattern()
-			
-			func next() -> Match<Collection>? {
-				if let matchForSecondPattern = iteratorOfSecondPattern.next() {				// Next match in second pattern found
-					return matchForSecondPattern
-				} else if let nextMatchForFirstPattern = iteratorOfFirstPattern.next() {	// Next match in first pattern found
-					matchForFirstPattern = nextMatchForFirstPattern
-					iteratorOfSecondPattern = makeIteratorOfSecondPattern()
-					return next()
-				} else {																	// Both patterns exhausted
-					return nil
-				}
-			}
-			
-			return AnyIterator(next)
-			
-		}
-		
 		switch direction {
-			case .forward:	return makeIterator(firstPattern: leadingPattern, secondPattern: trailingPattern)
-			case .backward:	return makeIterator(firstPattern: trailingPattern, secondPattern: leadingPattern)
+			case .forward:	return AnyIterator(makeForwardMatchIterator(base: base))
+			case .backward:	return AnyIterator(makeBackwardMatchIterator(base: base))
 		}
-		
 	}
 	
-	public func underestimatedSmallestInputPositionForForwardMatching(on subject: LeadingPattern.Collection, fromIndex inputPosition: LeadingPattern.Collection.Index) -> LeadingPattern.Collection.Index {
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index {
 		return leadingPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
-	public func overestimatedLargestInputPositionForBackwardMatching(on subject: TrailingPattern.Collection, fromIndex inputPosition: TrailingPattern.Collection.Index) -> TrailingPattern.Collection.Index {
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index {
 		return trailingPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	

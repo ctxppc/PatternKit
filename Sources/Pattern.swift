@@ -20,7 +20,7 @@ public protocol Pattern {
 	/// - Parameter base: The match on which to base successor matches.
 	/// - Parameter direction: The direction of matching.
 	///
-	/// - Returns: An iterator of matches. Every returned match must have the same `matchingCollection` as `base.matchingCollection`.
+	/// - Returns: An iterator of matches. Every returned match must have the same `subject` as `base`.
 	func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>>		// TODO: Remove in Swift 4
 //	func matches(base: Match<Collection>, direction: MatchingDirection) -> MatchIterator						// TODO: Add in Swift 4
 	
