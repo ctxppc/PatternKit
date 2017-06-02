@@ -10,19 +10,26 @@
 public protocol Pattern {
 	
 	/// The collection type on which pattern matching is performed.
-	associatedtype Collection : BidirectionalCollection /* where Collection.Iterator.Element : Equatable */		// TODO: Add in Swift 4
+	associatedtype Subject : BidirectionalCollection /* where Subject.Iterator.Element : Equatable */							// TODO: Add constraint in Swift 4
 	
-	/// The iterator type for matches.
-//	associatedtype MatchIterator : IteratorProtocol where MatchIterator.Element == Match<Collection>			// TODO: Add in Swift 4
+	/// The collection type for matches.
+	associatedtype MatchCollection : BidirectionalCollection /* where MatchCollection.Iterator.Element == Match<Subject> */		// TODO: Add constraint in Swift 4
 	
-	/// Returns an iterator of matches that result from performing matching.
+	/// Returns a collection of matches over a subject, given a base match and a direction.
 	///
 	/// - Parameter base: The match on which to base successor matches.
 	/// - Parameter direction: The direction of matching.
 	///
-	/// - Returns: An iterator of matches. Every returned match must have the same `subject` as `base`.
-	func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>>		// TODO: Remove in Swift 4
-//	func matches(base: Match<Collection>, direction: MatchingDirection) -> MatchIterator						// TODO: Add in Swift 4
+	/// - Returns: A collection of matches over the subject in `base`, starting from the input position of `base`, and matching in the direction given by `direction`.
+	func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>>				// TODO: Remove in Swift 4
+	
+	/// Returns a collection of matches over a subject, given a base match and a direction.
+	///
+	/// - Parameter base: The match on which to base successor matches.
+	/// - Parameter direction: The direction of matching.
+	///
+	/// - Returns: A collection of matches over the subject in `base`, starting from the input position of `base`, and matching in the direction given by `direction`.
+	func matches(base: Match<Subject>, direction: MatchingDirection) -> MatchCollection
 	
 	/// Determines the smallest index in `subject` equal to or greater than `inputPosition` that can be passed to `matches(base:direction:)`, in the context of forward matching.
 	///
@@ -40,7 +47,7 @@ public protocol Pattern {
 	/// - Parameter inputPosition: The input position within the collection from where forward matching starts.
 	///
 	/// - Returns: The smallest index in `subject` equal to or greater than `inputPosition` that may result in matches. If the pattern cannot possibly generate matches from `inputPosition` onward, `subject.endIndex` may be returned.
-	func underestimatedSmallestInputPositionForForwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index
+	func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index
 	
 	/// Determines the largest index in `subject` equal to or smaller than `inputPosition` that can be passed to `matches(base:direction:)`, in the context of backward matching.
 	///
@@ -58,17 +65,17 @@ public protocol Pattern {
 	/// - Parameter inputPosition: The input position within the collection from where backward matching starts.
 	///
 	/// - Returns: The smallest index in `subject` equal to or smaller than `inputPosition` that may result in matches. If the pattern cannot possibly generate matches between `inputPosition` and `subject.startIndex`, `subject.startIndex` may be returned.
-	func overestimatedLargestInputPositionForBackwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index
+	func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index
 	
 }
 
 extension Pattern {
 	
-	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index {
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
 		return inputPosition
 	}
 	
-	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Collection, fromIndex inputPosition: Collection.Index) -> Collection.Index {
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
 		return inputPosition
 	}
 	

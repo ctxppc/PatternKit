@@ -24,9 +24,9 @@ class ConcatenationsTestCase : XCTestCase {
 	}
 	
 	func testStringLiterals() {
-		XCTAssert(!"".characters.matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
-		XCTAssert(!"abba".characters.matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
-		XCTAssert("abba".characters.matches(("a"..."b") • ("a"..."b") • ("a"..."b") • ("a"..."b")))
+		XCTAssert(!"".matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
+		XCTAssert(!"abba".matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
+		XCTAssert("abba".matches(("a"..."b") • ("a"..."b") • ("a"..."b") • ("a"..."b")))
 	}
 	
 }

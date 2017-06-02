@@ -19,14 +19,14 @@ class WildcardsTestCase : XCTestCase {
 	}
 	
 	func testHelloString() {
-		XCTAssert("hello".characters.matches(one() • one() • one() • one() • one()))
-		XCTAssert(!"hello".characters.matches(one() • one() • one() • one()))
-		XCTAssert(!"hello".characters.matches(one() • one() • one() • one() • one() • one()))
+		XCTAssert("hello".matches(one() • one() • one() • one() • one()))
+		XCTAssert(!"hello".matches(one() • one() • one() • one()))
+		XCTAssert(!"hello".matches(one() • one() • one() • one() • one() • one()))
 	}
 	
 	func testEmptyString() {
-		XCTAssert(!"".characters.matches(one()))
-		XCTAssert(!"".characters.matches(one() • one()))
+		XCTAssert(!"".matches(one()))
+		XCTAssert(!"".matches(one() • one()))
 	}
 	
 }

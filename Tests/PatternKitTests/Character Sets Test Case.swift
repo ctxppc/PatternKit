@@ -6,22 +6,22 @@ import XCTest
 class CharacterSetsTestCase : XCTestCase {
 	
 	func testZeroCharacters() {
-		XCTAssert(!"".characters.matches("a"..."a"))
-		XCTAssert(!"".characters.matches("a"..."z"))
+		XCTAssert(!"".matches("a"..."a"))
+		XCTAssert(!"".matches("a"..."z"))
 	}
 	
 	func testSingleCharacter() {
-		XCTAssert("a".characters.matches("a"..."a"))
-		XCTAssert("a".characters.matches("a"..."z"))
-		XCTAssert(!"a".characters.matches("A"..."Z"))
-		XCTAssert(!"a".characters.matches("A"..."A"))
+		XCTAssert("a".matches("a"..."a"))
+		XCTAssert("a".matches("a"..."z"))
+		XCTAssert(!"a".matches("A"..."Z"))
+		XCTAssert(!"a".matches("A"..."A"))
 	}
 	
 	func testTwoCharacters() {
-		XCTAssert("ab".characters.matches(("a"..."a") • ("b"..."b")))
-		XCTAssert("ab".characters.matches(("a"..."z") • ("a"..."z")))
-		XCTAssert(!"ab".characters.matches("A"..."Z"))
-		XCTAssert(!"ab".characters.matches(("A"..."A") • ("a"..."z")))
+		XCTAssert("ab".matches(("a"..."a") • ("b"..."b")))
+		XCTAssert("ab".matches(("a"..."z") • ("a"..."z")))
+		XCTAssert(!"ab".matches("A"..."Z"))
+		XCTAssert(!"ab".matches(("A"..."A") • ("a"..."z")))
 	}
 	
 }
