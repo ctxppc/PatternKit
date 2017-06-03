@@ -5,7 +5,7 @@ import XCTest
 
 class ConcatenationsTestCase : XCTestCase {
 	
-	func testArrayLiterals() {
+	func testCombinedArrayLiterals() {
 		XCTAssert([1, 2, 3, 4].matches(Literal([]) •  Literal([1, 2, 3, 4])))
 		XCTAssert([1, 2, 3, 4].matches(Literal([1]) •  Literal([2, 3, 4])))
 		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2]) • Literal([3, 4])))
@@ -15,12 +15,17 @@ class ConcatenationsTestCase : XCTestCase {
 	}
 	
 	func testSeparateArrayLiterals() {
-		XCTAssert([1, 2, 3, 4].matches(Literal([]) • Token(Literal([])) • Literal([1, 2, 3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1]) • Token(Literal([])) • Literal([2, 3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2]) • Token(Literal([])) • Literal([3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2]) • Token(Literal([])) • Literal([3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2, 3]) • Token(Literal([])) • Literal([4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2, 3, 4]) • Token(Literal([])) • Literal([])))
+		
+		XCTAssert([1, 2, 3].matches(Concatenation(Literal([]), Literal([1, 2, 3]))))
+		XCTAssert([1, 2, 3].matches(Concatenation(Literal([1]), Literal([2, 3]))))
+		XCTAssert([1, 2, 3].matches(Concatenation(Literal([1, 2]), Literal([3]))))
+		XCTAssert([1, 2, 3].matches(Concatenation(Literal([1, 2, 3]), Literal([]))))
+		
+		XCTAssert(![1, 2].matches(Concatenation(Literal([1]), Literal([1, 2]))))
+		XCTAssert(![1, 2].matches(Concatenation(Literal([1, 2]), Literal([2]))))
+		XCTAssert(![1].matches(Concatenation(Literal([1]), Literal([2]))))
+		XCTAssert(![2].matches(Concatenation(Literal([1]), Literal([2]))))
+		
 	}
 	
 	func testStringLiterals() {

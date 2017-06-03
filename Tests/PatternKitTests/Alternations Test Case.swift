@@ -5,6 +5,19 @@ import XCTest
 
 class AlternationsTestCase : XCTestCase {
 	
+	func testEmptyLiterals() {
+		
+		XCTAssert("".matches(literal("") | literal("")))
+		XCTAssert("".matches(literal("a") | literal("")))
+		XCTAssert("".matches(literal("") | literal("a")))
+		XCTAssert(!"".matches(literal("a") | literal("a")))
+		
+		XCTAssert(!"a".matches(literal("") | literal("")))
+		XCTAssert("a".matches(literal("a") | literal("")))
+		XCTAssert("a".matches(literal("") | literal("a")))
+		
+	}
+	
 	func testCharacterLiterals() {
 		XCTAssert("a".matches("a" | "b"))
 		XCTAssert("a".matches("b" | "a"))
@@ -12,9 +25,9 @@ class AlternationsTestCase : XCTestCase {
 	}
 	
 	func testStringLiterals() {
-		XCTAssert("abba".matches(§"abba" | §"baab"))
-		XCTAssert("abba".matches(§"baab" | §"abba"))
-		XCTAssert(!"abba".matches(§"baab" | §"caac"))
+		XCTAssert("abba".matches(literal("abba") | literal("baab")))
+		XCTAssert("abba".matches(literal("baab") | literal("abba")))
+		XCTAssert(!"abba".matches(literal("baab") | literal("caac")))
 	}
 	
 }

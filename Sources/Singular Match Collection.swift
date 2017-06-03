@@ -31,7 +31,7 @@ extension SingularMatchCollection : BidirectionalCollection {
 	}
 	
 	public var endIndex: Index {
-		return resultMatch != nil ? .end : .resultMatch
+		return resultMatch == nil ? .resultMatch : .end
 	}
 	
 	public subscript (index: Index) -> Match<Subject> {
@@ -64,7 +64,7 @@ extension SingularMatchCollection : BidirectionalCollection {
 }
 
 extension SingularMatchCollection.Index : Comparable {
-	public static func <<Subject>(l: SingularMatchCollection<Subject>.Index, r: SingularMatchCollection<Subject>.Index) -> Bool {
-		return (l, r) == (.resultMatch, .end)
+	public static func <<Subject>(left: SingularMatchCollection<Subject>.Index, right: SingularMatchCollection<Subject>.Index) -> Bool {
+		return (left, right) == (.resultMatch, .end)
 	}
 }

@@ -1,7 +1,12 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 /// A pattern that matches two patterns separately.
-public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Collection == AlternativePattern.Collection {
+public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where
+	MainPattern.Subject == AlternativePattern.Subject,
+	MainPattern.MatchCollection.Iterator.Element == Match<MainPattern.Subject>,
+	AlternativePattern.MatchCollection.Iterator.Element == Match<AlternativePattern.Subject> {	// TODO: Update constraints after updating constraints in match collection type, in Swift 4
+	
+	public typealias Subject = MainPattern.Subject
 	
 	/// Creates a pattern that matches two patterns separately and sequentially.
 	///
@@ -22,58 +27,21 @@ public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> w
 
 extension Alternation : Pattern {
 	
-	public typealias Collection = MainPattern.Collection
+	public typealias MatchCollection = AlternationMatchCollection<MainPattern, AlternativePattern>
 	
-	public func matches(base: Match<Collection>, direction: MatchingDirection) -> AnyIterator<Match<Collection>> {
-		
-		func makeIterator<A : Pattern, B : Pattern>(firstPattern: A, secondPattern: B) -> AnyIterator<Match<Collection>> where A.Collection == Collection, B.Collection == Collection {
-			
-			var state = Iterator<Collection>.initial
-			func next() -> Match<Collection>? {
-				switch state {
-					
-					case .initial:
-					state = .matchingFirstPattern(iterator: firstPattern.matches(base: base, direction: direction))
-					return next()
-					
-					case .matchingFirstPattern(iterator: let iterator):
-					if let match = iterator.next() {
-						return match
-					} else {
-						state = .matchingSecondPattern(iterator: secondPattern.matches(base: base, direction: direction))
-						return next()
-					}
-					
-					case .matchingSecondPattern(iterator: let iterator):
-					if let match = iterator.next() {
-						return match
-					} else {
-						state = .done
-						return next()
-					}
-					
-					case .done:
-					return nil
-					
-				}
-			}
-			
-			return AnyIterator(next)
-			
-		}
-		
-		switch direction {
-			case .forward:	return makeIterator(firstPattern: mainPattern, secondPattern: alternativePattern)
-			case .backward:	return makeIterator(firstPattern: alternativePattern, secondPattern: mainPattern)
-		}
-		
+	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>> {		// TODO: Remove in Swift 4, after removing requirement in Pattern
+		return AnyBidirectionalCollection(matches(base: base, direction: direction) as AlternationMatchCollection)
 	}
 	
-	public func underestimatedSmallestInputPositionForForwardMatching(on subject: MainPattern.Collection, fromIndex inputPosition: MainPattern.Collection.Index) -> MainPattern.Collection.Index {
+	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AlternationMatchCollection<MainPattern, AlternativePattern> {
+		return AlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base, direction: direction)
+	}
+	
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: MainPattern.Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
 		return min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
-	public func overestimatedLargestInputPositionForBackwardMatching(on subject: MainPattern.Collection, fromIndex inputPosition: MainPattern.Collection.Index) -> MainPattern.Collection.Index {
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: MainPattern.Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
 		return max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
