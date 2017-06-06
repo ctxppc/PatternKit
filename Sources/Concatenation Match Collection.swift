@@ -46,18 +46,39 @@ extension ConcatenationMatchCollection : BidirectionalCollection {
 	public typealias Index = ConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>
 	
 	public var startIndex: Index {
-		
-		let matchesOfLeadingPattern = leadingPattern.matches(base: baseMatch, direction: direction) as LeadingPattern.MatchCollection
-		for (candidateIndexOfLeadingPattern, candidateMatchOfLeadingPattern) in zip(matchesOfLeadingPattern.indices, matchesOfLeadingPattern) {
-			let matchesOfTrailingPattern = trailingPattern.matches(base: candidateMatchOfLeadingPattern, direction: direction) as TrailingPattern.MatchCollection
-			let candidateIndexOfTrailingPattern = matchesOfTrailingPattern.startIndex
-			if candidateIndexOfTrailingPattern != matchesOfTrailingPattern.endIndex {
-				return .some(indexForLeadingPattern: candidateIndexOfLeadingPattern, indexForTrailingPattern: candidateIndexOfTrailingPattern, direction: direction)
+		switch direction {
+			
+			case .forward: do {
+				
+				let matchesOfLeadingPattern = leadingPattern.matches(base: baseMatch, direction: direction) as LeadingPattern.MatchCollection
+				for (candidateIndexOfLeadingPattern, candidateMatchOfLeadingPattern) in zip(matchesOfLeadingPattern.indices, matchesOfLeadingPattern) {
+					let matchesOfTrailingPattern = trailingPattern.matches(base: candidateMatchOfLeadingPattern, direction: direction) as TrailingPattern.MatchCollection
+					let candidateIndexOfTrailingPattern = matchesOfTrailingPattern.startIndex
+					if candidateIndexOfTrailingPattern != matchesOfTrailingPattern.endIndex {
+						return .some(indexForLeadingPattern: candidateIndexOfLeadingPattern, indexForTrailingPattern: candidateIndexOfTrailingPattern, direction: direction)
+					}
+				}
+				
+				return .end
+				
 			}
+			
+			case .backward: do {
+			
+				let matchesOfTrailingPattern = trailingPattern.matches(base: baseMatch, direction: direction) as TrailingPattern.MatchCollection
+				for (candidateIndexOfTrailingPattern, candidateMatchOfTrailingPattern) in zip(matchesOfTrailingPattern.indices, matchesOfTrailingPattern) {
+					let matchesOfLeadingPattern = leadingPattern.matches(base: candidateMatchOfTrailingPattern, direction: direction) as LeadingPattern.MatchCollection
+					let candidateIndexOfLeadingPattern = matchesOfLeadingPattern.startIndex
+					if candidateIndexOfLeadingPattern != matchesOfLeadingPattern.endIndex {
+						return .some(indexForLeadingPattern: candidateIndexOfLeadingPattern, indexForTrailingPattern: candidateIndexOfTrailingPattern, direction: direction)
+					}
+				}
+				
+				return .end
+			
+			}
+			
 		}
-		
-		return .end
-		
 	}
 	
 	public var endIndex: Index {
@@ -68,8 +89,17 @@ extension ConcatenationMatchCollection : BidirectionalCollection {
 		
 		guard case .some(indexForLeadingPattern: let indexForLeadingPattern, indexForTrailingPattern: let indexForTrailingPattern, direction: _) = index else { preconditionFailure("Index out of bounds") }
 		
-		let matchOfLeadingPattern = leadingPattern.matches(base: baseMatch, direction: direction)[indexForLeadingPattern]
-		return trailingPattern.matches(base: matchOfLeadingPattern, direction: direction)[indexForTrailingPattern]
+		switch direction {
+			
+			case .forward:
+			let matchOfLeadingPattern = (leadingPattern.matches(base: baseMatch, direction: direction) as LeadingPattern.MatchCollection)[indexForLeadingPattern]
+			return (trailingPattern.matches(base: matchOfLeadingPattern, direction: direction) as TrailingPattern.MatchCollection)[indexForTrailingPattern]
+			
+			case .backward:
+			let matchOfTrailingPattern = (trailingPattern.matches(base: baseMatch, direction: direction) as TrailingPattern.MatchCollection)[indexForTrailingPattern]
+			return (leadingPattern.matches(base: matchOfTrailingPattern, direction: direction) as LeadingPattern.MatchCollection)[indexForLeadingPattern]
+			
+		}
 		
 	}
 	
@@ -162,14 +192,18 @@ extension ConcatenationMatchCollection : BidirectionalCollection {
 				let matchesOfLeadingPattern = leadingPattern.matches(base: baseMatch, direction: direction) as LeadingPattern.MatchCollection
 				let matchesOfTrailingPattern = trailingPattern.matches(base: matchesOfLeadingPattern[indexForLeadingPattern], direction: direction) as TrailingPattern.MatchCollection
 				
-				if indexForTrailingPattern < matchesOfTrailingPattern.endIndex {
-					return .some(indexForLeadingPattern: indexForLeadingPattern, indexForTrailingPattern: matchesOfTrailingPattern.index(after: indexForTrailingPattern), direction: direction)
+				let nextIndexOfTrailingPattern = matchesOfTrailingPattern.index(after: indexForTrailingPattern)
+				if nextIndexOfTrailingPattern < matchesOfTrailingPattern.endIndex {
+					return .some(indexForLeadingPattern: indexForLeadingPattern, indexForTrailingPattern: nextIndexOfTrailingPattern, direction: direction)
 				}
 				
-				for candidateIndexOfLeadingPattern in matchesOfLeadingPattern.indices.suffix(from: indexForLeadingPattern) {	// index range includes indexForLeadingPattern, excludes endIndex
-					let matchesOfTrailingPattern = trailingPattern.matches(base: matchesOfLeadingPattern[candidateIndexOfLeadingPattern], direction: direction) as TrailingPattern.MatchCollection
+				let nextIndexOfLeadingPattern = matchesOfLeadingPattern.index(after: indexForLeadingPattern)
+				guard nextIndexOfLeadingPattern < matchesOfLeadingPattern.endIndex else { return .end }
+				
+				for nextIndexOfLeadingPattern in matchesOfLeadingPattern.indices.suffix(from: nextIndexOfLeadingPattern) {	// index range includes nextIndexOfLeadingPattern, excludes endIndex
+					let matchesOfTrailingPattern = trailingPattern.matches(base: matchesOfLeadingPattern[nextIndexOfLeadingPattern], direction: direction) as TrailingPattern.MatchCollection
 					if matchesOfTrailingPattern.startIndex != matchesOfTrailingPattern.endIndex {
-						return .some(indexForLeadingPattern: candidateIndexOfLeadingPattern, indexForTrailingPattern: matchesOfTrailingPattern.startIndex, direction: direction)
+						return .some(indexForLeadingPattern: nextIndexOfLeadingPattern, indexForTrailingPattern: matchesOfTrailingPattern.startIndex, direction: direction)
 					}
 				}
 				
@@ -183,14 +217,18 @@ extension ConcatenationMatchCollection : BidirectionalCollection {
 				let matchesOfTrailingPattern = trailingPattern.matches(base: baseMatch, direction: direction) as TrailingPattern.MatchCollection
 				let matchesOfLeadingPattern = leadingPattern.matches(base: matchesOfTrailingPattern[indexForTrailingPattern], direction: direction) as LeadingPattern.MatchCollection
 				
-				if indexForLeadingPattern < matchesOfLeadingPattern.endIndex {
-					return .some(indexForLeadingPattern: matchesOfLeadingPattern.index(after: indexForLeadingPattern), indexForTrailingPattern: indexForTrailingPattern, direction: direction)
+				let nextIndexForLeadingPattern = matchesOfLeadingPattern.index(after: indexForLeadingPattern)
+				if nextIndexForLeadingPattern < matchesOfLeadingPattern.endIndex {
+					return .some(indexForLeadingPattern: nextIndexForLeadingPattern, indexForTrailingPattern: indexForTrailingPattern, direction: direction)
 				}
 				
-				for candidateIndexOfTrailingPattern in matchesOfTrailingPattern.indices.suffix(from: indexForTrailingPattern) {	// index range includes indexForTrailingPattern, excludes endIndex
-					let matchesOfLeadingPattern = leadingPattern.matches(base: matchesOfTrailingPattern[candidateIndexOfTrailingPattern], direction: direction) as LeadingPattern.MatchCollection
+				let nextIndexOfTrailingPattern = matchesOfTrailingPattern.index(after: indexForTrailingPattern)
+				guard nextIndexOfTrailingPattern < matchesOfTrailingPattern.endIndex else { return .end }
+				
+				for nextIndexOfTrailingPattern in matchesOfTrailingPattern.indices.suffix(from: nextIndexOfTrailingPattern) {	// index range includes nextIndexOfTrailingPattern, excludes endIndex
+					let matchesOfLeadingPattern = leadingPattern.matches(base: matchesOfTrailingPattern[nextIndexOfTrailingPattern], direction: direction) as LeadingPattern.MatchCollection
 					if matchesOfLeadingPattern.startIndex != matchesOfLeadingPattern.endIndex {
-						return .some(indexForLeadingPattern: matchesOfLeadingPattern.startIndex, indexForTrailingPattern: candidateIndexOfTrailingPattern, direction: direction)
+						return .some(indexForLeadingPattern: matchesOfLeadingPattern.startIndex, indexForTrailingPattern: nextIndexOfTrailingPattern, direction: direction)
 					}
 				}
 				
