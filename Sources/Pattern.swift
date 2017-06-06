@@ -4,9 +4,9 @@
 ///
 /// Given a sequence and an input position, a pattern can determine a subsequence within the sequence, starting from the input position which is said to conform or **match** the pattern. Moreover, a pattern can determine any number of possible subsequences, including none.
 ///
-/// To conform to this protocol, implement the `matchStates(entryState:)` method which takes a match state and generates some number of successor states. A match state encapsulates a current state in the pattern matching routine; successor states are all possible match states that result after `self` has performed pattern matching.
+/// To conform to this protocol, implement the `matchStates(base:direction:)` method which takes a match state and generates some number of successor states. A match state encapsulates a current state in the pattern matching routine; successor states are all possible match states that result after `self` has performed pattern matching.
 ///
-/// Most clients of patterns should use the convenience methods `matches(in:)`, `firstMatch(in:)`, or `hasMatches(in:)` which as a bonus perform some optimisations.
+/// Most clients of patterns should use the convenience methods `matches(_:)` and `matches(for:)` on the subject collection, passing the pattern as an argument.
 public protocol Pattern {
 	
 	/// The collection type on which pattern matching is performed.
@@ -14,14 +14,6 @@ public protocol Pattern {
 	
 	/// The collection type for matches.
 	associatedtype MatchCollection : BidirectionalCollection /* where MatchCollection.Iterator.Element == Match<Subject> */		// TODO: Add constraint in Swift 4
-	
-	/// Returns a collection of matches over a subject, given a base match and a direction.
-	///
-	/// - Parameter base: The match on which to base successor matches.
-	/// - Parameter direction: The direction of matching.
-	///
-	/// - Returns: A collection of matches over the subject in `base`, starting from the input position of `base`, and matching in the direction given by `direction`.
-	func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>>				// TODO: Remove in Swift 4
 	
 	/// Returns a collection of matches over a subject, given a base match and a direction.
 	///

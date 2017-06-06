@@ -5,12 +5,6 @@ public struct Wildcard<Subject : BidirectionalCollection> where Subject.Iterator
 
 extension Wildcard : Pattern {
 	
-	public typealias MatchCollection = SingularMatchCollection<Subject>
-	
-	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>> {		// TODO: Remove in Swift 4, after removing requirement in Pattern
-		return AnyBidirectionalCollection(matches(base: base, direction: direction) as SingularMatchCollection)
-	}
-	
 	public func matches(base: Match<Subject>, direction: MatchingDirection) -> SingularMatchCollection<Subject> {
 		guard !base.remainingElements(direction: direction).isEmpty else { return nil }
 		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: 1, direction: direction))

@@ -10,11 +10,30 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Iterat
 	/// Creates a type-erased container for a given pattern.
 	///
 	/// - Parameter pattern: The pattern
-	public init<PatternType : Pattern>(_ pattern: PatternType) where PatternType.Subject == Subject {
-		matchCollectionGenerator = PatternType.matches(base:direction:)(pattern)
-		forwardEstimator = PatternType.underestimatedSmallestInputPositionForForwardMatching(pattern)
-		backwardEstimator = PatternType.overestimatedLargestInputPositionForBackwardMatching(pattern)
+	public init<P : Pattern>(_ pattern: P) where
+		P.Subject == Subject,
+		P.MatchCollection.Iterator.Element == Match<P.Subject>,
+		P.MatchCollection.Indices : BidirectionalCollection,
+		P.MatchCollection.SubSequence : BidirectionalCollection,
+		P.MatchCollection.Indices.Index == P.MatchCollection.Index,
+		P.MatchCollection.Indices.SubSequence == P.MatchCollection.Indices,
+		P.MatchCollection.Indices.Iterator.Element == P.MatchCollection.Index,
+		P.MatchCollection.SubSequence.Index == P.MatchCollection.Index,
+		P.MatchCollection.SubSequence.Indices : BidirectionalCollection,
+		P.MatchCollection.SubSequence.SubSequence == P.MatchCollection.SubSequence,
+		P.MatchCollection.SubSequence.Indices.Index == P.MatchCollection.Index,
+		P.MatchCollection.SubSequence.Indices.SubSequence == P.MatchCollection.SubSequence.Indices,
+		P.MatchCollection.SubSequence.Iterator.Element == Match<P.Subject>,
+		P.MatchCollection.SubSequence.Indices.Iterator.Element == P.MatchCollection.Index {		// TODO: Remove constraints when they're added to BidirectionalCollection, in Swift 4
+		
+		matchCollectionGenerator = { base, direction in
+			AnyBidirectionalCollection(pattern.matches(base: base, direction: direction))
+		}
+		
+		forwardEstimator = P.underestimatedSmallestInputPositionForForwardMatching(pattern)
+		backwardEstimator = P.overestimatedLargestInputPositionForBackwardMatching(pattern)
 		self.pattern = pattern
+		
 	}
 	
 	/// A generator of match collections, given a base match and direction.
@@ -35,10 +54,8 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Iterat
 
 extension AnyPattern : Pattern {
 	
-	public typealias MatchCollection = AnyBidirectionalCollection<Match<Subject>>
-	
 	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>> {
-		return matchCollectionGenerator(base, direction)	// TODO: Reimplement using associated type in Swift 4
+		return matchCollectionGenerator(base, direction)
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {

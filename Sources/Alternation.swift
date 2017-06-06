@@ -27,12 +27,6 @@ public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> w
 
 extension Alternation : Pattern {
 	
-	public typealias MatchCollection = AlternationMatchCollection<MainPattern, AlternativePattern>
-	
-	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>> {		// TODO: Remove in Swift 4, after removing requirement in Pattern
-		return AnyBidirectionalCollection(matches(base: base, direction: direction) as AlternationMatchCollection)
-	}
-	
 	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AlternationMatchCollection<MainPattern, AlternativePattern> {
 		return AlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base, direction: direction)
 	}

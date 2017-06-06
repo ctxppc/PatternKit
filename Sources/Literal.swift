@@ -21,12 +21,6 @@ public struct Literal<Subject : BidirectionalCollection> where
 
 extension Literal : Pattern {
 	
-	public typealias MatchCollection = SingularMatchCollection<Subject>
-	
-	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>> {		// TODO: Remove in Swift 4, after removing requirement in Pattern
-		return AnyBidirectionalCollection(matches(base: base, direction: direction) as SingularMatchCollection)
-	}
-	
 	public func matches(base: Match<Subject>, direction: MatchingDirection) -> SingularMatchCollection<Subject> {
 		
 		let hasMatch: Bool

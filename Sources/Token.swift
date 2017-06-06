@@ -1,6 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-public final class Token<Subpattern : Pattern> {
+public final class Token<Subpattern : Pattern> where Subpattern.MatchCollection.Iterator.Element == Match<Subpattern.Subject> {
 	
 	/// Creates a token capturing matches from a subpattern.
 	///
@@ -16,17 +16,11 @@ public final class Token<Subpattern : Pattern> {
 
 extension Token : Pattern {
 	
-	public typealias MatchCollection = LazyMapBidirectionalCollection<AnyBidirectionalCollection<Match<Subpattern.Subject>>, Match<Subpattern.Subject>>
-	
-	public func matches(base: Match<Subpattern.Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subpattern.Subject>> {	// TODO: Remove in Swift 4, after removing requirement in Pattern
-		return AnyBidirectionalCollection(matches(base: base, direction: direction) as LazyMapBidirectionalCollection)
-	}
-	
-	public func matches(base: Match<Subpattern.Subject>, direction: MatchingDirection) -> LazyMapBidirectionalCollection<AnyBidirectionalCollection<Match<Subpattern.Subject>>, Match<Subpattern.Subject>> {
+	public func matches(base: Match<Subpattern.Subject>, direction: MatchingDirection) -> LazyMapBidirectionalCollection<Subpattern.MatchCollection, Match<Subpattern.Subject>> {
 		return subpattern.matches(base: base, direction: direction).lazy.map { innerMatch in
 			switch direction {
-			case .forward:	return innerMatch.capturing(base.inputPosition..<innerMatch.inputPosition, for: self)
-			case .backward:	return innerMatch.capturing(innerMatch.inputPosition..<base.inputPosition, for: self)
+				case .forward:	return innerMatch.capturing(base.inputPosition..<innerMatch.inputPosition, for: self)
+				case .backward:	return innerMatch.capturing(innerMatch.inputPosition..<base.inputPosition, for: self)
 			}
 		}
 	}

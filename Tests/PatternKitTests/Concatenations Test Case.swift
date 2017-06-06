@@ -32,6 +32,7 @@ class ConcatenationsTestCase : XCTestCase {
 		XCTAssert(!"".matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
 		XCTAssert(!"abba".matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
 		XCTAssert("abba".matches(("a"..."b") • ("a"..."b") • ("a"..."b") • ("a"..."b")))
+		XCTAssert("abba".matches(("a"..."b") • literal("bb") • ("a"..."b")))
 	}
 	
 }

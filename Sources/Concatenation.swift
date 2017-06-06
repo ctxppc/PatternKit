@@ -29,12 +29,6 @@ public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern>
 
 extension Concatenation : Pattern {
 	
-	public typealias MatchCollection = ConcatenationMatchCollection<LeadingPattern, TrailingPattern>
-	
-	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AnyBidirectionalCollection<Match<Subject>> {		// TODO: Remove in Swift 4, after removing requirement in Pattern
-		return AnyBidirectionalCollection(matches(base: base, direction: direction) as ConcatenationMatchCollection)
-	}
-	
 	public func matches(base: Match<Subject>, direction: MatchingDirection) -> ConcatenationMatchCollection<LeadingPattern, TrailingPattern> {
 		return ConcatenationMatchCollection(leadingPattern: leadingPattern, trailingPattern: trailingPattern, baseMatch: base, direction: direction)
 	}
