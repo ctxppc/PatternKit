@@ -56,4 +56,4 @@ extension Literal where Subject : RangeReplaceableCollection {
 	
 }
 
-// TODO: Add `ExpressibleByStringLiteral` conformance when conditional conformances land, in Swift 4
+// TODO: Add `ExpressibleByArrayLiteral` and `ExpressibleByStringLiteral` conformances when conditional conformances land, in Swift 4
