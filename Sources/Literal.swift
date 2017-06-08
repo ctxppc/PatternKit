@@ -36,16 +36,24 @@ extension Literal : Pattern {
 	
 }
 
-extension Literal /* : ExpressibleByStringLiteral */ where Subject == String.CharacterView {	// TODO: Add conformance in Swift 4
+/// Creates a literal pattern over some string.
+///
+/// - Parameter literal: The literal string to match.
+///
+/// - Returns: A pattern matching `literal`.
+public func literal(_ literal: String) -> Literal<String.CharacterView> {		// TODO: Remove when String conforms to BidirectionalCollection, in Swift 4
+	return Literal(literal.characters)
+}
+
+extension Literal where Subject : RangeReplaceableCollection {
 	
-//	public init(_ literal: String) {															// TODO: Uncomment when bugfix lands, or remove when conformance is added
-//		self.literal = literal.characters
-//	}
-	
-	// TODO: Implement protocol conformance in Swift 4
+	/// Creates a literal pattern over some elements.
+	///
+	/// - Parameter elements: The elements to match.
+	public init(_ elements: Subject.Iterator.Element...) {
+		self.init(Subject(elements))
+	}
 	
 }
 
-public func literal(_ literal: String) -> Literal<String.CharacterView> {						// TODO: Remove when bugfix lands for above initialiser or when above conformance is added
-	return Literal(literal.characters)
-}
+// TODO: Add `ExpressibleByStringLiteral` conformance when conditional conformances land, in Swift 4

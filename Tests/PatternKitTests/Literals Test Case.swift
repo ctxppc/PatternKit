@@ -8,38 +8,38 @@ class LiteralsTestCase : XCTestCase {
 	let emptyIntArray: [Int] = []
 	
 	func testEmptyCollection() {
-		XCTAssert(emptyIntArray.matches(Literal(([]))))
-		XCTAssert(!emptyIntArray.matches(Literal([1])))
-		XCTAssert(!emptyIntArray.matches(Literal([1, 2])))
+		XCTAssert(Literal().hasMatches(over: emptyIntArray))
+		XCTAssert(!Literal(1).hasMatches(over: emptyIntArray))
+		XCTAssert(!Literal(1, 2).hasMatches(over: emptyIntArray))
 	}
 	
 	func testCollectionOfOne() {
-		XCTAssert([5].matches(Literal([5])))
-		XCTAssert(![5].matches(Literal([])))
-		XCTAssert(![5].matches(Literal([6])))
-		XCTAssert(![5].matches(Literal([5, 6])))
-		XCTAssert(![5].matches(Literal([6, 5])))
+		XCTAssert(Literal(5).hasMatches(over: [5]))
+		XCTAssert(!Literal().hasMatches(over: [5]))
+		XCTAssert(!Literal(6).hasMatches(over: [5]))
+		XCTAssert(!Literal(6, 5).hasMatches(over: [5]))
+		XCTAssert(!Literal(5, 6).hasMatches(over: [5]))
 	}
 	
 	func testCollectionOfTwo() {
-		XCTAssert([5, 6].matches(Literal([5, 6])))
-		XCTAssert(![5, 6].matches(Literal([])))
-		XCTAssert(![5, 6].matches(Literal([5])))
-		XCTAssert(![5, 6].matches(Literal([6])))
-		XCTAssert(![5, 6].matches(Literal([6, 5])))
+		XCTAssert(Literal(5, 6).hasMatches(over: [5, 6]))
+		XCTAssert(!Literal().hasMatches(over: [5, 6]))
+		XCTAssert(!Literal(6).hasMatches(over: [5, 6]))
+		XCTAssert(!Literal(5).hasMatches(over: [5, 6]))
+		XCTAssert(!Literal(6, 5).hasMatches(over: [5, 6]))
 	}
 	
 	func testHelloLiteral() {
-		XCTAssert(!"".matches(literal("hello")))
-		XCTAssert("hello".matches(literal("hello")))
-		XCTAssert(!"helloo".matches(literal("hello")))
-		XCTAssert(!"ello".matches(literal("hello")))
+		XCTAssert(literal("hello").hasMatches(over: "hello"))
+		XCTAssert(!literal("hello").hasMatches(over: ""))
+		XCTAssert(!literal("hello").hasMatches(over: "helloo"))
+		XCTAssert(!literal("hello").hasMatches(over: "ello"))
 	}
 
 	func testEmptyStringLiteral() {
-		XCTAssert("".matches(literal("")))
-		XCTAssert(!"h".matches(literal("")))
-		XCTAssert(!"hello".matches(literal("")))
+		XCTAssert(literal("").hasMatches(over: ""))
+		XCTAssert(!literal("").hasMatches(over: "h"))
+		XCTAssert(!literal("").hasMatches(over: "hello"))
 	}
 	
 }

@@ -6,22 +6,22 @@ import XCTest
 class CharacterSetsTestCase : XCTestCase {
 	
 	func testZeroCharacters() {
-		XCTAssert(!"".matches("a"..."a"))
-		XCTAssert(!"".matches("a"..."z"))
+		XCTAssert(!("a"..."a").hasMatches(over: ""))
+		XCTAssert(!("a"..."z").hasMatches(over: ""))
 	}
 	
 	func testSingleCharacter() {
-		XCTAssert("a".matches("a"..."a"))
-		XCTAssert("a".matches("a"..."z"))
-		XCTAssert(!"a".matches("A"..."Z"))
-		XCTAssert(!"a".matches("A"..."A"))
+		XCTAssert(("a"..."a").hasMatches(over: "a"))
+		XCTAssert(("a"..."z").hasMatches(over: "a"))
+		XCTAssert(!("A"..."Z").hasMatches(over: "a"))
+		XCTAssert(!("A"..."A").hasMatches(over: "a"))
 	}
 	
 	func testTwoCharacters() {
-		XCTAssert("ab".matches(("a"..."a") • ("b"..."b")))
-		XCTAssert("ab".matches(("a"..."z") • ("a"..."z")))
-		XCTAssert(!"ab".matches("A"..."Z"))
-		XCTAssert(!"ab".matches(("A"..."A") • ("a"..."z")))
+		XCTAssert((("a"..."a") • ("b"..."b")).hasMatches(over: "ab"))
+		XCTAssert((("a"..."z") • ("a"..."z")).hasMatches(over: "ab"))
+		XCTAssert(!("A"..."Z").hasMatches(over: "ab"))
+		XCTAssert(!(("A"..."A") • ("a"..."z")).hasMatches(over: "ab"))
 	}
 	
 }

@@ -5,28 +5,30 @@ import XCTest
 
 class WildcardsTestCase : XCTestCase {
 	
+	let emptyIntArray: [Int] = []
+	
 	func testSingleWildcard() {
-		XCTAssert(![Int]().matches(one()))
-		XCTAssert([5].matches(one()))
-		XCTAssert(![5, 6].matches(one()))
+		XCTAssert(one().hasMatches(over: [5]))
+		XCTAssert(!one().hasMatches(over: emptyIntArray))
+		XCTAssert(!one().hasMatches(over: [5, 6]))
 	}
 	
 	func testTwoWildcards() {
-		XCTAssert(![Int]().matches(one() • one()))
-		XCTAssert(![5].matches(one() • one()))
-		XCTAssert([5, 6].matches(one() • one()))
-		XCTAssert(![5, 6, 5].matches(one() • one()))
+		XCTAssert((one() • one()).hasMatches(over: [5, 6]))
+		XCTAssert(!(one() • one()).hasMatches(over: emptyIntArray))
+		XCTAssert(!(one() • one()).hasMatches(over: [5]))
+		XCTAssert(!(one() • one()).hasMatches(over: [5, 6, 7]))
 	}
 	
 	func testHelloString() {
-		XCTAssert("hello".matches(one() • one() • one() • one() • one()))
-		XCTAssert(!"hello".matches(one() • one() • one() • one()))
-		XCTAssert(!"hello".matches(one() • one() • one() • one() • one() • one()))
+		XCTAssert((one() • one() • one() • one() • one()).hasMatches(over: "hello"))
+		XCTAssert(!(one() • one() • one() • one()).hasMatches(over: "hello"))
+		XCTAssert(!(one() • one() • one() • one() • one() • one()).hasMatches(over: "hello"))
 	}
 	
 	func testEmptyString() {
-		XCTAssert(!"".matches(one()))
-		XCTAssert(!"".matches(one() • one()))
+		XCTAssert(!one().hasMatches(over: ""))
+		XCTAssert(!(one() • one()).hasMatches(over: ""))
 	}
 	
 }

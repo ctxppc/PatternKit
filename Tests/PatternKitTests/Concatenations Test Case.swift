@@ -6,33 +6,31 @@ import XCTest
 class ConcatenationsTestCase : XCTestCase {
 	
 	func testCombinedArrayLiterals() {
-		XCTAssert([1, 2, 3, 4].matches(Literal([]) •  Literal([1, 2, 3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1]) •  Literal([2, 3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2]) • Literal([3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2]) • Literal([3, 4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2, 3]) • Literal([4])))
-		XCTAssert([1, 2, 3, 4].matches(Literal([1, 2, 3, 4]) • Literal([])))
+		XCTAssert((Literal() • Literal(1, 2, 3, 4)).hasMatches(over: [1, 2, 3, 4]))
+		XCTAssert((Literal(1) • Literal(2, 3, 4)).hasMatches(over: [1, 2, 3, 4]))
+		XCTAssert((Literal(1, 2) • Literal(3, 4)).hasMatches(over: [1, 2, 3, 4]))
+		XCTAssert((Literal(1, 2) • Literal(3, 4)).hasMatches(over: [1, 2, 3, 4]))
+		XCTAssert((Literal(1, 2, 3) • Literal(4)).hasMatches(over: [1, 2, 3, 4]))
+		XCTAssert((Literal(1, 2, 3, 4) • Literal()).hasMatches(over: [1, 2, 3, 4]))
+		XCTAssert(!(Literal(1, 2) • Literal(4)).hasMatches(over: [1, 2, 3, 4]))
 	}
 	
 	func testSeparateArrayLiterals() {
-		
-		XCTAssert([1, 2, 3].matches(Concatenation(Literal([]), Literal([1, 2, 3]))))
-		XCTAssert([1, 2, 3].matches(Concatenation(Literal([1]), Literal([2, 3]))))
-		XCTAssert([1, 2, 3].matches(Concatenation(Literal([1, 2]), Literal([3]))))
-		XCTAssert([1, 2, 3].matches(Concatenation(Literal([1, 2, 3]), Literal([]))))
-		
-		XCTAssert(![1, 2].matches(Concatenation(Literal([1]), Literal([1, 2]))))
-		XCTAssert(![1, 2].matches(Concatenation(Literal([1, 2]), Literal([2]))))
-		XCTAssert(![1].matches(Concatenation(Literal([1]), Literal([2]))))
-		XCTAssert(![2].matches(Concatenation(Literal([1]), Literal([2]))))
-		
+		XCTAssert(Concatenation(Literal(), Literal(1, 2, 3)).hasMatches(over: [1, 2, 3]))
+		XCTAssert(Concatenation(Literal(1), Literal(2, 3)).hasMatches(over: [1, 2, 3]))
+		XCTAssert(Concatenation(Literal(1, 2), Literal(3)).hasMatches(over: [1, 2, 3]))
+		XCTAssert(Concatenation(Literal(1, 2, 3), Literal()).hasMatches(over: [1, 2, 3]))
+		XCTAssert(!Concatenation(Literal(), Literal(1, 2, 3)).hasMatches(over: [1, 2]))
+		XCTAssert(!Concatenation(Literal(1), Literal(2, 3)).hasMatches(over: [1, 2]))
+		XCTAssert(!Concatenation(Literal(1), Literal(2)).hasMatches(over: [1]))
+		XCTAssert(!Concatenation(Literal(1), Literal(2)).hasMatches(over: [2]))
 	}
 	
 	func testStringLiterals() {
-		XCTAssert(!"".matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
-		XCTAssert(!"abba".matches(("a"..."b") • ("a"..."b") • ("a"..."b")))
-		XCTAssert("abba".matches(("a"..."b") • ("a"..."b") • ("a"..."b") • ("a"..."b")))
-		XCTAssert("abba".matches(("a"..."b") • literal("bb") • ("a"..."b")))
+		XCTAssert((("a"..."b") • ("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: "abba"))
+		XCTAssert((("a"..."b") • literal("bb") • ("a"..."b")).hasMatches(over: "abba"))
+		XCTAssert(!(("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: ""))
+		XCTAssert(!(("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: "abba"))
 	}
 	
 }

@@ -7,27 +7,27 @@ class AlternationsTestCase : XCTestCase {
 	
 	func testEmptyLiterals() {
 		
-		XCTAssert("".matches(literal("") | literal("")))
-		XCTAssert("".matches(literal("a") | literal("")))
-		XCTAssert("".matches(literal("") | literal("a")))
-		XCTAssert(!"".matches(literal("a") | literal("a")))
+		XCTAssert((literal("") | literal("")).hasMatches(over: ""))
+		XCTAssert((literal("a") | literal("")).hasMatches(over: ""))
+		XCTAssert((literal("") | literal("a")).hasMatches(over: ""))
+		XCTAssert(!(literal("a") | literal("a")).hasMatches(over: ""))
 		
-		XCTAssert(!"a".matches(literal("") | literal("")))
-		XCTAssert("a".matches(literal("a") | literal("")))
-		XCTAssert("a".matches(literal("") | literal("a")))
+		XCTAssert((literal("a") | literal("")).hasMatches(over: "a"))
+		XCTAssert((literal("") | literal("a")).hasMatches(over: "a"))
+		XCTAssert(!(literal("") | literal("")).hasMatches(over: "a"))
 		
 	}
 	
 	func testCharacterLiterals() {
-		XCTAssert("a".matches("a" | "b"))
-		XCTAssert("a".matches("b" | "a"))
-		XCTAssert(!"a".matches("b" | "c"))
+		XCTAssert(("a" | "b").hasMatches(over: "a"))
+		XCTAssert(("b" | "a").hasMatches(over: "a"))
+		XCTAssert(!("b" | "c").hasMatches(over: "a"))
 	}
 	
 	func testStringLiterals() {
-		XCTAssert("abba".matches(literal("abba") | literal("baab")))
-		XCTAssert("abba".matches(literal("baab") | literal("abba")))
-		XCTAssert(!"abba".matches(literal("baab") | literal("caac")))
+		XCTAssert((literal("abba") | literal("baab")).hasMatches(over: "abba"))
+		XCTAssert((literal("baab") | literal("abba")).hasMatches(over: "abba"))
+		XCTAssert(!(literal("baab") | literal("caac")).hasMatches(over: "abba"))
 	}
 	
 }

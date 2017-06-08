@@ -3,32 +3,32 @@
 /// A conformance of a collection to a pattern.
 public struct Match<Subject : BidirectionalCollection> /* where Subject.Iterator.Element : Equatable */ {	// TODO: Add in Swift 4, after adding associated-type constraint in Pattern
 	
-	/// Creates an initial match.
+	/// Creates an initial match for matching over some subject.
 	///
 	/// - Postcondition: `remainingElements(direction: direction) == subject`
 	///
-	/// - Parameter subject: The collection on which the match applies.
+	/// - Parameter subject: The collection over which the match applies.
 	/// - Parameter direction: The direction in which matching is to be performed. The default is forward matching.
-	public init(on subject: Subject, direction: MatchingDirection = .forward) {
+	public init(over subject: Subject, direction: MatchingDirection = .forward) {
 		switch direction {
-			case .forward:	self.init(on: subject, inputPosition: subject.startIndex)
-			case .backward:	self.init(on: subject, inputPosition: subject.endIndex)
+			case .forward:	self.init(over: subject, inputPosition: subject.startIndex)
+			case .backward:	self.init(over: subject, inputPosition: subject.endIndex)
 		}
 	}
 	
-	/// Creates a match with given input position.
+	/// Creates a match for matching over some subject with given starting input position.
 	///
 	/// - Requires: `inputPosition` is a valid index into `subject`.
 	///
-	/// - Parameter subject: The collection on which the match applies.
+	/// - Parameter subject: The collection over which the match applies.
 	/// - Parameter inputPosition: The input position.
-	public init(on subject: Subject, inputPosition: Subject.Index) {
+	public init(over subject: Subject, inputPosition: Subject.Index) {
 		self.subject = subject
 		self.inputPosition = inputPosition
 		capturedRangesByToken = [:]
 	}
 	
-	/// The collection on which the match applies.
+	/// The collection over which the match applies.
 	public let subject: Subject
 	
 	/// The position in the subject collection that,
