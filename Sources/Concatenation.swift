@@ -4,9 +4,13 @@
 public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern> where
 	LeadingPattern.Subject == TrailingPattern.Subject,
 	LeadingPattern.MatchCollection.Iterator.Element == Match<LeadingPattern.Subject>,
+	LeadingPattern.MatchCollection.Indices : OrderedCollection,
+	LeadingPattern.MatchCollection.Indices.Iterator.Element == LeadingPattern.MatchCollection.Index,
+	LeadingPattern.MatchCollection.Indices.SubSequence.Iterator.Element == LeadingPattern.MatchCollection.Index,
 	TrailingPattern.MatchCollection.Iterator.Element == Match<TrailingPattern.Subject>,
-	LeadingPattern.MatchCollection.Indices == DefaultBidirectionalIndices<LeadingPattern.MatchCollection>,
-	TrailingPattern.MatchCollection.Indices == DefaultBidirectionalIndices<TrailingPattern.MatchCollection> {		// TODO: Update constraints after updating constraints in match collection type, in Swift 4
+	TrailingPattern.MatchCollection.Indices : OrderedCollection,
+	TrailingPattern.MatchCollection.Indices.Iterator.Element == TrailingPattern.MatchCollection.Index,
+	TrailingPattern.MatchCollection.Indices.SubSequence.Iterator.Element == TrailingPattern.MatchCollection.Index {		// TODO: Update constraints after updating constraints in match collection type, in Swift 4
 	
 	public typealias Subject = LeadingPattern.Subject
 	
