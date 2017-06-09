@@ -4,7 +4,15 @@ import Foundation
 
 extension CharacterSet : Pattern {
 	
-	public func matches(base: Match<String.CharacterView>, direction: MatchingDirection) -> SingularMatchCollection<String.CharacterView> {
+	public func forwardMatches(enteringFrom base: Match<String.CharacterView>) -> SingularMatchCollection<String.CharacterView> {
+		return matches(base: base, direction: .forward)
+	}
+	
+	public func backwardMatches(recedingFrom base: Match<String.CharacterView>) -> SingularMatchCollection<String.CharacterView> {
+		return matches(base: base, direction: .backward)
+	}
+	
+	private func matches(base: Match<String.CharacterView>, direction: MatchingDirection) -> SingularMatchCollection<String.CharacterView> {
 		
 		guard let character = base.remainingElements(direction: direction).first else { return nil }
 		

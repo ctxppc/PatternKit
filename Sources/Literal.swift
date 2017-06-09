@@ -21,17 +21,14 @@ public struct Literal<Subject : BidirectionalCollection> where
 
 extension Literal : Pattern {
 	
-	public func matches(base: Match<Subject>, direction: MatchingDirection) -> SingularMatchCollection<Subject> {
-		
-		let hasMatch: Bool
-		switch direction {
-			case .forward:	hasMatch = base.remainingElements(direction: .forward).starts(with: literal)
-			case .backward: hasMatch = base.remainingElements(direction: .forward).ends(with: literal)
-			
-		}
-		
-		return hasMatch ? SingularMatchCollection(resultMatch: base.movingInputPosition(distance: literal.count, direction: direction)) : nil
-		
+	public func forwardMatches(enteringFrom base: Match<Subject>) -> SingularMatchCollection<Subject> {
+		guard base.remainingElements(direction: .forward).starts(with: literal) else { return nil }
+		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: literal.count, direction: .forward))
+	}
+	
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> SingularMatchCollection<Subject> {
+		guard base.remainingElements(direction: .backward).ends(with: literal) else { return nil }
+		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: literal.count, direction: .backward))
 	}
 	
 }
