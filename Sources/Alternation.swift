@@ -3,8 +3,10 @@
 /// A pattern that matches two patterns separately.
 public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where
 	MainPattern.Subject == AlternativePattern.Subject,
-	MainPattern.MatchCollection.Iterator.Element == Match<MainPattern.Subject>,
-	AlternativePattern.MatchCollection.Iterator.Element == Match<AlternativePattern.Subject> {	// TODO: Update constraints after updating constraints in match collection type, in Swift 4
+	MainPattern.ForwardMatchCollection.Iterator.Element == Match<MainPattern.Subject>,
+	MainPattern.BackwardMatchCollection.Iterator.Element == Match<MainPattern.Subject>,
+	AlternativePattern.ForwardMatchCollection.Iterator.Element == Match<AlternativePattern.Subject>,
+	AlternativePattern.BackwardMatchCollection.Iterator.Element == Match<AlternativePattern.Subject> {	// TODO: Update constraints after updating constraints in match collection type, in Swift 4
 	
 	public typealias Subject = MainPattern.Subject
 	
@@ -27,15 +29,19 @@ public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> w
 
 extension Alternation : Pattern {
 	
-	public func matches(base: Match<Subject>, direction: MatchingDirection) -> AlternationMatchCollection<MainPattern, AlternativePattern> {
-		return AlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base, direction: direction)
+	public func forwardMatches(enteringFrom base: Match<Subject>) -> ForwardAlternationMatchCollection<MainPattern, AlternativePattern> {
+		return ForwardAlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base)
 	}
 	
-	public func underestimatedSmallestInputPositionForForwardMatching(on subject: MainPattern.Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> BackwardAlternationMatchCollection<MainPattern, AlternativePattern> {
+		return BackwardAlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base)
+	}
+	
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
 		return min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
-	public func overestimatedLargestInputPositionForBackwardMatching(on subject: MainPattern.Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
 		return max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	

@@ -160,10 +160,7 @@ extension BackwardConcatenationMatchCollectionIndex : Comparable {
 			case (.some, .end):
 			return true
 			
-			case (.end, .some):
-			return false
-			
-			case (.end, .end):
+			default:
 			return false
 			
 		}
@@ -185,6 +182,3 @@ extension BackwardConcatenationMatchCollectionIndex : Comparable {
 	}
 	
 }
-
-
-

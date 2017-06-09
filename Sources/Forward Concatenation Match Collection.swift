@@ -160,10 +160,7 @@ extension ForwardConcatenationMatchCollectionIndex : Comparable {
 			case (.some, .end):
 			return true
 			
-			case (.end, .some):
-			return false
-			
-			case (.end, .end):
+			default:
 			return false
 			
 		}
@@ -185,6 +182,3 @@ extension ForwardConcatenationMatchCollectionIndex : Comparable {
 	}
 	
 }
-
-
-

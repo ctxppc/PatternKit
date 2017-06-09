@@ -3,6 +3,8 @@
 /// A pattern that performs matching of a subpattern repeatedly on consecutive subsequences of the target collection.
 public struct Repeating<RepeatedPattern : Pattern> {
 	
+	public typealias Subject = RepeatedPattern.Subject
+	
 	/// Creates a repeating pattern.
 	///
 	/// - Requires: `multiplicityRange.lowerBound >= 0`
@@ -49,8 +51,20 @@ public struct Repeating<RepeatedPattern : Pattern> {
 
 extension Repeating : Pattern {
 	
-	public func matches(base: Match<RepeatedPattern.Subject>, direction: MatchingDirection) -> RepeatingMatchCollection<RepeatedPattern> {
-		return RepeatingMatchCollection(repeatedPattern: repeatedPattern, multiplicityRange: multiplicityRange, tendency: tendency)
+	public func forwardMatches(enteringFrom base: Match<Subject>) -> ForwardRepeatingMatchCollection<RepeatedPattern> {
+		return ForwardRepeatingMatchCollection(repeatedPattern: repeatedPattern, multiplicityRange: multiplicityRange, tendency: tendency, baseMatch: base)
+	}
+	
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> BackwardRepeatingMatchCollection<RepeatedPattern> {
+		return BackwardRepeatingMatchCollection(repeatedPattern: repeatedPattern, multiplicityRange: multiplicityRange, tendency: tendency, baseMatch: base)
+	}
+	
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: RepeatedPattern.Subject, fromIndex inputPosition: RepeatedPattern.Subject.Index) -> RepeatedPattern.Subject.Index {
+		unimplemented	// TODO
+	}
+	
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: RepeatedPattern.Subject, fromIndex inputPosition: RepeatedPattern.Subject.Index) -> RepeatedPattern.Subject.Index {
+		unimplemented	// TODO
 	}
 	
 }

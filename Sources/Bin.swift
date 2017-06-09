@@ -7,7 +7,11 @@ public struct Bin<Subject : BidirectionalCollection> {}
 
 extension Bin : Pattern {
 	
-	public func matches(base: Match<Subject>, direction: MatchingDirection) -> EmptyCollection<Subject> {
+	public func forwardMatches(enteringFrom base: Match<Subject>) -> EmptyCollection<Subject> {
+		return EmptyCollection()
+	}
+	
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> EmptyCollection<Subject> {
 		return EmptyCollection()
 	}
 	
