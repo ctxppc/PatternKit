@@ -5,7 +5,7 @@ public struct Repeating<RepeatedPattern : Pattern> {
 	
 	/// Creates a repeating pattern.
 	///
-	/// - Requires: `lowerBound >= 0`
+	/// - Requires: `multiplicityRange.lowerBound >= 0`
 	///
 	/// - Parameter repeatedPattern: The pattern that is repeated.
 	/// - Parameter lowerBound: The lower bound. The default is zero.
@@ -23,7 +23,7 @@ public struct Repeating<RepeatedPattern : Pattern> {
 	
 	/// The range of the number of times the pattern can be repeated.
 	///
-	/// - Invariant: `range.lowerBound >= 0`
+	/// - Invariant: `multiplicityRange.lowerBound >= 0`
 	public var multiplicityRange: CountableClosedRange<Int> {
 		willSet { precondition(newValue.lowerBound >= 0, "Negative lower bound") }
 	}
@@ -50,7 +50,7 @@ public struct Repeating<RepeatedPattern : Pattern> {
 extension Repeating : Pattern {
 	
 	public func matches(base: Match<RepeatedPattern.Subject>, direction: MatchingDirection) -> RepeatingMatchCollection<RepeatedPattern> {
-		unimplemented	// TODO
+		return RepeatingMatchCollection(repeatedPattern: repeatedPattern, multiplicityRange: multiplicityRange, tendency: tendency)
 	}
 	
 }

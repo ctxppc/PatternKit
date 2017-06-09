@@ -1,6 +1,8 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 /// The pattern concatenation operator.
+///
+/// Concatentation doesn't use `+` to minimise type inference performance problems as well as to avoid making code harder to read when combined with the `+` postfix operator for nonoptional eagerly repeating patterns.
 infix operator • : AdditionPrecedence
 
 /// Returns a concatenation of two arbitrary patterns.
