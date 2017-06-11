@@ -22,7 +22,7 @@ extension SingularMatchCollection : BidirectionalCollection {
 		case resultMatch
 		
 		/// The position after the result match of the collection if the result match exists, otherwise an invalid index.
-		case end
+		case afterResultMatch
 		
 	}
 	
@@ -31,7 +31,7 @@ extension SingularMatchCollection : BidirectionalCollection {
 	}
 	
 	public var endIndex: Index {
-		return resultMatch == nil ? .resultMatch : .end
+		return resultMatch == nil ? .resultMatch : .afterResultMatch
 	}
 	
 	public subscript (index: Index) -> Match<Subject> {
@@ -41,7 +41,7 @@ extension SingularMatchCollection : BidirectionalCollection {
 			guard let resultMatch = resultMatch else { preconditionFailure("Index out of bounds") }
 			return resultMatch
 			
-			case .end:
+			case .afterResultMatch:
 			preconditionFailure("Index out of bounds")
 			
 		}
@@ -49,22 +49,24 @@ extension SingularMatchCollection : BidirectionalCollection {
 	
 	public func index(before index: Index) -> Index {
 		switch index {
-			case .resultMatch:	preconditionFailure("Index out of bounds")
-			case .end:			return .resultMatch
+			case .resultMatch:		preconditionFailure("Index out of bounds")
+			case .afterResultMatch:	return .resultMatch
 		}
 	}
 	
 	public func index(after index: Index) -> Index {
 		switch index {
-			case .resultMatch:	return .end
-			case .end:			preconditionFailure("Index out of bounds")
+			case .resultMatch:		return .afterResultMatch
+			case .afterResultMatch:	preconditionFailure("Index out of bounds")
 		}
 	}
 	
 }
 
 extension SingularMatchCollection.Index : Comparable {
+	
 	public static func <<Subject>(left: SingularMatchCollection<Subject>.Index, right: SingularMatchCollection<Subject>.Index) -> Bool {
-		return (left, right) == (.resultMatch, .end)
+		return (left, right) == (.resultMatch, .afterResultMatch)
 	}
+	
 }
