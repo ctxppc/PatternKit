@@ -7,11 +7,11 @@ public struct Repeating<RepeatedPattern : Pattern> {
 	
 	/// Creates a repeating pattern.
 	///
-	/// - Requires: `multiplicityRange.lowerBound >= 0`
+	/// - Requires: `lowerBound >= 0` and `lowerBound <= upperBound`
 	///
 	/// - Parameter repeatedPattern: The pattern that is repeated.
-	/// - Parameter lowerBound: The lower bound. The default is zero.
-	/// - Parameter upperBound: The upper bound, inclusive. The default is `Int.max`.
+	/// - Parameter lowerBound: The minimal number of times the repeated pattern must be matched. The default is zero.
+	/// - Parameter upperBound: The maximal number of times the repeated pattern may be matched. The default is `Int.max`.
 	/// - Parameter tendency: The tendency of the repeating pattern to match its repeated pattern as few or as many times as possible within its multiplicity range. The default is eager matching.
 	public init(_ repeatedPattern: RepeatedPattern, min lowerBound: Int = 0, max upperBound: Int = .max, tendency: Tendency = .eager) {
 		precondition(lowerBound >= 0, "Negative lower bound")
@@ -19,6 +19,8 @@ public struct Repeating<RepeatedPattern : Pattern> {
 		multiplicityRange = lowerBound...upperBound
 		self.tendency = tendency
 	}
+	
+	// TODO: Replace min & max arguments in initialiser by a suitable `RangeExpression` argument, in Swift 4
 	
 	/// The pattern that is repeated.
 	public var repeatedPattern: RepeatedPattern
@@ -68,3 +70,19 @@ extension Repeating : Pattern {
 	}
 	
 }
+
+extension Repeating {
+	
+	/// Creates a repeating pattern.
+	///
+	/// - Requires: `multiplicity >= 0`
+	///
+	/// - Parameter repeatedPattern: The pattern that is repeated.
+	/// - Parameter multiplicity: The number of times to match the repeated pattern consecutively.
+	public init(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) {
+		self.init(repeatedPattern, min: multiplicity, max: multiplicity, tendency: .eager)
+	}
+	
+}
+
+// TODO: Add literal & element initialisers (for autowrapping in Literal) when bugfix lands, in Swift 4 (or later)

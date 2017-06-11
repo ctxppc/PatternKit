@@ -36,6 +36,8 @@ public struct BackwardConcatenationMatchCollection<LeadingPattern : Pattern, Tra
 	/// The base match.
 	public let baseMatch: Match<Subject>
 	
+	// TODO: Potentially optimise by caching match collection of the trailing pattern
+	
 }
 
 extension BackwardConcatenationMatchCollection : BidirectionalCollection {

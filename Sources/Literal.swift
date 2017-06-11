@@ -31,6 +31,8 @@ extension Literal : Pattern {
 		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: literal.count, direction: .backward))
 	}
 	
+	// TODO: Potentially optimise by implementing the heuristic functions, using an efficient substring finding algorithm
+	
 }
 
 /// Creates a literal pattern over some string.
