@@ -18,26 +18,32 @@ class CharacterSetsTestCase : XCTestCase {
 	func testSingleCharacter() {
 		
 		XCTAssert(("a"..."a").hasMatches(over: "a"))
+		XCTAssert(("b"..."b").hasMatches(over: "b"))
 		XCTAssert(("a"..."z").hasMatches(over: "a"))
 		XCTAssert(!("A"..."Z").hasMatches(over: "a"))
 		XCTAssert(!("A"..."A").hasMatches(over: "a"))
+		XCTAssert(!("b"..."b").hasMatches(over: "a"))
 		
 		XCTAssert(("a"..."a").hasMatches(over: "a", direction: .backward))
+		XCTAssert(("b"..."b").hasMatches(over: "b", direction: .backward))
 		XCTAssert(("a"..."z").hasMatches(over: "a", direction: .backward))
 		XCTAssert(!("A"..."Z").hasMatches(over: "a", direction: .backward))
 		XCTAssert(!("A"..."A").hasMatches(over: "a", direction: .backward))
+		XCTAssert(!("b"..."b").hasMatches(over: "a", direction: .backward))
 		
 	}
 	
 	func testTwoCharacters() {
 		
 		XCTAssert((("a"..."a") • ("b"..."b")).hasMatches(over: "ab"))
+		XCTAssert((("a"..."a") • ("a"..."b")).hasMatches(over: "ab"))
 		XCTAssert((("a"..."z") • ("a"..."z")).hasMatches(over: "ab"))
 		XCTAssert(!("A"..."Z").hasMatches(over: "ab"))
 		XCTAssert(!(("A"..."A") • ("a"..."z")).hasMatches(over: "ab"))
 		XCTAssert(!(("b"..."b") • ("a"..."a")).hasMatches(over: "ab"))
 		
 		XCTAssert((("a"..."a") • ("b"..."b")).hasMatches(over: "ab", direction: .backward))
+		XCTAssert((("a"..."a") • ("a"..."b")).hasMatches(over: "ab", direction: .backward))
 		XCTAssert((("a"..."z") • ("a"..."z")).hasMatches(over: "ab", direction: .backward))
 		XCTAssert(!("A"..."Z").hasMatches(over: "ab", direction: .backward))
 		XCTAssert(!(("A"..."A") • ("a"..."z")).hasMatches(over: "ab", direction: .backward))
