@@ -72,7 +72,7 @@ extension PostOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 		}
 	}
 	
-	public func index(before index: PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
+	public func index(before index: Index) -> Index {
 		
 		guard case .some(indexPath: let indexPath) = index else { return .some(indexPath: []) }
 		
@@ -92,7 +92,7 @@ extension PostOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 		
 	}
 	
-	public func index(after index: PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
+	public func index(after index: Index) -> Index {
 		
 		guard case .some(indexPath: let indexPath) = index else { preconditionFailure("Index out of bounds") }
 		
@@ -146,17 +146,17 @@ extension PostOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
 	public static func <<C>(leftIndex: PostOrderFlatteningBidirectionalCollection<C>.Index, rightIndex: PostOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
 		switch (leftIndex, rightIndex) {
-		case (.some(indexPath: let leftPath), .some(indexPath: let rightPath)):	return leftPath.lexicographicallyPrecedes(rightPath)
-		case (.some, .end):														return true
-		default:																return false
+			case (.some(indexPath: let leftPath), .some(indexPath: let rightPath)):	return leftPath.lexicographicallyPrecedes(rightPath, orderingShorterSequencesAfter: ())
+			case (.some, .end):														return true
+			default:																return false
 		}
 	}
 	
 	public static func ==<C>(index: PostOrderFlatteningBidirectionalCollection<C>.Index, otherIndex: PostOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
 		switch (index, otherIndex) {
-		case (.some(indexPath: let path), .some(indexPath: let otherPath)):	return path == otherPath
-		case (.end, .end):													return true
-		default:															return false
+			case (.some(indexPath: let path), .some(indexPath: let otherPath)):	return path == otherPath
+			case (.end, .end):													return true
+			default:															return false
 		}
 	}
 	

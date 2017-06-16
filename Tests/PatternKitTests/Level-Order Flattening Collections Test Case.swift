@@ -3,13 +3,13 @@
 import XCTest
 @testable import PatternKit
 
-class PostOrderFlatteningCollectionsTestCase : XCTestCase {
+class LevelOrderFlatteningCollectionsTestCase : XCTestCase {
 	
 	func testSingleton() {
 		
 		let tree = Tree("Node", [])
 		
-		let flattenedTree = tree.flattenedInPostOrder()
+		let flattenedTree = tree.flattenedInLevelOrder()
 		let elements = flattenedTree.map { $0.value }
 		
 		XCTAssert(elements == ["Node"])
@@ -33,10 +33,10 @@ class PostOrderFlatteningCollectionsTestCase : XCTestCase {
 			])
 		])
 		
-		let flattenedTree = binaryTree.flattenedInPostOrder()
+		let flattenedTree = binaryTree.flattenedInLevelOrder()
 		let elements = flattenedTree.map { $0.value }
 		
-		XCTAssert(elements == ["A", "C", "E", "D", "B", "H", "I", "G", "F"])
+		XCTAssert(elements == ["F", "B", "G", "A", "D", "I", "C", "E", "H"])
 		
 	}
 	
@@ -58,10 +58,10 @@ class PostOrderFlatteningCollectionsTestCase : XCTestCase {
 			])
 		])
 		
-		let flattenedTree = tree.flattenedInPostOrder()
+		let flattenedTree = tree.flattenedInLevelOrder()
 		let elements = flattenedTree.map { $0.value }
 		
-		XCTAssert(elements == ["A", "C", "X", "E", "D", "B", "H", "I", "G", "F"])
+		XCTAssert(elements == ["F", "B", "G", "A", "D", "I", "C", "X", "E", "H"])
 		
 	}
 	
@@ -83,10 +83,10 @@ class PostOrderFlatteningCollectionsTestCase : XCTestCase {
 			])
 		])
 		
-		let flattenedTree = tree.flattenedInPostOrder().reversed()
+		let flattenedTree = tree.flattenedInPreOrder().reversed()
 		let elements = flattenedTree.map { $0.value }
 		
-		XCTAssert(elements == ["A", "C", "X", "E", "D", "B", "H", "I", "G", "F"].reversed())
+		XCTAssert(elements == ["F", "B", "G", "A", "D", "I", "C", "X", "E", "H"].reversed())
 		
 	}
 	
@@ -97,8 +97,8 @@ class PostOrderFlatteningCollectionsTestCase : XCTestCase {
 				Tree("A", []),
 				Tree("D", [
 					Tree("C", []),
-					Tree("E", []),
-					Tree("X", [])
+					Tree("X", []),
+					Tree("E", [])
 				])
 			]),
 			Tree("G", [
@@ -108,7 +108,7 @@ class PostOrderFlatteningCollectionsTestCase : XCTestCase {
 			])
 		])
 		
-		let indices = Array(tree.flattenedInPostOrder().indices)
+		let indices = Array(tree.flattenedInLevelOrder().indices)
 		XCTAssert(indices == indices.sorted())
 		
 	}

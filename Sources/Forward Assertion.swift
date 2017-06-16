@@ -6,7 +6,7 @@
 ///
 /// While the assertion does not change the input position, it does preserve captures by tokens contained within the asserted pattern. However, the assertion only produces one match from the asserted pattern.
 ///
-/// Note that a forward assertion can also be used within a backward matching context. In that case, the forward assertion statically transforms (i.e., via the type system) into a backward assertion.
+/// Note that a forward assertion can also be used within a backward matching context; this does not affect the matching direction of the asserted pattern since the assertion itself is strictly forward-matching.
 public struct ForwardAssertion<AssertedPattern : Pattern> where
 	AssertedPattern.ForwardMatchCollection.Iterator.Element == Match<AssertedPattern.Subject>,
 	AssertedPattern.BackwardMatchCollection.Iterator.Element == Match<AssertedPattern.Subject> {
@@ -31,8 +31,8 @@ extension ForwardAssertion : Pattern {
 		return ForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
-	public func backwardMatches(recedingFrom base: Match<Subject>) -> BackwardAssertionMatchCollection<AssertedPattern> {
-		return BackwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> ForwardAssertionMatchCollection<AssertedPattern> {
+		return ForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {

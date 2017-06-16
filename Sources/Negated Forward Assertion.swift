@@ -27,8 +27,8 @@ extension NegatedForwardAssertion : Pattern {
 		return NegatedForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
-	public func backwardMatches(recedingFrom base: Match<AssertedPattern.Subject>) -> NegatedBackwardAssertionMatchCollection<AssertedPattern> {
-		return NegatedBackwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+	public func backwardMatches(recedingFrom base: Match<AssertedPattern.Subject>) -> NegatedForwardAssertionMatchCollection<AssertedPattern> {
+		return NegatedForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 }

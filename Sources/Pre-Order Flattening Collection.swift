@@ -72,7 +72,7 @@ extension PreOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 		}
 	}
 	
-	public func index(before index: PreOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PreOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
+	public func index(before index: Index) -> Index {
 		
 		guard case .some(indexPath: let indexPath) = index else {
 			return .some(indexPath: indexPathOfTrailingCollection(containedInCollectionAt: []))
@@ -90,7 +90,7 @@ extension PreOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 		
 	}
 	
-	public func index(after index: PreOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PreOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
+	public func index(after index: Index) -> Index {
 		
 		guard case .some(indexPath: let indexPath) = index else { preconditionFailure("Index out of bounds") }
 		
