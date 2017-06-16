@@ -1,7 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 /// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in post-order.
-public struct PostorderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Iterator.Element == RecursiveCollection {
+public struct PostOrderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Iterator.Element == RecursiveCollection {
 	
 	/// Creates a flattening collection over a collection.
 	///
@@ -20,7 +20,7 @@ public struct PostorderFlatteningBidirectionalCollection<RecursiveCollection : B
 	
 }
 
-extension PostorderFlatteningBidirectionalCollection {
+extension PostOrderFlatteningBidirectionalCollection {
 	
 	/// Creates a flattening collection over a collection.
 	///
@@ -32,7 +32,7 @@ extension PostorderFlatteningBidirectionalCollection {
 	
 }
 
-extension PostorderFlatteningBidirectionalCollection : BidirectionalCollection {
+extension PostOrderFlatteningBidirectionalCollection : BidirectionalCollection {
 	
 	public enum Index {
 		
@@ -72,7 +72,7 @@ extension PostorderFlatteningBidirectionalCollection : BidirectionalCollection {
 		}
 	}
 	
-	public func index(before index: PostorderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PostorderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
+	public func index(before index: PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
 		
 		guard case .some(indexPath: let indexPath) = index else { return .some(indexPath: []) }
 		
@@ -92,7 +92,7 @@ extension PostorderFlatteningBidirectionalCollection : BidirectionalCollection {
 		
 	}
 	
-	public func index(after index: PostorderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PostorderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
+	public func index(after index: PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PostOrderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
 		
 		guard case .some(indexPath: let indexPath) = index else { preconditionFailure("Index out of bounds") }
 		
@@ -142,9 +142,9 @@ extension PostorderFlatteningBidirectionalCollection : BidirectionalCollection {
 	
 }
 
-extension PostorderFlatteningBidirectionalCollection.Index : Comparable {
+extension PostOrderFlatteningBidirectionalCollection.Index : Comparable {
 	
-	public static func <<C>(leftIndex: PostorderFlatteningBidirectionalCollection<C>.Index, rightIndex: PostorderFlatteningBidirectionalCollection<C>.Index) -> Bool {
+	public static func <<C>(leftIndex: PostOrderFlatteningBidirectionalCollection<C>.Index, rightIndex: PostOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
 		switch (leftIndex, rightIndex) {
 		case (.some(indexPath: let leftPath), .some(indexPath: let rightPath)):	return leftPath.lexicographicallyPrecedes(rightPath)
 		case (.some, .end):														return true
@@ -152,7 +152,7 @@ extension PostorderFlatteningBidirectionalCollection.Index : Comparable {
 		}
 	}
 	
-	public static func ==<C>(index: PostorderFlatteningBidirectionalCollection<C>.Index, otherIndex: PostorderFlatteningBidirectionalCollection<C>.Index) -> Bool {
+	public static func ==<C>(index: PostOrderFlatteningBidirectionalCollection<C>.Index, otherIndex: PostOrderFlatteningBidirectionalCollection<C>.Index) -> Bool {
 		switch (index, otherIndex) {
 		case (.some(indexPath: let path), .some(indexPath: let otherPath)):	return path == otherPath
 		case (.end, .end):													return true

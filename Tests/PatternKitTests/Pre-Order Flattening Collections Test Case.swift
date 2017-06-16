@@ -3,13 +3,13 @@
 import XCTest
 @testable import PatternKit
 
-class PostorderFlatteningCollectionsTestCase : XCTestCase {
+class PreOrderFlatteningCollectionsTestCase : XCTestCase {
 	
 	func testSingleton() {
 		
 		let tree = Tree("Node", [])
 		
-		let flattenedTree = tree.flattenedInPostorder()
+		let flattenedTree = tree.flattenedInPreorder()
 		let elements = flattenedTree.map { $0.value }
 		
 		XCTAssert(elements == ["Node"])
@@ -29,14 +29,14 @@ class PostorderFlatteningCollectionsTestCase : XCTestCase {
 			Tree("G", [
 				Tree("I", [
 					Tree("H", [])
-					])
 				])
 			])
+		])
 		
-		let flattenedTree = binaryTree.flattenedInPostorder()
+		let flattenedTree = binaryTree.flattenedInPreorder()
 		let elements = flattenedTree.map { $0.value }
 		
-		XCTAssert(elements == ["A", "C", "E", "D", "B", "H", "I", "G", "F"])
+		XCTAssert(elements == ["F", "B", "A", "D", "C", "E", "G", "I", "H"])
 		
 	}
 	
@@ -47,21 +47,21 @@ class PostorderFlatteningCollectionsTestCase : XCTestCase {
 				Tree("A", []),
 				Tree("D", [
 					Tree("C", []),
-					Tree("X", []),
-					Tree("E", [])
+					Tree("E", []),
+					Tree("X", [])
 				])
 			]),
 			Tree("G", [
 				Tree("I", [
 					Tree("H", [])
+					])
 				])
 			])
-		])
 		
-		let flattenedTree = tree.flattenedInPostorder()
+		let flattenedTree = tree.flattenedInPreorder()
 		let elements = flattenedTree.map { $0.value }
 		
-		XCTAssert(elements == ["A", "C", "X", "E", "D", "B", "H", "I", "G", "F"])
+		XCTAssert(elements == ["F", "B", "A", "D", "C", "E", "X", "G", "I", "H"])
 		
 	}
 	

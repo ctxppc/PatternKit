@@ -51,8 +51,8 @@ extension BidirectionalCollection where Iterator.Element == Self {
 	/// - Parameter isLeaf: A function that determines whether a collection is a leaf node, given that collection's index path. The default always returns false.
 	///
 	/// - Returns: A pre-order flattening collection over `self`.
-	public func flattenedInPreorder(isLeaf: @escaping (PreorderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> PreorderFlatteningBidirectionalCollection<Self> {
-		return PreorderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
+	public func flattenedInPreOrder(isLeaf: @escaping (PreOrderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> PreOrderFlatteningBidirectionalCollection<Self> {
+		return PreOrderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
 	}
 	
 	/// Returns a pre-order flattening collection over the collection.
@@ -60,8 +60,8 @@ extension BidirectionalCollection where Iterator.Element == Self {
 	/// - Parameter maximumDepth: The maximum depth, inclusive. `self` is at depth 0. If negative, the flattening collection is empty.
 	///
 	/// - Returns: A pre-order flattening collection over `self`.
-	public func flattenedInPreorder(maximumDepth: Int) -> PreorderFlatteningBidirectionalCollection<Self> {
-		return PreorderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
+	public func flattenedInPreOrder(maximumDepth: Int) -> PreOrderFlatteningBidirectionalCollection<Self> {
+		return PreOrderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
 	}
 	
 	/// Returns a post-order flattening collection over the collection.
@@ -69,8 +69,8 @@ extension BidirectionalCollection where Iterator.Element == Self {
 	/// - Parameter isLeaf: A function that determines whether a collection is a leaf node, given that collection's index path. The default always returns false.
 	///
 	/// - Returns: A post-order flattening collection over `self`.
-	public func flattenedInPostorder(isLeaf: @escaping (PostorderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> PostorderFlatteningBidirectionalCollection<Self> {
-		return PostorderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
+	public func flattenedInPostOrder(isLeaf: @escaping (PostOrderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> PostOrderFlatteningBidirectionalCollection<Self> {
+		return PostOrderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
 	}
 	
 	/// Returns a post-order flattening collection over the collection.
@@ -78,8 +78,8 @@ extension BidirectionalCollection where Iterator.Element == Self {
 	/// - Parameter maximumDepth: The maximum depth, inclusive. `self` is at depth 0. If negative, the flattening collection is empty.
 	///
 	/// - Returns: A post-order flattening collection over `self`.
-	public func flattenedInPostorder(maximumDepth: Int) -> PostorderFlatteningBidirectionalCollection<Self> {
-		return PostorderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
+	public func flattenedInPostOrder(maximumDepth: Int) -> PostOrderFlatteningBidirectionalCollection<Self> {
+		return PostOrderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
 	}
 	
 }
