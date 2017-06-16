@@ -1,6 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-/// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in preorder.
+/// A bidirectional collection that flattens a recursive bidirectional collection by visiting all subcollections in pre-order.
 public struct PreorderFlatteningBidirectionalCollection<RecursiveCollection : BidirectionalCollection> where RecursiveCollection.Iterator.Element == RecursiveCollection {
 	
 	/// Creates a flattening collection over a collection.
@@ -75,7 +75,7 @@ extension PreorderFlatteningBidirectionalCollection : BidirectionalCollection {
 	public func index(before index: PreorderFlatteningBidirectionalCollection<RecursiveCollection>.Index) -> PreorderFlatteningBidirectionalCollection<RecursiveCollection>.Index {
 		
 		guard case .some(indexPath: let indexPath) = index else {
-			return .some(indexPath: indexPathForTrailingCollection(containedInCollectionAt: []))
+			return .some(indexPath: indexPathOfTrailingCollection(containedInCollectionAt: []))
 		}
 		
 		guard let (indexPathOfParent, indexOfCurrent) = indexPath.poppingLast() else { preconditionFailure("Index out of bounds") }
@@ -83,7 +83,7 @@ extension PreorderFlatteningBidirectionalCollection : BidirectionalCollection {
 		let parent = self[indexPathOfParent]
 		if indexOfCurrent > parent.startIndex {
 			let indexPathOfSibling = indexPathOfParent.appending(parent.index(before: indexOfCurrent))
-			return .some(indexPath: indexPathForTrailingCollection(containedInCollectionAt: indexPathOfSibling))
+			return .some(indexPath: indexPathOfTrailingCollection(containedInCollectionAt: indexPathOfSibling))
 		} else {
 			return .some(indexPath: indexPathOfParent)
 		}
@@ -94,7 +94,7 @@ extension PreorderFlatteningBidirectionalCollection : BidirectionalCollection {
 		
 		guard case .some(indexPath: let indexPath) = index else { preconditionFailure("Index out of bounds") }
 		
-		if let indexPathOfFirstChild = indexPathForFirstChildCollection(containedInCollectionAt: indexPath) {
+		if let indexPathOfFirstChild = indexPathOfFirstChildCollection(containedInCollectionAt: indexPath) {
 			return .some(indexPath: indexPathOfFirstChild)
 		}
 		
@@ -112,18 +112,18 @@ extension PreorderFlatteningBidirectionalCollection : BidirectionalCollection {
 	
 	/// Returns the index path for the first collection contained within a collection at a given index path.
 	///
-	/// - Parameter indexPathForParent: The index path of the collection whose first child collection's index path to determine.
+	/// - Parameter indexPathOfParent: The index path of the collection whose first child collection's index path to determine.
 	///
-	/// - Returns: The index path for the first collection contained within a collection at `indexPathForParent`; or `nil` if the collection at `indexPathForParent` is empty or is a leaf node.
-	private func indexPathForFirstChildCollection(containedInCollectionAt indexPathForParent: Index.Path) -> Index.Path? {
+	/// - Returns: The index path for the first collection contained within a collection at `indexPathOfParent`; or `nil` if the collection at `indexPathOfParent` is empty or is a leaf node.
+	private func indexPathOfFirstChildCollection(containedInCollectionAt indexPathOfParent: Index.Path) -> Index.Path? {
 		
-		guard !isLeaf(indexPathForParent) else { return nil }
+		guard !isLeaf(indexPathOfParent) else { return nil }
 		
-		let parent = self[indexPathForParent]
+		let parent = self[indexPathOfParent]
 		let indexForFirstChild = parent.startIndex
 		guard indexForFirstChild < parent.endIndex else { return nil }
 		
-		return indexPathForParent.appending(indexForFirstChild)
+		return indexPathOfParent.appending(indexForFirstChild)
 		
 	}
 	
@@ -132,16 +132,16 @@ extension PreorderFlatteningBidirectionalCollection : BidirectionalCollection {
 	/// - Parameter indexPath: The index path of the collection whose trailing collection's index path to determine.
 	///
 	/// - Returns: The index path for the trailing (right-most) collection contained within a collection at `indexPath`; or `indexPath` if the collection at `indexPath` is empty or is a leaf node.
-	private func indexPathForTrailingCollection(containedInCollectionAt indexPath: Index.Path) -> Index.Path {
+	private func indexPathOfTrailingCollection(containedInCollectionAt indexPath: Index.Path) -> Index.Path {
 		
 		guard !isLeaf(indexPath) else { return indexPath }
 		
-		let base = self[indexPath]
+		let base = self[indexPath]	// TODO: Remove redundant computation of the base in a recursive context
 		let endIndexInBase = base.endIndex
 		guard endIndexInBase > base.startIndex else { return indexPath }
 		
 		let indexOfLastElementInBase = base.index(before: endIndexInBase)
-		return indexPathForTrailingCollection(containedInCollectionAt: indexPath.appending(indexOfLastElementInBase))
+		return indexPathOfTrailingCollection(containedInCollectionAt: indexPath.appending(indexOfLastElementInBase))
 		
 	}
 	
