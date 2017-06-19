@@ -9,11 +9,7 @@ extension CharacterSet : Pattern {
 		guard let character = base.remainingElements(direction: .forward).first else { return nil }
 		
 		let scalars = String(character).unicodeScalars
-		guard let scalar = scalars.first,
-			scalars.count == 1,
-			contains(scalar) else {
-				return nil
-		}
+		guard let scalar = scalars.first, scalars.count == 1, contains(scalar) else { return nil }
 		
 		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: 1, direction: .forward))
 		
@@ -24,11 +20,7 @@ extension CharacterSet : Pattern {
 		guard let character = base.remainingElements(direction: .backward).last else { return nil }
 		
 		let scalars = String(character).unicodeScalars
-		guard let scalar = scalars.first,
-			scalars.count == 1,
-			contains(scalar) else {
-				return nil
-		}
+		guard let scalar = scalars.first, scalars.count == 1, contains(scalar) else { return nil }
 		
 		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: 1, direction: .backward))
 		
