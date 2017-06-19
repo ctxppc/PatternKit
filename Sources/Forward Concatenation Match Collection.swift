@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import DepthKit
+
 /// A collection of forward matches of a concatenation pattern.
 public struct ForwardConcatenationMatchCollection<LeadingPattern : Pattern, TrailingPattern : Pattern> where
 	LeadingPattern.Subject == TrailingPattern.Subject,

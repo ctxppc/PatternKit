@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import DepthKit
+
 /// A pattern that performs matching of a subpattern repeatedly on consecutive subsequences of the target collection, preferring matching as few times as possible.
 public struct LazilyRepeating<RepeatedPattern : Pattern> where
 	RepeatedPattern.ForwardMatchCollection.Iterator.Element == Match<RepeatedPattern.Subject>,

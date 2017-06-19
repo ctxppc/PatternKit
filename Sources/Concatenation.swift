@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import DepthKit
+
 /// A pattern that matches two patterns sequentially.
 public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern> where
 	
