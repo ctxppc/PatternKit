@@ -37,7 +37,7 @@ extension LazilyRepeating : Pattern {
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
 		
 		let minimumDepth = multiplicityRange.lowerBound
-		let maximumDepth = multiplicityRange.upperBound == .max ? multiplicityRange.upperBound : multiplicityRange.upperBound + 1
+		let maximumDepth = multiplicityRange.upperBound == .max ? .max : multiplicityRange.upperBound + 1
 		return ForwardRing(repeatedPattern: repeatedPattern, baseMatch: base)
 			.flattenedInPreOrder(maximumDepth: maximumDepth)
 			.lazy
@@ -48,7 +48,7 @@ extension LazilyRepeating : Pattern {
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<BackwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
 		let minimumDepth = multiplicityRange.lowerBound
-		let maximumDepth = multiplicityRange.upperBound == .max ? multiplicityRange.upperBound : multiplicityRange.upperBound + 1
+		let maximumDepth = multiplicityRange.upperBound == .max ? .max : multiplicityRange.upperBound + 1
 		return BackwardRing(repeatedPattern: repeatedPattern, baseMatch: base)
 			.flattenedInPreOrder(maximumDepth: maximumDepth)
 			.lazy
@@ -80,6 +80,10 @@ extension LazilyRepeating {
 		self.init(repeatedPattern, min: multiplicity, max: multiplicity)
 	}
 	
+}
+
+public func repeating<RepeatedPattern>(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) -> LazilyRepeating<RepeatedPattern> {
+	return LazilyRepeating(repeatedPattern, exactly: multiplicity)
 }
 
 // TODO: Add literal & element initialisers (for autowrapping in Literal) when bugfix lands, in Swift 4 (or later)

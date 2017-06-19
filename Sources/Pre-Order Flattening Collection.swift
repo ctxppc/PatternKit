@@ -27,7 +27,7 @@ extension PreOrderFlatteningBidirectionalCollection {
 	/// - Parameter root: The root collection that is being flattened.
 	/// - Parameter maximumDepth: The maximum depth, inclusive. The root collection is at depth 0. If negative, the flattening collection is empty.
 	public init(root: RecursiveCollection, maximumDepth: Int) {
-		self.init(root: root, isLeaf: { path in path.count <= maximumDepth })
+		self.init(root: root, isLeaf: { path in path.count >= maximumDepth })
 	}
 	
 }
