@@ -72,8 +72,8 @@ class LevelOrderFlatteningCollectionsTestCase : XCTestCase {
 				Tree("A", []),
 				Tree("D", [
 					Tree("C", []),
-					Tree("E", []),
-					Tree("X", [])
+					Tree("X", []),
+					Tree("E", [])
 				])
 			]),
 			Tree("G", [
@@ -83,7 +83,7 @@ class LevelOrderFlatteningCollectionsTestCase : XCTestCase {
 			])
 		])
 		
-		let flattenedTree = tree.flattenedInPreOrder().reversed()
+		let flattenedTree = tree.flattenedInLevelOrder().reversed()
 		let elements = flattenedTree.map { $0.value }
 		
 		XCTAssert(elements == ["F", "B", "G", "A", "D", "I", "C", "X", "E", "H"].reversed())

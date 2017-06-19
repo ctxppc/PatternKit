@@ -10,7 +10,7 @@ public struct LevelOrderFlatteningBidirectionalCollection<RecursiveCollection : 
 	///
 	/// - Parameter root: The root collection that is being flattened.
 	/// - Parameter isLeaf: A function that determines whether a collection is a leaf node, given that collection's index path. The default always returns false.
-	public init(root: RecursiveCollection, isLeaf: @escaping (Index.Path) -> Bool = { _ in false }) {
+	fileprivate init(root: RecursiveCollection, isLeaf: @escaping (Index.Path) -> Bool = { _ in false }) {
 		self.root = root
 		self.isLeaf = isLeaf
 	}
@@ -19,7 +19,7 @@ public struct LevelOrderFlatteningBidirectionalCollection<RecursiveCollection : 
 	public let root: RecursiveCollection
 	
 	/// A function that determines whether a collection is a leaf node, given the index path of the node.
-	public var isLeaf: (Index.Path) -> Bool
+	public let isLeaf: (Index.Path) -> Bool
 	
 }
 
@@ -29,7 +29,7 @@ extension LevelOrderFlatteningBidirectionalCollection {
 	///
 	/// - Parameter root: The root collection that is being flattened.
 	/// - Parameter maximumDepth: The maximum depth, inclusive. The root collection is at depth 0. If negative, the flattening collection is empty.
-	public init(root: RecursiveCollection, maximumDepth: Int) {
+	fileprivate init(root: RecursiveCollection, maximumDepth: Int) {
 		self.init(root: root, isLeaf: { path in path.count <= maximumDepth })
 	}
 	
@@ -78,14 +78,13 @@ extension LevelOrderFlatteningBidirectionalCollection : BidirectionalCollection 
 	public func index(before index: Index) -> Index {
 		
 		guard case .some(indexPath: let indexPathOfCurrent) = index else { return .some(indexPath: lastDeepestIndexPath()) }
+		precondition(!indexPathOfCurrent.isEmpty, "Index out of bounds")
 		
 		if let previousIndexPath = indexPath(before: indexPathOfCurrent) {
 			return .some(indexPath: previousIndexPath)
 		}
 		
 		let previousDepth = indexPathOfCurrent.count - 1
-		guard previousDepth >= 0 else { preconditionFailure("Index out of bounds") }
-		
 		guard let indexPath = lastIndexPath(depth: previousDepth) else { fatalError("Previous depth doesn't exist") }
 		return .some(indexPath: indexPath)
 		
@@ -294,6 +293,28 @@ extension LevelOrderFlatteningBidirectionalCollection.Index : Comparable {
 			case (.end, .end):													return true
 			default:															return false
 		}
+	}
+	
+}
+
+extension BidirectionalCollection where Iterator.Element == Self, Indices : BidirectionalCollection, Indices.Iterator.Element == Index {
+	
+	/// Returns a level-order flattening collection over the collection.
+	///
+	/// - Parameter isLeaf: A function that determines whether a collection is a leaf node, given that collection's index path. The default always returns false.
+	///
+	/// - Returns: A level-order flattening collection over `self`.
+	public func flattenedInLevelOrder(isLeaf: @escaping (LevelOrderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> LevelOrderFlatteningBidirectionalCollection<Self> {
+		return LevelOrderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
+	}
+	
+	/// Returns a level-order flattening collection over the collection.
+	///
+	/// - Parameter maximumDepth: The maximum depth, inclusive. `self` is at depth 0. If negative, the flattening collection is empty.
+	///
+	/// - Returns: A level-order flattening collection over `self`.
+	public func flattenedInLevelOrder(maximumDepth: Int) -> LevelOrderFlatteningBidirectionalCollection<Self> {
+		return LevelOrderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
 	}
 	
 }
