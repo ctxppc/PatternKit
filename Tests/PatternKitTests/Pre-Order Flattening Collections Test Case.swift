@@ -40,73 +40,44 @@ class PreOrderFlatteningCollectionsTestCase : XCTestCase {
 		
 	}
 	
-	func testArbitraryTree() {
-		
-		let tree = Tree("F", [
-			Tree("B", [
-				Tree("A", []),
-				Tree("D", [
-					Tree("C", []),
-					Tree("E", []),
-					Tree("X", [])
-				])
-			]),
-			Tree("G", [
-				Tree("I", [
-					Tree("H", [])
-				])
+	// https://en.wikipedia.org/wiki/Tree_traversal
+	let tree = Tree("F", [
+		Tree("B", [
+			Tree("A", []),
+			Tree("D", [
+				Tree("C", []),
+				Tree("X", []),
+				Tree("E", [])
+			])
+		]),
+		Tree("G", [
+			Tree("I", [
+				Tree("H", [])
 			])
 		])
+	])
+	
+	let preorder = ["F", "B", "A", "D", "C", "X", "E", "G", "I", "H"]
+	
+	func testArbitraryTree() {
 		
 		let flattenedTree = tree.flattenedInPreOrder()
 		let elements = flattenedTree.map { $0.value }
 		
-		XCTAssert(elements == ["F", "B", "A", "D", "C", "E", "X", "G", "I", "H"])
+		XCTAssert(elements == preorder)
 		
 	}
 	
 	func testInversedTree() {
 		
-		let tree = Tree("F", [
-			Tree("B", [
-				Tree("A", []),
-				Tree("D", [
-					Tree("C", []),
-					Tree("E", []),
-					Tree("X", [])
-				])
-			]),
-			Tree("G", [
-				Tree("I", [
-					Tree("H", [])
-				])
-			])
-		])
-		
 		let flattenedTree = tree.flattenedInPreOrder().reversed()
 		let elements = flattenedTree.map { $0.value }
 		
-		XCTAssert(elements == ["F", "B", "A", "D", "C", "E", "X", "G", "I", "H"].reversed())
+		XCTAssert(elements == preorder.reversed())
 		
 	}
 	
 	func testIndexOrdering() {
-		
-		let tree = Tree("F", [
-			Tree("B", [
-				Tree("A", []),
-				Tree("D", [
-					Tree("C", []),
-					Tree("E", []),
-					Tree("X", [])
-				])
-			]),
-			Tree("G", [
-				Tree("I", [
-					Tree("H", [])
-				])
-			])
-		])
 		
 		let indices = Array(tree.flattenedInPreOrder().indices)
 		XCTAssert(indices == indices.sorted())

@@ -83,25 +83,3 @@ extension BidirectionalCollection where Iterator.Element == Self {
 	}
 	
 }
-
-extension BidirectionalCollection where Iterator.Element == Self, Indices : BidirectionalCollection, Indices.Iterator.Element == Index {
-	
-	/// Returns a level-order flattening collection over the collection.
-	///
-	/// - Parameter isLeaf: A function that determines whether a collection is a leaf node, given that collection's index path. The default always returns false.
-	///
-	/// - Returns: A level-order flattening collection over `self`.
-	public func flattenedInLevelOrder(isLeaf: @escaping (LevelOrderFlatteningBidirectionalCollection<Self>.Index.Path) -> Bool = { _ in false }) -> LevelOrderFlatteningBidirectionalCollection<Self> {
-		return LevelOrderFlatteningBidirectionalCollection(root: self, isLeaf: isLeaf)
-	}
-	
-	/// Returns a level-order flattening collection over the collection.
-	///
-	/// - Parameter maximumDepth: The maximum depth, inclusive. `self` is at depth 0. If negative, the flattening collection is empty.
-	///
-	/// - Returns: A level-order flattening collection over `self`.
-	public func flattenedInLevelOrder(maximumDepth: Int) -> LevelOrderFlatteningBidirectionalCollection<Self> {
-		return LevelOrderFlatteningBidirectionalCollection(root: self, maximumDepth: maximumDepth)
-	}
-	
-}
