@@ -22,15 +22,13 @@ public struct EagerlyRepeating<RepeatedPattern : Pattern> where
 		multiplicityRange = lowerBound...upperBound
 	}
 	
-	// TODO: Replace min & max arguments in initialiser by a suitable `RangeExpression` argument, in Swift 4
-	
 	/// The pattern that is repeated.
 	public var repeatedPattern: RepeatedPattern
 	
 	/// The range of the number of times the pattern can be repeated.
 	///
 	/// - Invariant: `multiplicityRange.lowerBound >= 0`
-	public var multiplicityRange: CountableClosedRange<Int> {
+	public var multiplicityRange: ClosedRange<Int> {
 		willSet { precondition(newValue.lowerBound >= 0, "Negative lower bound") }
 	}
 	
@@ -38,20 +36,34 @@ public struct EagerlyRepeating<RepeatedPattern : Pattern> where
 
 extension EagerlyRepeating : Pattern {
 	
-	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
-		unimplemented	// TODO
+	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PostOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
+		let minimumDepth = multiplicityRange.lowerBound
+		let maximumDepth = multiplicityRange.upperBound == .max ? .max : multiplicityRange.upperBound + 1
+		return ForwardRing(repeatedPattern: repeatedPattern, baseMatch: base)
+			.flattenedInPostOrder(maximumDepth: maximumDepth)
+			.lazy
+			.filter { $0.depth >= minimumDepth }
+			.map { $0.baseMatch }
 	}
 	
-	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<BackwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
-		unimplemented	// TODO
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PostOrderFlatteningBidirectionalCollection<BackwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
+		let minimumDepth = multiplicityRange.lowerBound
+		let maximumDepth = multiplicityRange.upperBound == .max ? .max : multiplicityRange.upperBound + 1
+		return BackwardRing(repeatedPattern: repeatedPattern, baseMatch: base)
+			.flattenedInPostOrder(maximumDepth: maximumDepth)
+			.lazy
+			.filter { $0.depth >= minimumDepth }
+			.map { $0.baseMatch }
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: RepeatedPattern.Subject, fromIndex inputPosition: RepeatedPattern.Subject.Index) -> RepeatedPattern.Subject.Index {
-		unimplemented	// TODO
+		guard multiplicityRange.lowerBound > 0 else { return inputPosition }
+		return repeatedPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: RepeatedPattern.Subject, fromIndex inputPosition: RepeatedPattern.Subject.Index) -> RepeatedPattern.Subject.Index {
-		unimplemented	// TODO
+		guard multiplicityRange.lowerBound > 0 else { return inputPosition }
+		return repeatedPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 }

@@ -26,4 +26,20 @@ class LazilyRepeatingTestCase : XCTestCase {
 		XCTAssert((literal("a")/?? • literal("b")*? • literal("a")).hasMatches(over: "bbbbbba"))
 	}
 	
+	func testLaziness() {
+		
+		let base = "a"+?
+		let prefix = Token(base)
+		let suffix = Token(base)
+		let pattern = prefix • suffix
+		
+		let matches = pattern.matches(over: "aaa")
+		let captures = Array(matches.map { (String($0.capturedSubsequences(for: prefix).first!), String($0.capturedSubsequences(for: suffix).first!)) })
+		
+		XCTAssert(captures[0] == ("a", "aa"))
+		XCTAssert(captures[1] == ("aa", "a"))
+		XCTAssert(captures.count == 2)
+		
+	}
+	
 }

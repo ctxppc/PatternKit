@@ -37,7 +37,6 @@ public struct LazilyRepeating<RepeatedPattern : Pattern> where
 extension LazilyRepeating : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
-		
 		let minimumDepth = multiplicityRange.lowerBound
 		let maximumDepth = multiplicityRange.upperBound == .max ? .max : multiplicityRange.upperBound + 1
 		return ForwardRing(repeatedPattern: repeatedPattern, baseMatch: base)
@@ -45,7 +44,6 @@ extension LazilyRepeating : Pattern {
 			.lazy
 			.filter { $0.depth >= minimumDepth }
 			.map { $0.baseMatch }
-		
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<BackwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
