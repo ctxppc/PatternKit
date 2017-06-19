@@ -7,27 +7,27 @@ postfix operator *
 ///
 /// - Parameter repeatedPattern: The pattern that is repeated.
 ///
-/// - Returns: `Repeating(repeatedPattern)`
-public postfix func *<P>(repeatedPattern: P) -> Repeating<P> {
-	return Repeating(repeatedPattern)
+/// - Returns: An arbitrarily, eagerly repeating pattern over `repeatedPattern`.
+public postfix func *<P>(repeatedPattern: P) -> EagerlyRepeating<P> {
+	return EagerlyRepeating(repeatedPattern)
 }
 
 /// Returns an arbitrarily, eagerly repeating pattern over a given literal collection.
 ///
 /// - Parameter repeatedlyMatchedCollection: The collection that is repeatedly matched exactly.
 ///
-/// - Returns: `Repeating(Literal(repeatedlyMatchedCollection))`
-public postfix func *<C>(repeatedlyMatchedCollection: C) -> Repeating<Literal<C>> {
-	return Repeating(Literal(repeatedlyMatchedCollection))
+/// - Returns: An arbitrarily, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
+public postfix func *<C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
+	return EagerlyRepeating(Literal(repeatedlyMatchedCollection))
 }
 
 /// Returns an arbitrarily, eagerly repeating pattern over a given literal string.
 ///
 /// - Parameter repeatedlyMatchedString: The string that is repeatedly matched exactly.
 ///
-/// - Returns: `Repeating(Literal(repeatedlyMatchedString.characters))`
-public postfix func *(repeatedlyMatchedString: String) -> Repeating<Literal<String.CharacterView>> {
-	return Repeating(Literal(repeatedlyMatchedString.characters))
+/// - Returns: An arbitrarily, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedString`.
+public postfix func *(repeatedlyMatchedString: String) -> EagerlyRepeating<Literal<String.CharacterView>> {		// TODO: Remove in Swift 4
+	return EagerlyRepeating(Literal(repeatedlyMatchedString.characters))
 }
 
 
@@ -39,27 +39,27 @@ postfix operator +
 ///
 /// - Parameter repeatedPattern: The pattern that is repeated.
 ///
-/// - Returns: `Repeating(repeatedPattern, min: 1)`
-public postfix func +<P>(repeatedPattern: P) -> Repeating<P> {
-	return Repeating(repeatedPattern, min: 1)
+/// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over `repeatedPattern`.
+public postfix func +<P>(repeatedPattern: P) -> EagerlyRepeating<P> {
+	return EagerlyRepeating(repeatedPattern, min: 1)
 }
 
 /// Returns an arbitrarily, eagerly repeating pattern over a given literal collection that must match at least once.
 ///
 /// - Parameter repeatedlyMatchedCollection: The collection that is repeatedly matched exactly.
 ///
-/// - Returns: `Repeating(Literal(repeatedlyMatchedCollection), min: 1)`
-public postfix func +<C>(repeatedlyMatchedCollection: C) -> Repeating<Literal<C>> {
-	return Repeating(Literal(repeatedlyMatchedCollection), min: 1)
+/// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
+public postfix func +<C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
+	return EagerlyRepeating(Literal(repeatedlyMatchedCollection), min: 1)
 }
 
 /// Returns an arbitrarily, eagerly repeating pattern over a given literal string that must match at least once.
 ///
 /// - Parameter repeatedlyMatchedString: The string that is repeatedly matched exactly.
 ///
-/// - Returns: `Repeating(Literal(repeatedlyMatchedString.characters), min: 1)`
-public postfix func +(repeatedlyMatchedString: String) -> Repeating<Literal<String.CharacterView>> {
-	return Repeating(Literal(repeatedlyMatchedString.characters), min: 1)
+/// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedString`.
+public postfix func +(repeatedlyMatchedString: String) -> EagerlyRepeating<Literal<String.CharacterView>> {		// TODO: Remove in Swift 4
+	return EagerlyRepeating(Literal(repeatedlyMatchedString.characters), min: 1)
 }
 
 
@@ -71,36 +71,25 @@ postfix operator /?
 ///
 /// - Parameter optionalPattern: The pattern that is eagerly but optionally matched.
 ///
-/// - Returns: `Repeating(optionalPattern, max: 1)`
-public postfix func /?<P>(optionalPattern: P) -> Repeating<P> {
-	return Repeating(optionalPattern, max: 1)
+/// - Returns: A pattern that optionally and eagerly matches `optionalPattern`.
+public postfix func /?<P>(optionalPattern: P) -> EagerlyRepeating<P> {
+	return EagerlyRepeating(optionalPattern, max: 1)
 }
 
 /// Returns a pattern that eagerly matches a given optional collection.
 ///
 /// - Parameter optionalCollection: The collection that is eagerly but optionally matched.
 ///
-/// - Returns: `Repeating(Literal(optionalCollection), max: 1)`
-public postfix func /?<C>(optionalCollection: C) -> Repeating<Literal<C>> {
-	return Repeating(Literal(optionalCollection), max: 1)
+/// - Returns: A pattern that optionally and eagerly matches the literal `optionalCollection`.
+public postfix func /?<C>(optionalCollection: C) -> EagerlyRepeating<Literal<C>> {
+	return EagerlyRepeating(Literal(optionalCollection), max: 1)
 }
 
 /// Returns a pattern that eagerly matches a given optional string.
 ///
 /// - Parameter optionalString: The string that is eagerly but optionally matched.
 ///
-/// - Returns: `Repeating(Literal(optionalString.characters), max: 1)`
-public postfix func /?(optionalString: String) -> Repeating<Literal<String.CharacterView>> {
-	return Repeating(Literal(optionalString.characters), max: 1)
-}
-
-
-
-/// Returns a pattern that produces at most once match from a given atomically-matched pattern.
-///
-/// - Parameter atomicallyMatchedPattern: The pattern that is atomically matched.
-///
-/// - Returns: `Repeating(atomicallyMatchedPattern, min: 1, max: 1, tendency: .possessive)`
-public func atomic<P>(_ atomicallyMatchedPattern: P) -> Repeating<P> {
-	return Repeating(atomicallyMatchedPattern, min: 1, max: 1, tendency: .possessive)
+/// - Returns: A pattern that optionally and eagerly matches the literal `optionalString`.
+public postfix func /?(optionalString: String) -> EagerlyRepeating<Literal<String.CharacterView>> {				// TODO: Remove in Swift 4
+	return EagerlyRepeating(Literal(optionalString.characters), max: 1)
 }

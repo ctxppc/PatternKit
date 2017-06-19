@@ -24,13 +24,12 @@ public func one<C>() -> Wildcard<C> {
 	return Wildcard()
 }
 
-/// Returns a pattern matching some number of arbitrary elements.
+/// Returns a pattern eagerly matching some number of arbitrary elements.
 ///
 /// - Parameter lowerBound: The lower bound. The default is zero.
 /// - Parameter upperBound: The upper bound, inclusive. The default is `Int.max`.
-/// - Parameter tendency: The tendency to match as few or as many arbitrary elements as possible. The default is eager matching.
 ///
-/// - Returns: `Repeating(Wildcard(), min: lowerBound, max: upperBound, tendency: tendency)`
-public func any<C>(min lowerBound: Int = 0, max upperBound: Int = .max, tendency: Repeating<Wildcard<C>>.Tendency = .eager) -> Repeating<Wildcard<C>> {
-	return Repeating(Wildcard(), min: lowerBound, max: upperBound, tendency: tendency)
+/// - Returns: A pattern eagerly matching some number of arbitrary elements.
+public func any<C>(min lowerBound: Int = 0, max upperBound: Int = .max) -> EagerlyRepeating<Wildcard<C>> {
+	return EagerlyRepeating(Wildcard(), min: lowerBound, max: upperBound)
 }
