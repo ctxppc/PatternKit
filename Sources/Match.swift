@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import DepthKit
+
 /// A conformance of a collection to a pattern.
 public struct Match<Subject : BidirectionalCollection> /* where Subject.Iterator.Element : Equatable */ {	// TODO: Add in Swift 4, after adding associated-type constraint in Pattern
 	

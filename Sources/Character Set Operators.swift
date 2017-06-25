@@ -1,6 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import Foundation
+import DepthKit
 
 /// Returns a character set containing a range of Unicode scalars.
 ///
