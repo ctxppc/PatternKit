@@ -43,3 +43,48 @@ extension Token : Pattern {
 	}
 	
 }
+
+extension Token : BidirectionalCollection {
+	
+	public enum Index : Int, Hashable {
+		
+		/// The position of the captured pattern.
+		case capturedPattern = 0
+		
+		/// The past-the-end position.
+		case end
+		
+	}
+	
+	public var startIndex: Index {
+		return .capturedPattern
+	}
+	
+	public var endIndex: Index {
+		return .end
+	}
+	
+	public subscript (index: Index) -> CapturedPattern {
+		precondition(index == .capturedPattern, "Index out of bounds")
+		return capturedPattern
+	}
+	
+	public func index(before index: Index) -> Index {
+		precondition(index == .end, "Index out of bounds")
+		return .capturedPattern
+	}
+	
+	public func index(after index: Index) -> Index {
+		precondition(index == .capturedPattern, "Index out of bounds")
+		return .end
+	}
+	
+}
+
+extension Token.Index : Comparable {
+	
+	public static func <<P>(leftIndex: Token<P>.Index, rightIndex: Token<P>.Index) -> Bool {
+		return leftIndex.rawValue < rightIndex.rawValue
+	}
+	
+}

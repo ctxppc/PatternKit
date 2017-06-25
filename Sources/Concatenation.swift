@@ -65,3 +65,70 @@ extension Concatenation : Pattern {
 	}
 	
 }
+
+extension Concatenation : BidirectionalCollection {
+	
+	public enum Index : Int, Hashable {
+		
+		/// The position of the leading pattern.
+		case leadingPattern = 0
+		
+		/// The position of the trailing pattern.
+		case trailingPattern
+		
+		/// The past-the-end position.
+		case end
+		
+	}
+	
+	public enum Element {
+		
+		/// The leading pattern.
+		case leadingPattern(LeadingPattern)
+		
+		/// The trailing pattern.
+		case trailingPattern(TrailingPattern)
+		
+	}
+	
+	public var startIndex: Index {
+		return .leadingPattern
+	}
+	
+	public var endIndex: Index {
+		return .end
+	}
+	
+	public subscript (index: Index) -> Element {
+		switch index {
+			case .leadingPattern:	return .leadingPattern(leadingPattern)
+			case .trailingPattern:	return .trailingPattern(trailingPattern)
+			case .end:				preconditionFailure("Index out of bounds")
+		}
+	}
+	
+	public func index(before index: Index) -> Index {
+		switch index {
+			case .leadingPattern:	preconditionFailure("Index out of bounds")
+			case .trailingPattern:	return .leadingPattern
+			case .end:				return .trailingPattern
+		}
+	}
+	
+	public func index(after index: Index) -> Index {
+		switch index {
+			case .leadingPattern:	return .trailingPattern
+			case .trailingPattern:	return .end
+			case .end:				preconditionFailure("Index out of bounds")
+		}
+	}
+	
+}
+
+extension Concatenation.Index : Comparable {
+	
+	public static func <<L, T>(leftIndex: Concatenation<L, T>.Index, rightIndex: Concatenation<L, T>.Index) -> Bool {
+		return leftIndex.rawValue < rightIndex.rawValue
+	}
+	
+}

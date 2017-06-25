@@ -34,6 +34,24 @@ public struct LazilyRepeating<RepeatedPattern : Pattern> where
 	
 }
 
+extension LazilyRepeating {
+	
+	/// Creates a repeating pattern.
+	///
+	/// - Requires: `multiplicity >= 0`
+	///
+	/// - Parameter repeatedPattern: The pattern that is repeated.
+	/// - Parameter multiplicity: The number of times to match the repeated pattern consecutively.
+	public init(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) {
+		self.init(repeatedPattern, min: multiplicity, max: multiplicity)
+	}
+	
+}
+
+public func repeating<RepeatedPattern>(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) -> LazilyRepeating<RepeatedPattern> {
+	return LazilyRepeating(repeatedPattern, exactly: multiplicity)
+}
+
 extension LazilyRepeating : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
@@ -68,22 +86,49 @@ extension LazilyRepeating : Pattern {
 	
 }
 
-extension LazilyRepeating {
+extension LazilyRepeating : BidirectionalCollection {
 	
-	/// Creates a repeating pattern.
-	///
-	/// - Requires: `multiplicity >= 0`
-	///
-	/// - Parameter repeatedPattern: The pattern that is repeated.
-	/// - Parameter multiplicity: The number of times to match the repeated pattern consecutively.
-	public init(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) {
-		self.init(repeatedPattern, min: multiplicity, max: multiplicity)
+	public enum Index : Int, Hashable {
+		
+		/// The position of the repeated pattern.
+		case repeatedPattern = 0
+		
+		/// The past-the-end position.
+		case end
+		
+	}
+	
+	public var startIndex: Index {
+		return .repeatedPattern
+	}
+	
+	public var endIndex: Index {
+		return .end
+	}
+	
+	public subscript (index: Index) -> RepeatedPattern {
+		precondition(index == .repeatedPattern, "Index out of bounds")
+		return repeatedPattern
+	}
+	
+	public func index(before index: Index) -> Index {
+		precondition(index == .end, "Index out of bounds")
+		return .repeatedPattern
+	}
+	
+	public func index(after index: Index) -> Index {
+		precondition(index == .repeatedPattern, "Index out of bounds")
+		return .end
 	}
 	
 }
 
-public func repeating<RepeatedPattern>(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) -> LazilyRepeating<RepeatedPattern> {
-	return LazilyRepeating(repeatedPattern, exactly: multiplicity)
+extension LazilyRepeating.Index : Comparable {
+	
+	public static func <<P>(leftIndex: LazilyRepeating<P>.Index, rightIndex: LazilyRepeating<P>.Index) -> Bool {
+		return leftIndex.rawValue < rightIndex.rawValue
+	}
+	
 }
 
 // TODO: Add literal & element initialisers (for autowrapping in Literal) when bugfix lands, in Swift 4 (or later)

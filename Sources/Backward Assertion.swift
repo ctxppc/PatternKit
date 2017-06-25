@@ -34,3 +34,48 @@ extension BackwardAssertion : Pattern {
 	}
 	
 }
+
+extension BackwardAssertion : BidirectionalCollection {
+	
+	public enum Index : Int, Hashable {
+		
+		/// The position of the asserted pattern.
+		case assertedPattern = 0
+		
+		/// The past-the-end position.
+		case end
+		
+	}
+	
+	public var startIndex: Index {
+		return .assertedPattern
+	}
+	
+	public var endIndex: Index {
+		return .end
+	}
+	
+	public subscript (index: Index) -> AssertedPattern {
+		precondition(index == .assertedPattern, "Index out of bounds")
+		return assertedPattern
+	}
+	
+	public func index(before index: Index) -> Index {
+		precondition(index == .end, "Index out of bounds")
+		return .assertedPattern
+	}
+	
+	public func index(after index: Index) -> Index {
+		precondition(index == .assertedPattern, "Index out of bounds")
+		return .end
+	}
+	
+}
+
+extension BackwardAssertion.Index : Comparable {
+	
+	public static func <<P>(leftIndex: BackwardAssertion<P>.Index, rightIndex: BackwardAssertion<P>.Index) -> Bool {
+		return leftIndex.rawValue < rightIndex.rawValue
+	}
+	
+}

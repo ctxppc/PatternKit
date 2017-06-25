@@ -38,18 +38,78 @@ extension Alternation : Pattern {
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
-		return min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
+		return Swift.min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
-		return max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
+		return Swift.max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
 }
 
-private enum Iterator<Collection : BidirectionalCollection> {
-	case initial
-	case matchingFirstPattern(iterator: AnyIterator<Match<Collection>>)
-	case matchingSecondPattern(iterator: AnyIterator<Match<Collection>>)
-	case done
+extension Alternation : BidirectionalCollection {
+	
+	public enum Index : Int, Hashable {
+		
+		/// The position of the main pattern.
+		case mainPattern = 0
+		
+		/// The position of the alternative pattern.
+		case alternativePattern
+		
+		/// The past-the-end position.
+		case end
+		
+	}
+	
+	public enum Element {
+		
+		/// The main pattern.
+		case mainPattern(MainPattern)
+		
+		/// The alternative pattern.
+		case alternativePattern(AlternativePattern)
+		
+	}
+	
+	public var startIndex: Index {
+		return .mainPattern
+	}
+	
+	public var endIndex: Index {
+		return .end
+	}
+	
+	public subscript (index: Index) -> Element {
+		switch index {
+			case .mainPattern:			return .mainPattern(mainPattern)
+			case .alternativePattern:	return .alternativePattern(alternativePattern)
+			case .end:					preconditionFailure("Index out of bounds")
+		}
+	}
+	
+	public func index(before index: Index) -> Index {
+		switch index {
+			case .mainPattern:			preconditionFailure("Index out of bounds")
+			case .alternativePattern:	return .mainPattern
+			case .end:					return .alternativePattern
+		}
+	}
+	
+	public func index(after index: Index) -> Index {
+		switch index {
+			case .mainPattern:			return .alternativePattern
+			case .alternativePattern:	return .end
+			case .end:					preconditionFailure("Index out of bounds")
+		}
+	}
+	
+}
+
+extension Alternation.Index : Comparable {
+	
+	public static func <<M, A>(leftIndex: Alternation<M, A>.Index, rightIndex: Alternation<M, A>.Index) -> Bool {
+		return leftIndex.rawValue < rightIndex.rawValue
+	}
+	
 }

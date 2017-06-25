@@ -34,6 +34,20 @@ public struct EagerlyRepeating<RepeatedPattern : Pattern> where
 	
 }
 
+extension EagerlyRepeating {
+	
+	/// Creates a repeating pattern.
+	///
+	/// - Requires: `multiplicity >= 0`
+	///
+	/// - Parameter repeatedPattern: The pattern that is repeated.
+	/// - Parameter multiplicity: The number of times to match the repeated pattern consecutively.
+	public init(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) {
+		self.init(repeatedPattern, min: multiplicity, max: multiplicity)
+	}
+	
+}
+
 extension EagerlyRepeating : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PostOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<RepeatedPattern.Subject>> {
@@ -68,16 +82,47 @@ extension EagerlyRepeating : Pattern {
 	
 }
 
-extension EagerlyRepeating {
+extension EagerlyRepeating : BidirectionalCollection {
 	
-	/// Creates a repeating pattern.
-	///
-	/// - Requires: `multiplicity >= 0`
-	///
-	/// - Parameter repeatedPattern: The pattern that is repeated.
-	/// - Parameter multiplicity: The number of times to match the repeated pattern consecutively.
-	public init(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) {
-		self.init(repeatedPattern, min: multiplicity, max: multiplicity)
+	public enum Index : Int, Hashable {
+		
+		/// The position of the repeated pattern.
+		case repeatedPattern = 0
+		
+		/// The past-the-end position.
+		case end
+		
+	}
+	
+	public var startIndex: Index {
+		return .repeatedPattern
+	}
+	
+	public var endIndex: Index {
+		return .end
+	}
+	
+	public subscript (index: Index) -> RepeatedPattern {
+		precondition(index == .repeatedPattern, "Index out of bounds")
+		return repeatedPattern
+	}
+	
+	public func index(before index: Index) -> Index {
+		precondition(index == .end, "Index out of bounds")
+		return .repeatedPattern
+	}
+	
+	public func index(after index: Index) -> Index {
+		precondition(index == .repeatedPattern, "Index out of bounds")
+		return .end
+	}
+	
+}
+
+extension EagerlyRepeating.Index : Comparable {
+	
+	public static func <<P>(leftIndex: EagerlyRepeating<P>.Index, rightIndex: EagerlyRepeating<P>.Index) -> Bool {
+		return leftIndex.rawValue < rightIndex.rawValue
 	}
 	
 }
