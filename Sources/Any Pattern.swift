@@ -9,8 +9,9 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Iterat
 	
 	/// Creates a type-erased container for a given pattern.
 	///
-	/// - Parameter pattern: The pattern
+	/// - Parameter pattern: The pattern.
 	public init<P : Pattern>(_ pattern: P) where
+		
 		P.Subject == Subject,
 		
 		P.ForwardMatchCollection.Iterator.Element == Match<P.Subject>,
