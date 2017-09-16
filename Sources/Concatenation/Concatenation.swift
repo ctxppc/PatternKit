@@ -9,21 +9,13 @@ public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern>
 	
 	LeadingPattern.ForwardMatchCollection.Iterator.Element == Match<LeadingPattern.Subject>,
 	LeadingPattern.ForwardMatchCollection.Indices : OrderedCollection,
-	LeadingPattern.ForwardMatchCollection.Indices.Iterator.Element == LeadingPattern.ForwardMatchCollection.Index,
-	LeadingPattern.ForwardMatchCollection.Indices.SubSequence.Iterator.Element == LeadingPattern.ForwardMatchCollection.Index,
 	TrailingPattern.ForwardMatchCollection.Iterator.Element == Match<TrailingPattern.Subject>,
 	TrailingPattern.ForwardMatchCollection.Indices : OrderedCollection,
-	TrailingPattern.ForwardMatchCollection.Indices.Iterator.Element == TrailingPattern.ForwardMatchCollection.Index,
-	TrailingPattern.ForwardMatchCollection.Indices.SubSequence.Iterator.Element == TrailingPattern.ForwardMatchCollection.Index,
 
 	LeadingPattern.BackwardMatchCollection.Iterator.Element == Match<LeadingPattern.Subject>,
 	LeadingPattern.BackwardMatchCollection.Indices : OrderedCollection,
-	LeadingPattern.BackwardMatchCollection.Indices.Iterator.Element == LeadingPattern.BackwardMatchCollection.Index,
-	LeadingPattern.BackwardMatchCollection.Indices.SubSequence.Iterator.Element == LeadingPattern.BackwardMatchCollection.Index,
 	TrailingPattern.BackwardMatchCollection.Iterator.Element == Match<TrailingPattern.Subject>,
-	TrailingPattern.BackwardMatchCollection.Indices : OrderedCollection,
-	TrailingPattern.BackwardMatchCollection.Indices.Iterator.Element == TrailingPattern.BackwardMatchCollection.Index,
-	TrailingPattern.BackwardMatchCollection.Indices.SubSequence.Iterator.Element == TrailingPattern.BackwardMatchCollection.Index {
+	TrailingPattern.BackwardMatchCollection.Indices : OrderedCollection {
 	
 	// TODO: Update constraints after updating constraints in match collection type, in Swift 4
 	

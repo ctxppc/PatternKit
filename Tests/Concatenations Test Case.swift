@@ -50,12 +50,12 @@ class ConcatenationsTestCase : XCTestCase {
 	func testStringLiterals() {
 		
 		XCTAssert((("a"..."b") • ("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: "abba"))
-		XCTAssert((("a"..."b") • literal("bb") • ("a"..."b")).hasMatches(over: "abba"))
+		XCTAssert((("a"..."b") • Literal("bb") • ("a"..."b")).hasMatches(over: "abba"))
 		XCTAssert(!(("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: ""))
 		XCTAssert(!(("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: "abba"))
 		
 		XCTAssert((("a"..."b") • ("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: "abba", direction: .backward))
-		XCTAssert((("a"..."b") • literal("bb") • ("a"..."b")).hasMatches(over: "abba", direction: .backward))
+		XCTAssert((("a"..."b") • Literal("bb") • ("a"..."b")).hasMatches(over: "abba", direction: .backward))
 		XCTAssert(!(("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: "", direction: .backward))
 		XCTAssert(!(("a"..."b") • ("a"..."b") • ("a"..."b")).hasMatches(over: "abba", direction: .backward))
 		

@@ -3,7 +3,6 @@
 /// A pattern that matches an exact subcollection.
 public struct Literal<Subject : BidirectionalCollection> where
 	Subject.Iterator.Element : Equatable,
-	Subject.Iterator.Element == Subject.SubSequence.Iterator.Element,
 	Subject.IndexDistance == Subject.SubSequence.IndexDistance,
 	Subject.SubSequence : BidirectionalCollection {
 	
@@ -33,15 +32,6 @@ extension Literal : Pattern {
 	
 	// TODO: Potentially optimise by implementing the heuristic functions, using an efficient substring finding algorithm
 	
-}
-
-/// Creates a literal pattern over some string.
-///
-/// - Parameter literal: The literal string to match.
-///
-/// - Returns: A pattern matching `literal`.
-public func literal(_ literal: String) -> Literal<String.CharacterView> {		// TODO: Remove when String conforms to BidirectionalCollection, in Swift 4
-	return Literal(literal.characters)
 }
 
 extension Literal where Subject : RangeReplaceableCollection {

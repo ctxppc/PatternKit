@@ -44,7 +44,7 @@ class TokenTestCase : XCTestCase {
 	func testCharacterSetToken() {
 		
 		let token = Token(("a"..."b") • ("a"..."b"))
-		let pattern = literal("a") • token • literal("a")
+		let pattern = Literal("a") • token • Literal("a")
 		let matches = pattern.matches(over: "abba")
 		
 		guard let match = matches.first, matches.count == 1 else { return XCTFail() }
@@ -59,7 +59,7 @@ class TokenTestCase : XCTestCase {
 	func testBackwardCharacterSetToken() {
 		
 		let token = Token(("a"..."b") • ("a"..."b"))
-		let pattern = literal("a") • token • literal("a")
+		let pattern = Literal("a") • token • Literal("a")
 		let matches = pattern.backwardMatches(over: "abba")
 		
 		guard let match = matches.first, matches.count == 1 else { return XCTFail() }

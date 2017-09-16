@@ -43,23 +43,23 @@ class LiteralsTestCase : XCTestCase {
 	}
 	
 	func testHelloLiteral() {
-		XCTAssert(literal("hello").hasMatches(over: "hello"))
-		XCTAssert(!literal("hello").hasMatches(over: ""))
-		XCTAssert(!literal("hello").hasMatches(over: "helloo"))
-		XCTAssert(!literal("hello").hasMatches(over: "ello"))
-		XCTAssert(literal("hello").hasMatches(over: "hello", direction: .backward))
-		XCTAssert(!literal("hello").hasMatches(over: "", direction: .backward))
-		XCTAssert(!literal("hello").hasMatches(over: "helloo", direction: .backward))
-		XCTAssert(!literal("hello").hasMatches(over: "ello", direction: .backward))
+		XCTAssert(Literal("hello").hasMatches(over: "hello"))
+		XCTAssert(!Literal("hello").hasMatches(over: ""))
+		XCTAssert(!Literal("hello").hasMatches(over: "helloo"))
+		XCTAssert(!Literal("hello").hasMatches(over: "ello"))
+		XCTAssert(Literal("hello").hasMatches(over: "hello", direction: .backward))
+		XCTAssert(!Literal("hello").hasMatches(over: "", direction: .backward))
+		XCTAssert(!Literal("hello").hasMatches(over: "helloo", direction: .backward))
+		XCTAssert(!Literal("hello").hasMatches(over: "ello", direction: .backward))
 	}
 
 	func testEmptyStringLiteral() {
-		XCTAssert(literal("").hasMatches(over: ""))
-		XCTAssert(!literal("").hasMatches(over: "h"))
-		XCTAssert(!literal("").hasMatches(over: "hello"))
-		XCTAssert(literal("").hasMatches(over: "", direction: .backward))
-		XCTAssert(!literal("").hasMatches(over: "h", direction: .backward))
-		XCTAssert(!literal("").hasMatches(over: "hello", direction: .backward))
+		XCTAssert(Literal("").hasMatches(over: ""))
+		XCTAssert(!Literal("").hasMatches(over: "h"))
+		XCTAssert(!Literal("").hasMatches(over: "hello"))
+		XCTAssert(Literal("").hasMatches(over: "", direction: .backward))
+		XCTAssert(!Literal("").hasMatches(over: "h", direction: .backward))
+		XCTAssert(!Literal("").hasMatches(over: "hello", direction: .backward))
 	}
 	
 }

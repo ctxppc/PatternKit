@@ -7,12 +7,8 @@ public struct ForwardConcatenationMatchCollection<LeadingPattern : Pattern, Trai
 	LeadingPattern.Subject == TrailingPattern.Subject,
 	LeadingPattern.ForwardMatchCollection.Iterator.Element == Match<LeadingPattern.Subject>,
 	LeadingPattern.ForwardMatchCollection.Indices : OrderedCollection,
-	LeadingPattern.ForwardMatchCollection.Indices.Iterator.Element == LeadingPattern.ForwardMatchCollection.Index,
-	LeadingPattern.ForwardMatchCollection.Indices.SubSequence.Iterator.Element == LeadingPattern.ForwardMatchCollection.Index,
 	TrailingPattern.ForwardMatchCollection.Iterator.Element == Match<TrailingPattern.Subject>,
-	TrailingPattern.ForwardMatchCollection.Indices : OrderedCollection,
-	TrailingPattern.ForwardMatchCollection.Indices.Iterator.Element == TrailingPattern.ForwardMatchCollection.Index,
-	TrailingPattern.ForwardMatchCollection.Indices.SubSequence.Iterator.Element == TrailingPattern.ForwardMatchCollection.Index {
+	TrailingPattern.ForwardMatchCollection.Indices : OrderedCollection {
 	
 	// TODO: Update constraints when better Collection constraints land, in Swift 4
 	

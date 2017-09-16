@@ -20,10 +20,10 @@ class LazilyRepeatingTestCase : XCTestCase {
 	}
 	
 	func testStringLiterals() {
-		XCTAssert((literal("a") • literal("b")+? • literal("a")).hasMatches(over: "abbbbbba"))
-		XCTAssert((literal("a") • literal("b")*? • literal("a")).hasMatches(over: "abbbbbba"))
-		XCTAssert((literal("a")/?? • literal("b")*? • literal("a")).hasMatches(over: "abbbbbba"))
-		XCTAssert((literal("a")/?? • literal("b")*? • literal("a")).hasMatches(over: "bbbbbba"))
+		XCTAssert((Literal("a") • Literal("b")+? • Literal("a")).hasMatches(over: "abbbbbba"))
+		XCTAssert((Literal("a") • Literal("b")*? • Literal("a")).hasMatches(over: "abbbbbba"))
+		XCTAssert((Literal("a")/?? • Literal("b")*? • Literal("a")).hasMatches(over: "abbbbbba"))
+		XCTAssert((Literal("a")/?? • Literal("b")*? • Literal("a")).hasMatches(over: "bbbbbba"))
 	}
 	
 	func testLaziness() {

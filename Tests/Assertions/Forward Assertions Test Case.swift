@@ -12,28 +12,28 @@ class ForwardAssertionsTestCase : XCTestCase {
 	}
 	
 	func testHeadingEmptyAssertion() {
-		XCTAssert((?=literal("") • literal("Hello")).hasMatches(over: "Hello"))
-		XCTAssert((?=literal("") • literal("Hello")).hasMatches(over: "Hello", direction: .backward))
+		XCTAssert((?=Literal("") • Literal("Hello")).hasMatches(over: "Hello"))
+		XCTAssert((?=Literal("") • Literal("Hello")).hasMatches(over: "Hello", direction: .backward))
 	}
 	
 	func testMiddleEmptyAssertion() {
-		XCTAssert((literal("Hel") • ?=literal("") • literal("lo")).hasMatches(over: "Hello"))
-		XCTAssert((literal("Hel") • ?=literal("") • literal("lo")).hasMatches(over: "Hello", direction: .backward))
+		XCTAssert((Literal("Hel") • ?=Literal("") • Literal("lo")).hasMatches(over: "Hello"))
+		XCTAssert((Literal("Hel") • ?=Literal("") • Literal("lo")).hasMatches(over: "Hello", direction: .backward))
 	}
 	
 	func testTrailingEmptyAssertion() {
-		XCTAssert((literal("Hello") • ?=literal("")).hasMatches(over: "Hello"))
-		XCTAssert((literal("Hello") • ?=literal("")).hasMatches(over: "Hello", direction: .backward))
+		XCTAssert((Literal("Hello") • ?=Literal("")).hasMatches(over: "Hello"))
+		XCTAssert((Literal("Hello") • ?=Literal("")).hasMatches(over: "Hello", direction: .backward))
 	}
 	
 	func testLeadingStringAssertion() {
-		XCTAssert((?=literal("Hel") • literal("Hello")).hasMatches(over: "Hello"))
-		XCTAssert((?=literal("Hel") • literal("Hello")).hasMatches(over: "Hello", direction: .backward))
+		XCTAssert((?=Literal("Hel") • Literal("Hello")).hasMatches(over: "Hello"))
+		XCTAssert((?=Literal("Hel") • Literal("Hello")).hasMatches(over: "Hello", direction: .backward))
 	}
 	
 	func testMiddleStringAssertion() {
-		XCTAssert((literal("Hel") • ?=literal("l") • literal("lo")).hasMatches(over: "Hello"))
-		XCTAssert((literal("Hel") • ?=literal("l") • literal("lo")).hasMatches(over: "Hello", direction: .backward))
+		XCTAssert((Literal("Hel") • ?=Literal("l") • Literal("lo")).hasMatches(over: "Hello"))
+		XCTAssert((Literal("Hel") • ?=Literal("l") • Literal("lo")).hasMatches(over: "Hello", direction: .backward))
 	}
 	
 	func testLeadingAssertion() {
