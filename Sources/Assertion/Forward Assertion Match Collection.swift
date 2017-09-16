@@ -1,6 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-public struct ForwardAssertionMatchCollection<AssertedPattern : Pattern> where AssertedPattern.ForwardMatchCollection.Iterator.Element == Match<AssertedPattern.Subject> {
+public struct ForwardAssertionMatchCollection<AssertedPattern : Pattern> {
 	
 	public typealias Subject = AssertedPattern.Subject
 	

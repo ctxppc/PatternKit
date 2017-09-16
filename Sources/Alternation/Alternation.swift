@@ -1,12 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 /// A pattern that matches two patterns separately.
-public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where
-	MainPattern.Subject == AlternativePattern.Subject,
-	MainPattern.ForwardMatchCollection.Iterator.Element == Match<MainPattern.Subject>,
-	MainPattern.BackwardMatchCollection.Iterator.Element == Match<MainPattern.Subject>,
-	AlternativePattern.ForwardMatchCollection.Iterator.Element == Match<AlternativePattern.Subject>,
-	AlternativePattern.BackwardMatchCollection.Iterator.Element == Match<AlternativePattern.Subject> {	// TODO: Update constraints after updating constraints in match collection type, in Swift 4
+public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Subject == AlternativePattern.Subject {
 	
 	public typealias Subject = MainPattern.Subject
 	
@@ -37,11 +32,11 @@ extension Alternation : Pattern {
 		return BackwardAlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base)
 	}
 	
-	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
+	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
 		return Swift.min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
-	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: MainPattern.Subject.Index) -> MainPattern.Subject.Index {
+	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
 		return Swift.max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	

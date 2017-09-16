@@ -21,15 +21,6 @@ public postfix func *<C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Lit
 	return EagerlyRepeating(Literal(repeatedlyMatchedCollection))
 }
 
-/// Returns an arbitrarily, eagerly repeating pattern over a given literal string.
-///
-/// - Parameter repeatedlyMatchedString: The string that is repeatedly matched exactly.
-///
-/// - Returns: An arbitrarily, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedString`.
-public postfix func *(repeatedlyMatchedString: String) -> EagerlyRepeating<Literal<String.CharacterView>> {		// TODO: Remove in Swift 4
-	return EagerlyRepeating(Literal(repeatedlyMatchedString.characters))
-}
-
 
 
 /// The lower-bounded Kleene operator with eager matching semantics.
@@ -53,15 +44,6 @@ public postfix func +<C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Lit
 	return EagerlyRepeating(Literal(repeatedlyMatchedCollection), min: 1)
 }
 
-/// Returns an arbitrarily, eagerly repeating pattern over a given literal string that must match at least once.
-///
-/// - Parameter repeatedlyMatchedString: The string that is repeatedly matched exactly.
-///
-/// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedString`.
-public postfix func +(repeatedlyMatchedString: String) -> EagerlyRepeating<Literal<String.CharacterView>> {		// TODO: Remove in Swift 4
-	return EagerlyRepeating(Literal(repeatedlyMatchedString.characters), min: 1)
-}
-
 
 
 /// The optionality operator with eager matching semantics.
@@ -83,13 +65,4 @@ public postfix func /?<P>(optionalPattern: P) -> EagerlyRepeating<P> {
 /// - Returns: A pattern that optionally and eagerly matches the literal `optionalCollection`.
 public postfix func /?<C>(optionalCollection: C) -> EagerlyRepeating<Literal<C>> {
 	return EagerlyRepeating(Literal(optionalCollection), max: 1)
-}
-
-/// Returns a pattern that eagerly matches a given optional string.
-///
-/// - Parameter optionalString: The string that is eagerly but optionally matched.
-///
-/// - Returns: A pattern that optionally and eagerly matches the literal `optionalString`.
-public postfix func /?(optionalString: String) -> EagerlyRepeating<Literal<String.CharacterView>> {				// TODO: Remove in Swift 4
-	return EagerlyRepeating(Literal(optionalString.characters), max: 1)
 }

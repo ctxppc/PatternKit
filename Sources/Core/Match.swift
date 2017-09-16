@@ -3,7 +3,7 @@
 import DepthKit
 
 /// A conformance of a collection to a pattern.
-public struct Match<Subject : BidirectionalCollection> /* where Subject.Iterator.Element : Equatable */ {	// TODO: Add in Swift 4, after adding associated-type constraint in Pattern
+public struct Match<Subject : BidirectionalCollection> /* where Subject.Element : Equatable */ {	// TODO: Add in Swift 4, after fixing compiler crasher
 	
 	/// Creates an initial match for matching over some subject.
 	///
@@ -174,7 +174,7 @@ public struct Match<Subject : BidirectionalCollection> /* where Subject.Iterator
 	///
 	/// - Parameter range: The captured range.
 	/// - Parameter token: The token that captured the range.
-	internal mutating func capture<P : Pattern>(_ range: Range<Subject.Index>, for token: Token<P>) {
+	internal mutating func capture<P>(_ range: Range<Subject.Index>, for token: Token<P>) {
 		
 		precondition((subject.startIndex..<subject.endIndex).contains(range), "Captured range out of bounds")
 		
@@ -195,7 +195,7 @@ public struct Match<Subject : BidirectionalCollection> /* where Subject.Iterator
 	/// - Parameter token: The token that captured the range.
 	///
 	/// - Returns: A match where `capturedRanges(for: token).last == range`.
-	internal func capturing<P : Pattern>(_ range: Range<Subject.Index>, for token: Token<P>) -> Match {
+	internal func capturing<P>(_ range: Range<Subject.Index>, for token: Token<P>) -> Match {
 		return withCopy(of: self, mutator: Match.capture(_:for:), arguments: range, token)
 	}
 	
@@ -204,7 +204,7 @@ public struct Match<Subject : BidirectionalCollection> /* where Subject.Iterator
 	/// - Parameter token: The token.
 	///
 	/// - Returns: The ranges captured by `token`.
-	public func capturedRanges<P : Pattern>(for token: Token<P>) -> [Range<Subject.Index>] {
+	public func capturedRanges<P>(for token: Token<P>) -> [Range<Subject.Index>] {
 		return capturedRangesByToken[ObjectIdentifier(token)] ?? []
 	}
 	
@@ -213,7 +213,7 @@ public struct Match<Subject : BidirectionalCollection> /* where Subject.Iterator
 	/// - Parameter token: The token.
 	///
 	/// - Returns: The subsequences captured by `token`.
-	public func capturedSubsequences<P : Pattern>(for token: Token<P>) -> [Subject.SubSequence] {
+	public func capturedSubsequences<P>(for token: Token<P>) -> [Subject.SubSequence] {
 		return capturedRanges(for: token).map { subject[$0] }
 	}
 	

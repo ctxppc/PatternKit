@@ -1,10 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 /// A collection of matches of a concatenation pattern.
-public struct BackwardAlternationMatchCollection<MainPattern : Pattern, AlternativePattern : Pattern> where
-	MainPattern.Subject == AlternativePattern.Subject,
-	MainPattern.BackwardMatchCollection.Iterator.Element == Match<MainPattern.Subject>,
-	AlternativePattern.BackwardMatchCollection.Iterator.Element == Match<AlternativePattern.Subject> {	// TODO: Update constraints when better Collection constraints land, in Swift 4
+public struct BackwardAlternationMatchCollection<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Subject == AlternativePattern.Subject {
 	
 	public typealias Subject = MainPattern.Subject
 	

@@ -21,15 +21,6 @@ public postfix func *?<C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Lit
 	return LazilyRepeating(Literal(repeatedlyMatchedCollection))
 }
 
-/// Returns an arbitrarily, lazily repeating pattern over a given literal string.
-///
-/// - Parameter repeatedlyMatchedCollection: The string that is repeatedly matched exactly.
-///
-/// - Returns: An arbitrarily, lazily repeating pattern over a literal pattern matching `repeatedlyMatchedString`.
-public postfix func *?(repeatedlyMatchedString: String) -> LazilyRepeating<Literal<String.CharacterView>> {		// TODO: Remove in Swift 4
-	return LazilyRepeating(Literal(repeatedlyMatchedString.characters))
-}
-
 
 
 /// The lower-bounded Kleene operator with lazy matching semantics.
@@ -53,15 +44,6 @@ public postfix func +?<C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Lit
 	return LazilyRepeating(Literal(repeatedlyMatchedCollection), min: 1)
 }
 
-/// Returns an arbitrarily, lazily repeating pattern over a given literal string that must match at least once.
-///
-/// - Parameter repeatedlyMatchedCollection: The string that is repeatedly matched exactly.
-///
-/// - Returns: An arbitrarily, nonoptional, lazily repeating pattern over a literal pattern matching `repeatedlyMatchedString`.
-public postfix func +?(repeatedlyMatchedString: String) -> LazilyRepeating<Literal<String.CharacterView>> {		// TODO: Remove in Swift 4
-	return LazilyRepeating(Literal(repeatedlyMatchedString.characters), min: 1)
-}
-
 
 
 /// The optionality operator with lazy matching semantics.
@@ -83,13 +65,4 @@ public postfix func /??<P>(optionalPattern: P) -> LazilyRepeating<P> {
 /// - Returns: A pattern that optionally and lazily matches the literal `optionalCollection`.
 public postfix func /??<C>(optionalCollection: C) -> LazilyRepeating<Literal<C>> {
 	return LazilyRepeating(Literal(optionalCollection), max: 1)
-}
-
-/// Returns a pattern that lazily matches a given optional string.
-///
-/// - Parameter optionalCollection: The string that is lazily matched.
-///
-/// - Returns: A pattern that optionally and lazily matches the literal `optionalString`.
-public postfix func /??(optionalString: String) -> LazilyRepeating<Literal<String.CharacterView>> {				// TODO: Remove in Swift 4
-	return LazilyRepeating(Literal(optionalString.characters), max: 1)
 }

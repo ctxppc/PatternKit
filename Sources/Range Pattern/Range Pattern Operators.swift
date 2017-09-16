@@ -6,7 +6,7 @@
 /// - Parameter upperBound: The element greater than the largest element that is matched.
 ///
 /// - Returns: A range pattern matching elements between `lowerBound` and `upperBound`, exclusive.
-public func ..<<Subject>(lowerBound: Subject.Iterator.Element, upperBound: Subject.Iterator.Element) -> RangePattern<Subject> {
+public func ..<<Subject>(lowerBound: Subject.Element, upperBound: Subject.Element) -> RangePattern<Subject> {
 	return RangePattern(lowerBound..<upperBound)
 }
 
@@ -16,6 +16,6 @@ public func ..<<Subject>(lowerBound: Subject.Iterator.Element, upperBound: Subje
 /// - Parameter upperBound: The largest element that is matched.
 ///
 /// - Returns: A range pattern matching elements between `lowerBound` and `upperBound`, inclusive.
-public func ...<Subject>(lowerBound: Subject.Iterator.Element, upperBound: Subject.Iterator.Element) -> RangePattern<Subject> {
+public func ...<Subject>(lowerBound: Subject.Element, upperBound: Subject.Element) -> RangePattern<Subject> {
 	return RangePattern(lowerBound...upperBound)
 }

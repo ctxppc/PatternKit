@@ -7,9 +7,7 @@
 /// While the assertion does not change the input position, it does preserve captures by tokens contained within the asserted pattern. However, the assertion only produces one match from the asserted pattern.
 ///
 /// Note that a forward assertion can also be used within a backward matching context; this does not affect the matching direction of the asserted pattern since the assertion itself is strictly forward-matching.
-public struct ForwardAssertion<AssertedPattern : Pattern> where
-	AssertedPattern.ForwardMatchCollection.Iterator.Element == Match<AssertedPattern.Subject>,
-	AssertedPattern.BackwardMatchCollection.Iterator.Element == Match<AssertedPattern.Subject> {
+public struct ForwardAssertion<AssertedPattern : Pattern> {
 	
 	public typealias Subject = AssertedPattern.Subject
 	

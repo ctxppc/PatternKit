@@ -1,8 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-public final class Token<CapturedPattern : Pattern> where
-	CapturedPattern.ForwardMatchCollection.Iterator.Element == Match<CapturedPattern.Subject>,
-	CapturedPattern.BackwardMatchCollection.Iterator.Element == Match<CapturedPattern.Subject> {
+public final class Token<CapturedPattern : Pattern> {
 	
 	public typealias Subject = CapturedPattern.Subject
 	

@@ -3,7 +3,7 @@
 /// An iteration of a repeatedly forward-matching pattern.
 ///
 /// A ring takes a base match and produces a successor ring for every match produced by the repeated pattern given the base match. The successor rings themselves can be used to generate further descendant rings. Given a *root* ring, one can determine a tree of ring and thus of matches.
-public struct ForwardRing<RepeatedPattern : Pattern> where RepeatedPattern.ForwardMatchCollection.Iterator.Element == Match<RepeatedPattern.Subject> {
+public struct ForwardRing<RepeatedPattern : Pattern> {
 	
 	public typealias Subject = RepeatedPattern.Subject
 	public typealias MatchCollection = RepeatedPattern.ForwardMatchCollection

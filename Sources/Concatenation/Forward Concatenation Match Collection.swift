@@ -5,12 +5,8 @@ import DepthKit
 /// A collection of forward matches of a concatenation pattern.
 public struct ForwardConcatenationMatchCollection<LeadingPattern : Pattern, TrailingPattern : Pattern> where
 	LeadingPattern.Subject == TrailingPattern.Subject,
-	LeadingPattern.ForwardMatchCollection.Iterator.Element == Match<LeadingPattern.Subject>,
 	LeadingPattern.ForwardMatchCollection.Indices : OrderedCollection,
-	TrailingPattern.ForwardMatchCollection.Iterator.Element == Match<TrailingPattern.Subject>,
 	TrailingPattern.ForwardMatchCollection.Indices : OrderedCollection {
-	
-	// TODO: Update constraints when better Collection constraints land, in Swift 4
 	
 	public typealias Subject = LeadingPattern.Subject
 	

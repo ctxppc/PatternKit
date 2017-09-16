@@ -2,7 +2,7 @@
 
 /// A pattern that matches an exact subcollection.
 public struct Literal<Subject : BidirectionalCollection> where
-	Subject.Iterator.Element : Equatable,
+	Subject.Element : Equatable,
 	Subject.IndexDistance == Subject.SubSequence.IndexDistance,
 	Subject.SubSequence : BidirectionalCollection {
 	
@@ -39,7 +39,7 @@ extension Literal where Subject : RangeReplaceableCollection {
 	/// Creates a literal pattern over some elements.
 	///
 	/// - Parameter elements: The elements to match.
-	public init(_ elements: Subject.Iterator.Element...) {
+	public init(_ elements: Subject.Element...) {
 		self.init(Subject(elements))
 	}
 	

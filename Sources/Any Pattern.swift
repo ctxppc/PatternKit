@@ -5,7 +5,7 @@
 /// This pattern forwards its `matches(base:direction:)` method to an arbitrary, underlying pattern on `Collection`, hiding the specifics of the underlying `Pattern` conformance.
 ///
 /// Type-erased patterns are useful in dynamic contexts, e.g., when patterns are formed at runtime by an end user. Typed patterns (with typed subpatterns and so on) may be more efficient as they present optimisation opportunities to the compiler.
-public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Iterator.Element : Equatable {
+public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Element : Equatable {
 	
 	/// Creates a type-erased container for a given pattern.
 	///
@@ -14,33 +14,13 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Iterat
 		
 		P.Subject == Subject,
 		
-		P.ForwardMatchCollection.Iterator.Element == Match<P.Subject>,
 		P.ForwardMatchCollection.Indices : BidirectionalCollection,
 		P.ForwardMatchCollection.SubSequence : BidirectionalCollection,
-		P.ForwardMatchCollection.Indices.Index == P.ForwardMatchCollection.Index,
-		P.ForwardMatchCollection.Indices.SubSequence == P.ForwardMatchCollection.Indices,
-		P.ForwardMatchCollection.Indices.Iterator.Element == P.ForwardMatchCollection.Index,
-		P.ForwardMatchCollection.SubSequence.Index == P.ForwardMatchCollection.Index,
 		P.ForwardMatchCollection.SubSequence.Indices : BidirectionalCollection,
-		P.ForwardMatchCollection.SubSequence.SubSequence == P.ForwardMatchCollection.SubSequence,
-		P.ForwardMatchCollection.SubSequence.Indices.Index == P.ForwardMatchCollection.Index,
-		P.ForwardMatchCollection.SubSequence.Indices.SubSequence == P.ForwardMatchCollection.SubSequence.Indices,
-		P.ForwardMatchCollection.SubSequence.Iterator.Element == Match<P.Subject>,
-		P.ForwardMatchCollection.SubSequence.Indices.Iterator.Element == P.ForwardMatchCollection.Index,
 		
-		P.BackwardMatchCollection.Iterator.Element == Match<P.Subject>,
 		P.BackwardMatchCollection.Indices : BidirectionalCollection,
 		P.BackwardMatchCollection.SubSequence : BidirectionalCollection,
-		P.BackwardMatchCollection.Indices.Index == P.BackwardMatchCollection.Index,
-		P.BackwardMatchCollection.Indices.SubSequence == P.BackwardMatchCollection.Indices,
-		P.BackwardMatchCollection.Indices.Iterator.Element == P.BackwardMatchCollection.Index,
-		P.BackwardMatchCollection.SubSequence.Index == P.BackwardMatchCollection.Index,
-		P.BackwardMatchCollection.SubSequence.Indices : BidirectionalCollection,
-		P.BackwardMatchCollection.SubSequence.SubSequence == P.BackwardMatchCollection.SubSequence,
-		P.BackwardMatchCollection.SubSequence.Indices.Index == P.BackwardMatchCollection.Index,
-		P.BackwardMatchCollection.SubSequence.Indices.SubSequence == P.BackwardMatchCollection.SubSequence.Indices,
-		P.BackwardMatchCollection.SubSequence.Iterator.Element == Match<P.Subject>,
-		P.BackwardMatchCollection.SubSequence.Indices.Iterator.Element == P.BackwardMatchCollection.Index {		// TODO: Remove constraints when they're added to BidirectionalCollection, in Swift 4
+		P.BackwardMatchCollection.SubSequence.Indices : BidirectionalCollection {		// TODO: Remove constraints when they're added to BidirectionalCollection, in Swift 4
 		
 		forwardMatchCollectionGenerator = { base in
 			AnyBidirectionalCollection(pattern.forwardMatches(enteringFrom: base))
@@ -70,7 +50,7 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Iterat
 	
 	/// The type-erased pattern.
 	///
-	/// Clients can add type information back by casting `pattern` to a reified type, e.g., `pattern as? LiteralPattern<String.CharacterView>`.
+	/// Clients can add type information back by casting `pattern` to a reified type, e.g., `pattern as? Literal<String>`.
 	public let pattern: Any
 	
 }

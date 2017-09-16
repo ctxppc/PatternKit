@@ -1,7 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 /// A collection that contains at most one match.
-public struct SingularMatchCollection<Subject : BidirectionalCollection> {
+public struct SingularMatchCollection<Subject : BidirectionalCollection> where Subject.Element : Equatable {
 	
 	/// The match resulting from matching the pattern, or `nil` if the pattern failed to match.
 	public let resultMatch: Match<Subject>?

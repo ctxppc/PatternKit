@@ -5,9 +5,7 @@
 /// While the assertion does not change the input position, it does preserve captures by tokens contained within the asserted pattern. However, the assertion only produces one match from the asserted pattern.
 ///
 /// Note that a backward assertion can also be used within a forward matching context; this does not affect the matching direction of the asserted pattern since the assertion itself is strictly backward-matching.
-public struct BackwardAssertion<AssertedPattern : Pattern> where
-	AssertedPattern.ForwardMatchCollection.Iterator.Element == Match<AssertedPattern.Subject>,
-	AssertedPattern.BackwardMatchCollection.Iterator.Element == Match<AssertedPattern.Subject> {
+public struct BackwardAssertion<AssertedPattern : Pattern> {
 	
 	public typealias Subject = AssertedPattern.Subject
 	

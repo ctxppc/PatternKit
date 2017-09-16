@@ -5,16 +5,8 @@ import DepthKit
 /// A collection of backward matches of a concatenation pattern.
 public struct BackwardConcatenationMatchCollection<LeadingPattern : Pattern, TrailingPattern : Pattern> where
 	LeadingPattern.Subject == TrailingPattern.Subject,
-	LeadingPattern.BackwardMatchCollection.Iterator.Element == Match<LeadingPattern.Subject>,
 	LeadingPattern.BackwardMatchCollection.Indices : OrderedCollection,
-	LeadingPattern.BackwardMatchCollection.Indices.Iterator.Element == LeadingPattern.BackwardMatchCollection.Index,
-	LeadingPattern.BackwardMatchCollection.Indices.SubSequence.Iterator.Element == LeadingPattern.BackwardMatchCollection.Index,
-	TrailingPattern.BackwardMatchCollection.Iterator.Element == Match<TrailingPattern.Subject>,
-	TrailingPattern.BackwardMatchCollection.Indices : OrderedCollection,
-	TrailingPattern.BackwardMatchCollection.Indices.Iterator.Element == TrailingPattern.BackwardMatchCollection.Index,
-	TrailingPattern.BackwardMatchCollection.Indices.SubSequence.Iterator.Element == TrailingPattern.BackwardMatchCollection.Index {
-	
-	// TODO: Update constraints when better Collection constraints land, in Swift 4
+	TrailingPattern.BackwardMatchCollection.Indices : OrderedCollection {
 	
 	public typealias Subject = LeadingPattern.Subject
 	
