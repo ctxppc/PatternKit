@@ -11,7 +11,7 @@ public struct ForwardConcatenationMatchCollection<LeadingPattern : Pattern, Trai
 	
 	public typealias Subject = LeadingPattern.Subject
 	
-	/// Creates a concatenation match pattern.
+	/// Creates a concatenation match collection.
 	///
 	/// - Parameter leadingPattern: The matches of the first part of the concatenation.
 	/// - Parameter trailingPattern: The matches of the part after the part matched by the leading pattern.
