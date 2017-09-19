@@ -1,7 +1,8 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import XCTest
-@testable import PatternKit
+import PatternKitCore
+@testable import PatternKitBundle
 
 class LazilyRepeatingTestCase : XCTestCase {
 	

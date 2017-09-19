@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that asserts that an asserted pattern matches the part of the subject following the input position, without actually moving the input position beyond the assertion; also known as a positive lookahead.
 ///
 /// For example, `ForwardAssertion(Repeating(1...9, min: 5)) • Literal([1, 2, 3]) • any()+` matches all arrays starting with at least 5 elements between 1 and 9; and starting with the elements 1, 2, and 3.

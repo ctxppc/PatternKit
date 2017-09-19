@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that matches two patterns separately.
 public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Subject == AlternativePattern.Subject {
 	

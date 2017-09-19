@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// An iteration of a repeatedly forward-matching pattern.
 ///
 /// A ring takes a base match and produces a successor ring for every match produced by the repeated pattern given the base match. The successor rings themselves can be used to generate further descendant rings. Given a *root* ring, one can determine a tree of ring and thus of matches.

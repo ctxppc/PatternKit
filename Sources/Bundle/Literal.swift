@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that matches an exact subcollection.
 public struct Literal<Subject : BidirectionalCollection> where
 	Subject.Element : Equatable,

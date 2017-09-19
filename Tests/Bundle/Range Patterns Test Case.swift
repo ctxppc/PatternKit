@@ -1,7 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import XCTest
-@testable import PatternKit
+@testable import PatternKitBundle
 
 class RangePatternsTestCase : XCTestCase {
 	

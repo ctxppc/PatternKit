@@ -1,6 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import DepthKit
+import PatternKitCore
 
 /// A pattern that performs matching of a subpattern repeatedly on consecutive subsequences of the target collection, preferring matching as many times as possible.
 public struct EagerlyRepeating<RepeatedPattern : Pattern> {

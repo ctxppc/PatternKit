@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that matches any one element that is contained in a range.
 public struct RangePattern<Subject : BidirectionalCollection> where Subject.Element : Comparable, Subject.SubSequence : BidirectionalCollection {
 	

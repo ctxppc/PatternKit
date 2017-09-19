@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that asserts that an asserted pattern does *not* match the part of the subject following the input position; also known as a negative lookahead.
 ///
 /// For example, `NegatedForwardAssertion(Repeating(1...9, min: 5)) • Literal([1, 2, 3]) • any()+` matches all arrays starting with the elements 1, 2, and 3 that do not start with 5 elements between 1 and 9.

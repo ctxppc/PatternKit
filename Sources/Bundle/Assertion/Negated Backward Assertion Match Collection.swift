@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 public struct NegatedBackwardAssertionMatchCollection<AssertedPattern : Pattern> {
 	
 	public typealias Subject = AssertedPattern.Subject

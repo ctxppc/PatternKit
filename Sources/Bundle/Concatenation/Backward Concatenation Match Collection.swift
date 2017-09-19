@@ -1,6 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import DepthKit
+import PatternKitCore
 
 /// A collection of backward matches of a concatenation pattern.
 public struct BackwardConcatenationMatchCollection<LeadingPattern : Pattern, TrailingPattern : Pattern> where

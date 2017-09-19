@@ -10,8 +10,8 @@ let package = Package(
 		// The PatternKit library includes the full suite. This product is suitable for applications that use strongly typed patterns and/or regular expressions.
 		.library(name: "PatternKit", targets: ["PatternKitCore", "PatternKitBundle", "PatternKitRegex"]),
 		
-		// The Core library contains the primitive types from which all kinds of patterns can be defined. This product is suitable for libraries and applications that define new pattern types and don't depend on predefined pattern types.
-		.library(name: "PatternKitCore", targets: ["PatternKitCore"]),
+		// The Basic library contains the primitive types from which all kinds of patterns can be defined. This product is suitable for libraries and applications that define new pattern types and don't depend on predefined pattern types.
+		.library(name: "PatternKitBasic", targets: ["PatternKitCore"]),
 		
 		// The Static library contains the PatternKit suite without regular expression support. This product is suitable for applications that use PatternKit for matching over subjects that are not strings or for patterns defined at compile-time only.
 		.library(name: "PatternKitStatic", targets: ["PatternKitCore", "PatternKitBundle"]),

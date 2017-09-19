@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that never produces matches.
 ///
 /// Use a bin pattern on paths that are to be discarded early, e.g., for performance reasons.

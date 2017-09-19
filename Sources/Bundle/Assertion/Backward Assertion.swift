@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that asserts that an asserted pattern matches the part of the subject preceding the input position, without actually moving the input position beyond the assertion; also known as a positive lookbehind.
 ///
 /// While the assertion does not change the input position, it does preserve captures by tokens contained within the asserted pattern. However, the assertion only produces one match from the asserted pattern.

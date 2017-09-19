@@ -1,8 +1,9 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import Foundation
+import PatternKitCore
 
-extension CharacterSet : Pattern {
+extension CharacterSet : PatternKitCore.Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<String>) -> SingularMatchCollection<String> {
 		

@@ -1,5 +1,7 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+import PatternKitCore
+
 /// A pattern that matches any one element.
 public struct Wildcard<Subject : BidirectionalCollection> where Subject.Element : Equatable {}
 
