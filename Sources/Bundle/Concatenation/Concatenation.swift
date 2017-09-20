@@ -16,7 +16,7 @@ public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern>
 	
 	public typealias Subject = LeadingPattern.Subject
 	
-	/// Creates a concatenated pattern.
+	/// Creates a concatenation.
 	///
 	/// - Parameter leadingPattern: The pattern that matches the first part of the concatenation.
 	/// - Parameter trailingPattern: The pattern that matches the part after the part matched by the leading pattern.

@@ -2,7 +2,7 @@
 
 import PatternKitCore
 
-/// A type-erased pattern on `Collection`.
+/// A type-erased pattern for some subject type.
 ///
 /// This pattern forwards its `matches(base:direction:)` method to an arbitrary, underlying pattern on `Collection`, hiding the specifics of the underlying `Pattern` conformance.
 ///
@@ -26,6 +26,13 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Elemen
 		backwardEstimator = P.overestimatedLargestInputPositionForBackwardMatching(pattern)
 		self.pattern = pattern
 		
+	}
+	
+	/// Creates a type-erased container for a given pattern.
+	///
+	/// - Parameter pattern: The pattern.
+	public init(_ pattern: AnyPattern<Subject>) {
+		self = pattern
 	}
 	
 	/// A generator of forward match collections, given a base match.
