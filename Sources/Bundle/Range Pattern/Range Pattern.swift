@@ -3,7 +3,7 @@
 import PatternKitCore
 
 /// A pattern that matches any one element that is contained in a range.
-public struct RangePattern<Subject : BidirectionalCollection> where Subject.Element : Comparable, Subject.SubSequence : BidirectionalCollection {
+public struct RangePattern<Subject : BidirectionalCollection> where Subject.Element : Comparable, Subject.SubSequence : BidirectionalCollection {		// TODO: Remove constraint when recursive conformances land in Swift
 	
 	/// Creates a range pattern.
 	///

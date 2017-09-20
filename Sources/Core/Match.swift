@@ -3,7 +3,7 @@
 import DepthKit
 
 /// A conformance of a collection to a pattern.
-public struct Match<Subject : BidirectionalCollection> /* where Subject.Element : Equatable */ {	// TODO: Add in Swift 4, after fixing compiler crasher
+public struct Match<Subject : BidirectionalCollection> where Subject.Element : Equatable {
 	
 	/// Creates an initial match for matching over some subject.
 	///

@@ -6,23 +6,13 @@ import PatternKitCore
 ///
 /// This pattern forwards its `matches(base:direction:)` method to an arbitrary, underlying pattern on `Collection`, hiding the specifics of the underlying `Pattern` conformance.
 ///
-/// Type-erased patterns are useful in dynamic contexts, e.g., when patterns are formed at runtime by an end user. Typed patterns (with typed subpatterns and so on) may be more efficient as they present optimisation opportunities to the compiler.
+/// Type-erased patterns are useful in dynamic contexts, e.g., when patterns are formed at runtime by an end user. Typed patterns (with typed subpatterns and so on) may be more efficient as they present visible optimisation opportunities to the compiler.
 public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Element : Equatable {
 	
 	/// Creates a type-erased container for a given pattern.
 	///
 	/// - Parameter pattern: The pattern.
-	public init<P : Pattern>(_ pattern: P) where
-		
-		P.Subject == Subject,
-		
-		P.ForwardMatchCollection.Indices : BidirectionalCollection,
-		P.ForwardMatchCollection.SubSequence : BidirectionalCollection,
-		P.ForwardMatchCollection.SubSequence.Indices : BidirectionalCollection,
-		
-		P.BackwardMatchCollection.Indices : BidirectionalCollection,
-		P.BackwardMatchCollection.SubSequence : BidirectionalCollection,
-		P.BackwardMatchCollection.SubSequence.Indices : BidirectionalCollection {		// TODO: Remove constraints when they're added to BidirectionalCollection, in Swift 4
+	public init<P : Pattern>(_ pattern: P) where P.Subject == Subject {
 		
 		forwardMatchCollectionGenerator = { base in
 			AnyBidirectionalCollection(pattern.forwardMatches(enteringFrom: base))

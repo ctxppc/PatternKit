@@ -6,7 +6,7 @@ import PatternKitCore
 public struct Literal<Subject : BidirectionalCollection> where
 	Subject.Element : Equatable,
 	Subject.IndexDistance == Subject.SubSequence.IndexDistance,
-	Subject.SubSequence : BidirectionalCollection {
+	Subject.SubSequence : BidirectionalCollection {					// TODO: Remove constraints when recursive conformances land in Swift.
 	
 	/// Creates a pattern that matches an exact collection.
 	///
