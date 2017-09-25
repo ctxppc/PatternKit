@@ -27,13 +27,3 @@ public struct AnyRegularExpression<SubjectType : BidirectionalCollection> where 
 	private let symbolCollectionClosure: () -> AnyBidirectionalCollection<Symbol>
 	
 }
-
-extension AnyRegularExpression : RegularExpression {
-	
-	public typealias Subject = SubjectType
-	
-	public var symbols: AnyBidirectionalCollection<Symbol> {
-		return symbolCollectionClosure()
-	}
-	
-}

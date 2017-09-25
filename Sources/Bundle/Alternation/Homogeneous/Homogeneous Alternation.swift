@@ -10,10 +10,10 @@ public struct HomogeneousAlternation<Subpattern : Pattern> {
 	
 	/// Creates a homogeneous alternation pattern with given subpatterns.
 	///
-	/// - Parameter firstPattern: The first subpattern.
-	/// - Parameter otherPatterns: The other subpatterns.
-	public init(_ firstPattern: Subpattern, _ otherPatterns: Subpattern...) {
-		self.subpatterns = [firstPattern] + otherPatterns
+	/// - Parameter mainPattern: The main pattern.
+	/// - Parameter otherPatterns: The alternative patterns.
+	public init(_ mainPattern: Subpattern, _ otherPatterns: Subpattern...) {
+		self.subpatterns = [mainPattern] + otherPatterns
 	}
 	
 	/// Creates a homogeneous alternation pattern with given subpatterns.

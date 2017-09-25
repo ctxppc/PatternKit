@@ -1,8 +1,9 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
+/// A regular expression that concatenates two subexpressions.
 public struct ConcatenatedRegularExpression<LeadingExpression, TrailingExpression> {
 	
-	/// Creates a concatenated regular expression.
+	/// Creates a concatenated regular expression with given subexpressions.
 	///
 	/// - Parameter leadingExpression: The expression that forms the first part of the concatenated expression.
 	/// - Parameter trailingExpression: The expression that follows the leading expression.
