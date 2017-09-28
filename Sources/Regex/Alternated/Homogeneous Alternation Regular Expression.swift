@@ -1,6 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-/// A regular expression that represents a homogeneous alternation pattern.
+/// A regular expression that expresses a homogeneous alternation pattern.
 public struct HomogeneousAlternationRegularExpression<Subexpression> {
 	
 	/// Creates a homogeneous concatenated regular expression with given subexpressions.

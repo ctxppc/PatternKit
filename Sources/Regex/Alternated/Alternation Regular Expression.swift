@@ -1,6 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-/// A regular expression that represents an alternation pattern.
+/// A regular expression that expresses an alternation pattern.
 public struct AlternationRegularExpression<MainExpression, AlternativeExpression> {
 	
 	/// Creates an alternation regular expression with given subexpressions.

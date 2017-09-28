@@ -1,28 +1,74 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-/// A regular expression that represents a literal pattern.
-public struct LiteralRegularExpression<Subject : BidirectionalCollection> where
-	Subject.Element : Equatable,
-	Subject.IndexDistance == Subject.SubSequence.IndexDistance,
-	Subject.SubSequence : BidirectionalCollection {					// TODO: Remove constraints when recursive conformances land in Swift.
+import DepthKit
+import PatternKitBundle
+
+/// A regular expression that expresses a literal pattern.
+public struct LiteralRegularExpression {
 	
-	/// Creates a pattern that matches an exact collection.
+	/// Creates a pattern that matches an exact string.
 	///
 	/// - Requires: `literal` is non-empty.
 	///
-	/// - Parameter literal: The collection that the pattern matches exactly.
-	public init(_ literal: Subject) {
+	/// - Parameter literal: The string that the pattern matches exactly.
+	public init(_ literal: String) {
 		precondition(!literal.isEmpty, "Empty literal")
 		self.literal = literal
 	}
 	
-	/// The collection that the pattern matches exactly.
+	/// The string that the pattern matches exactly.
 	///
 	/// - Invariant: `literal` is non-empty.
-	public var literal: Subject {
+	public var literal: String {
 		willSet {
 			precondition(!newValue.isEmpty, "Empty literal")
 		}
+	}
+	
+	/// A symbol that represents a literal character.
+	public struct Symbol {
+		
+		/// The character represented by the symbol.
+		var character: Character
+		
+	}
+	
+}
+
+extension LiteralRegularExpression : RegularExpression {
+	
+	public typealias Index = String.Index
+	
+	public var startIndex: Index {
+		return literal.startIndex
+	}
+	
+	public var endIndex: Index {
+		return literal.endIndex
+	}
+	
+	public subscript (index: Index) -> Symbol {
+		return Symbol(character: literal[index])
+	}
+	
+	public func index(before index: Index) -> Index {
+		return literal.index(before: index)
+	}
+	
+	public func index(after index: Index) -> Index {
+		return literal.index(after: index)
+	}
+	
+	public func makePattern() -> Literal<String> {
+		return Literal(literal)
+	}
+	
+}
+
+extension LiteralRegularExpression.Symbol : Symbol {
+	
+	public func serialisation(language: Language) -> String {
+		TODO.unimplemented
 	}
 	
 }

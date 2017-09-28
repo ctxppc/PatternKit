@@ -46,23 +46,23 @@ extension BackwardHomogeneousConcatenationMatchCollection : BidirectionalCollect
 	}
 	
 	public var startIndex: Index {
-		unimplemented
+		TODO.unimplemented
 	}
 	
 	public var endIndex: Index {
-		unimplemented
+		TODO.unimplemented
 	}
 	
 	public subscript (index: Index) -> Match<Subject> {
-		unimplemented
+		TODO.unimplemented
 	}
 	
 	public func index(before index: Index) -> Index {
-		unimplemented
+		TODO.unimplemented
 	}
 	
 	public func index(after index: Index) -> Index {
-		unimplemented
+		TODO.unimplemented
 	}
 	
 }
@@ -70,11 +70,11 @@ extension BackwardHomogeneousConcatenationMatchCollection : BidirectionalCollect
 extension BackwardHomogeneousConcatenationMatchCollection.Index : Comparable {
 	
 	public static func <(lhs: BackwardHomogeneousConcatenationMatchCollection.Index, rhs: BackwardHomogeneousConcatenationMatchCollection.Index) -> Bool {
-		unimplemented
+		TODO.unimplemented
 	}
 	
 	public static func ==(lhs: BackwardHomogeneousConcatenationMatchCollection.Index, rhs: BackwardHomogeneousConcatenationMatchCollection.Index) -> Bool {
-		unimplemented
+		TODO.unimplemented
 	}
 	
 }
