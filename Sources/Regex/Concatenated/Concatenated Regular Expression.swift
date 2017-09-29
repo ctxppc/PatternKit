@@ -5,15 +5,8 @@ import PatternKitBundle
 
 /// A regular expression that concatenates two subexpressions.
 public struct ConcatenatedRegularExpression<LeadingExpression : RegularExpression, TrailingExpression : RegularExpression> where
-	
 	LeadingExpression.Indices : BidirectionalCollection,
-	TrailingExpression.Indices : BidirectionalCollection,
-	
-	LeadingExpression.PatternType.ForwardMatchCollection.Indices : OrderedCollection,
-	TrailingExpression.PatternType.ForwardMatchCollection.Indices : OrderedCollection,
-	
-	LeadingExpression.PatternType.BackwardMatchCollection.Indices : OrderedCollection,
-	TrailingExpression.PatternType.BackwardMatchCollection.Indices : OrderedCollection {
+	TrailingExpression.Indices : BidirectionalCollection {
 	
 	/// Creates a concatenated regular expression with given subexpressions.
 	///
@@ -126,10 +119,6 @@ extension ConcatenatedRegularExpression : RegularExpression {
 			indexOutOfBounds
 			
 		}
-	}
-	
-	public func makePattern() throws -> Concatenation<LeadingExpression.PatternType, TrailingExpression.PatternType> {
-		return try Concatenation(leadingExpression.makePattern(), trailingExpression.makePattern())
 	}
 	
 }

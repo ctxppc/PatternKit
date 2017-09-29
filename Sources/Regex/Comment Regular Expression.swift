@@ -4,7 +4,7 @@ import DepthKit
 import PatternKitBundle
 
 /// A regular expression with arbitrary literal symbols that expresses no pattern.
-public struct CommentRegularExpression<Subject : BidirectionalCollection> {
+public struct CommentRegularExpression {
 	
 	/// The comment or unevaluated serialisation.
 	public var comment: String
@@ -94,10 +94,6 @@ extension CommentRegularExpression : RegularExpression {
 			indexOutOfBounds
 			
 		}
-	}
-	
-	public func makePattern() -> Literal<String> {
-		return Literal("")
 	}
 	
 }

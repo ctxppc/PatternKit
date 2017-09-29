@@ -59,10 +59,6 @@ extension LiteralRegularExpression : RegularExpression {
 		return literal.index(after: index)
 	}
 	
-	public func makePattern() -> Literal<String> {
-		return Literal(literal)
-	}
-	
 }
 
 extension LiteralRegularExpression.Symbol : Symbol {
