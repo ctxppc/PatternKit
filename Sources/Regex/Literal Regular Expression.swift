@@ -26,7 +26,7 @@ public struct LiteralRegularExpression {
 	}
 	
 	/// A symbol that represents a literal character.
-	public struct Symbol {
+	public struct LiteralSymbol {
 		
 		/// The character represented by the symbol.
 		var character: Character
@@ -48,7 +48,7 @@ extension LiteralRegularExpression : RegularExpression {
 	}
 	
 	public subscript (index: Index) -> Symbol {
-		return Symbol(character: literal[index])
+		return LiteralSymbol(character: literal[index])
 	}
 	
 	public func index(before index: Index) -> Index {
@@ -61,7 +61,7 @@ extension LiteralRegularExpression : RegularExpression {
 	
 }
 
-extension LiteralRegularExpression.Symbol : Symbol {
+extension LiteralRegularExpression.LiteralSymbol : Symbol {
 	
 	public func serialisation(language: Language) -> String {
 		TODO.unimplemented

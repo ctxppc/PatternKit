@@ -1,7 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import DepthKit
-import PatternKitBundle
 
 /// A regular expression that concatenates two subexpressions.
 public struct ConcatenatedRegularExpression<LeadingExpression : RegularExpression, TrailingExpression : RegularExpression> where
@@ -23,16 +22,6 @@ public struct ConcatenatedRegularExpression<LeadingExpression : RegularExpressio
 	/// The expression that follows the leading expression.
 	public var trailingExpression: TrailingExpression
 	
-	public enum Symbol {
-		
-		/// A symbol from the leading expression.
-		case inLeadingExpression(symbol: LeadingExpression.Element)
-		
-		/// A symbol from the trailing expression.
-		case inTrailingExpression(symbol: TrailingExpression.Element)
-		
-	}
-	
 }
 
 extension ConcatenatedRegularExpression : RegularExpression {
@@ -40,9 +29,13 @@ extension ConcatenatedRegularExpression : RegularExpression {
 	public enum Index {
 		
 		/// A position to a symbol in the leading expression.
+		///
+		/// - Parameter innerIndex: The position of the symbol within the leading expression.
 		case inLeadingExpression(innerIndex: LeadingExpression.Index)
 		
 		/// A position to a symbol in the trailing expression.
+		///
+		/// - Parameter innerIndex: The position of the symbol within the trailing expression.
 		case inTrailingExpression(innerIndex: TrailingExpression.Index)
 		
 		/// The position after the last symbol.
@@ -51,10 +44,10 @@ extension ConcatenatedRegularExpression : RegularExpression {
 	}
 	
 	public var startIndex: Index {
-		if let firstInnerIndex = leadingExpression.indices.first {
-			return .inLeadingExpression(innerIndex: firstInnerIndex)
-		} else if let firstInnerIndex = trailingExpression.indices.first {
-			return .inTrailingExpression(innerIndex: firstInnerIndex)
+		if let firstIndex = leadingExpression.indices.first {
+			return .inLeadingExpression(innerIndex: firstIndex)
+		} else if let firstIndex = trailingExpression.indices.first {
+			return .inTrailingExpression(innerIndex: firstIndex)
 		} else {
 			return .end
 		}
@@ -66,8 +59,8 @@ extension ConcatenatedRegularExpression : RegularExpression {
 	
 	public subscript (index: Index) -> Symbol {
 		switch index {
-			case .inLeadingExpression(innerIndex: let index):	return .inLeadingExpression(symbol: leadingExpression[index])
-			case .inTrailingExpression(innerIndex: let index):	return .inTrailingExpression(symbol: trailingExpression[index])
+			case .inLeadingExpression(innerIndex: let index):	return leadingExpression[index]
+			case .inTrailingExpression(innerIndex: let index):	return trailingExpression[index]
 			case .end:											indexOutOfBounds
 		}
 	}
@@ -123,46 +116,25 @@ extension ConcatenatedRegularExpression : RegularExpression {
 	
 }
 
-extension ConcatenatedRegularExpression.Symbol : Symbol {
-	
-	public func serialisation(language: Language) -> String {
-		TODO.unimplemented
-	}
-	
-}
-
 extension ConcatenatedRegularExpression.Index : Comparable {
 	
 	public static func <(smallerIndex: ConcatenatedRegularExpression.Index, greaterIndex: ConcatenatedRegularExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
-			
-			case (.inLeadingExpression(innerIndex: let smallerIndex), .inLeadingExpression(innerIndex: let greaterIndex)):
-			return smallerIndex < greaterIndex
-			
-			case (.inLeadingExpression, _):
-			return true
-			
-			case (.inTrailingExpression, .inLeadingExpression):
-			return false
-			
-			case (.inTrailingExpression(innerIndex: let smallerIndex), .inTrailingExpression(innerIndex: let greaterIndex)):
-			return smallerIndex < greaterIndex
-			
-			case (.inTrailingExpression, .end):
-			return true
-			
-			case (.end, _):
-			return false
-			
+			case (.inLeadingExpression(innerIndex: let smallerIndex), .inLeadingExpression(innerIndex: let greaterIndex)):		return smallerIndex < greaterIndex
+			case (.inLeadingExpression, _):																						return true
+			case (.inTrailingExpression, .inLeadingExpression):																	return false
+			case (.inTrailingExpression(innerIndex: let smallerIndex), .inTrailingExpression(innerIndex: let greaterIndex)):	return smallerIndex < greaterIndex
+			case (.inTrailingExpression, .end):																					return true
+			case (.end, _):																										return false
 		}
 	}
 	
 	public static func ==(firstIndex: ConcatenatedRegularExpression.Index, otherIndex: ConcatenatedRegularExpression.Index) -> Bool {
 		switch (firstIndex, otherIndex) {
-			case (.inLeadingExpression(let firstIndex), .inLeadingExpression(let otherIndex)):		return firstIndex == otherIndex
-			case (.inTrailingExpression(let firstIndex), .inTrailingExpression(let otherIndex)):	return firstIndex == otherIndex
-			case (.end, .end):																		return true
-			default:																				return false
+			case (.inLeadingExpression(innerIndex: let firstIndex), .inLeadingExpression(innerIndex: let otherIndex)):		return firstIndex == otherIndex
+			case (.inTrailingExpression(innerIndex: let firstIndex), .inTrailingExpression(innerIndex: let otherIndex)):	return firstIndex == otherIndex
+			case (.end, .end):																								return true
+			default:																										return false
 		}
 	}
 	

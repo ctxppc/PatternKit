@@ -7,10 +7,10 @@ import PatternKitCore
 /// Although not specified by this protocol, a realisation on a concrete pattern type may provide additional functionality such as mapping symbols to parts of patterns.
 public protocol Realisation {
 	
-	/// The type of regular expression that is realised.
+	/// The type of the realised regular expression.
 	associatedtype Expression : RegularExpression
 	
-	/// The type of pattern that results after realising the expression.
+	/// The type of the pattern that results after realising the expression.
 	associatedtype PatternType : Pattern where PatternType.Subject == String
 	
 	/// Realises given regular expression.
@@ -18,7 +18,7 @@ public protocol Realisation {
 	/// - Parameter regularExpression: The regular expression to realise.
 	init(of regularExpression: Expression)
 	
-	/// The realised pattern.
+	/// The resulting pattern.
 	var pattern: PatternType { get }
 	
 }

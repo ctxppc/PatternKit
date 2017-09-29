@@ -9,14 +9,6 @@ public struct CommentRegularExpression {
 	/// The comment or unevaluated serialisation.
 	public var comment: String
 	
-	/// A symbol that represents a character in a comment.
-	public struct Symbol {
-		
-		/// The character represented by the symbol.
-		var character: Character
-		
-	}
-	
 }
 
 extension CommentRegularExpression : RegularExpression {
@@ -98,36 +90,28 @@ extension CommentRegularExpression : RegularExpression {
 	
 }
 
-extension CommentRegularExpression.Symbol : Symbol {
-	
-	public func serialisation(language: Language) -> String {
-		TODO.unimplemented
-	}
-	
-}
-
 extension CommentRegularExpression.Index : Comparable {
 	
 	public static func <(smallerIndex: CommentRegularExpression.Index, greaterIndex: CommentRegularExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
-			case (.leadingBoundary, .leadingBoundary):						return false
-			case (.leadingBoundary, _):										return true
-			case (.comment, .leadingBoundary):								return false
-			case (.comment(let smallerIndex), .comment(let greaterIndex)):	return smallerIndex < greaterIndex
-			case (.comment, _):												return true
-			case (.trailingBoundary, .end):									return true
-			case (.trailingBoundary, _):									return false
-			case (.end, _):													return false
+			case (.leadingBoundary, .leadingBoundary):										return false
+			case (.leadingBoundary, _):														return true
+			case (.comment, .leadingBoundary):												return false
+			case (.comment(index: let smallerIndex), .comment(index: let greaterIndex)):	return smallerIndex < greaterIndex
+			case (.comment, _):																return true
+			case (.trailingBoundary, .end):													return true
+			case (.trailingBoundary, _):													return false
+			case (.end, _):																	return false
 		}
 	}
 	
 	public static func ==(firstIndex: CommentRegularExpression.Index, otherIndex: CommentRegularExpression.Index) -> Bool {
 		switch (firstIndex, otherIndex) {
-			case (.leadingBoundary, .leadingBoundary):					return true
-			case (.comment(let firstIndex), .comment(let otherIndex)):	return firstIndex == otherIndex
-			case (.trailingBoundary, .trailingBoundary):				return true
-			case (.end, .end):											return true
-			default:													return false
+			case (.leadingBoundary, .leadingBoundary):									return true
+			case (.comment(index: let firstIndex), .comment(index: let otherIndex)):	return firstIndex == otherIndex
+			case (.trailingBoundary, .trailingBoundary):								return true
+			case (.end, .end):															return true
+			default:																	return false
 		}
 	}
 	
