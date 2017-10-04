@@ -57,7 +57,7 @@ extension ConcatenatedRegularExpression : RegularExpression {
 		return .end
 	}
 	
-	public subscript (index: Index) -> Symbol {
+	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
 			case .inLeadingExpression(innerIndex: let index):	return leadingExpression[index]
 			case .inTrailingExpression(innerIndex: let index):	return trailingExpression[index]

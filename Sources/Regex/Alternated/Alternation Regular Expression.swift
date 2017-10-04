@@ -58,7 +58,7 @@ extension AlternationRegularExpression : RegularExpression {
 		return .end
 	}
 	
-	public subscript (index: Index) -> Symbol {
+	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
 			case .inMainExpression(innerIndex: let index):			return mainExpression[index]
 			case .delimiter:										return AlternationDelimiterSymbol()
@@ -142,8 +142,8 @@ extension AlternationRegularExpression.Index : Comparable {
 	
 }
 
-
-public struct AlternationDelimiterSymbol : Symbol {
+/// A symbol that separates the different subexpressions in an alternation.
+public struct AlternationDelimiterSymbol : SymbolProtocol {
 	
 	// See protocol.
 	public func serialisation(language: Language) -> String {

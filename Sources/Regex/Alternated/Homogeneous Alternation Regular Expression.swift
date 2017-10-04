@@ -66,7 +66,7 @@ extension HomogeneousAlternationRegularExpression : RegularExpression {
 		return .end
 	}
 	
-	public subscript (index: Index) -> Symbol {
+	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
 			
 			case .inSubexpression(subexpressionIndex: let subexpressionIndex, innerIndex: let innerIndex):

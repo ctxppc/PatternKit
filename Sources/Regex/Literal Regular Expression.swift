@@ -1,7 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
 import DepthKit
-import PatternKitBundle
 
 /// A regular expression that expresses a literal pattern.
 public struct LiteralRegularExpression {
@@ -25,8 +24,8 @@ public struct LiteralRegularExpression {
 		}
 	}
 	
-	/// A symbol that represents a literal character.
-	public struct LiteralSymbol {
+	/// A symbol that represents a literal character in a literal regular expression.
+	public struct Symbol {
 		
 		/// The character represented by the symbol.
 		var character: Character
@@ -47,8 +46,8 @@ extension LiteralRegularExpression : RegularExpression {
 		return literal.endIndex
 	}
 	
-	public subscript (index: Index) -> Symbol {
-		return LiteralSymbol(character: literal[index])
+	public subscript (index: Index) -> SymbolProtocol {
+		return Symbol(character: literal[index])
 	}
 	
 	public func index(before index: Index) -> Index {
@@ -61,7 +60,7 @@ extension LiteralRegularExpression : RegularExpression {
 	
 }
 
-extension LiteralRegularExpression.LiteralSymbol : Symbol {
+extension LiteralRegularExpression.Symbol : SymbolProtocol {
 	
 	public func serialisation(language: Language) -> String {
 		TODO.unimplemented

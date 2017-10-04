@@ -65,7 +65,7 @@ extension HomogeneousConcatenatedRegularExpression : RegularExpression {
 		return .end
 	}
 	
-	public subscript (index: Index) -> Symbol {
+	public subscript (index: Index) -> SymbolProtocol {
 		guard case .inSubexpression(subexpressionIndex: let subexpressionIndex, innerIndex: let innerIndex) = index else { indexOutOfBounds }
 		return subexpressions[subexpressionIndex][innerIndex]
 	}
