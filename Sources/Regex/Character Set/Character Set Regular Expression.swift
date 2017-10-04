@@ -111,11 +111,11 @@ extension CharacterSetRegularExpression : RegularExpression {
 			
 			case .singletonScalarMember(index: let index):
 			guard case .singletonScalar(let scalar) = members[index] else { fatalError("Incompatible member type of index") }
-			return Symbol.singletonScalar(scalar, firstInSet: index == 0)
+			return Symbol.singletonScalar(scalar, firstInSet: index == members.startIndex)
 			
 			case .intervalLowerBoundScalar(index: let index):
 			guard case .interval(let range) = members[index] else { fatalError("Incompatible member type of index") }
-			return Symbol.intervalLowerBoundScalar(range.lowerBound, firstInSet: index == 0)
+			return Symbol.intervalLowerBoundScalar(range.lowerBound, firstInSet: index == members.startIndex)
 			
 			case .intervalBoundsDelimiter:
 			return Symbol.intervalBoundsDelimiter
@@ -133,13 +133,89 @@ extension CharacterSetRegularExpression : RegularExpression {
 		}
 	}
 	
-	public func index(before i: Index) -> Index {
-		TODO.unimplemented
+	public func index(before index: Index) -> Index {
+		switch index {
+			
+			case .leadingBoundary:
+			indexOutOfBounds
+			
+			case .singletonScalarMember(index: let index):
+			guard index > members.startIndex else { return .leadingBoundary }
+			return indexForMember(at: members.index(before: index), boundary: .trailing)
+			
+			case .intervalLowerBoundScalar(index: let index):
+			guard index > members.startIndex else { return .leadingBoundary }
+			return indexForMember(at: members.index(before: index), boundary: .trailing)
+			
+			case .intervalBoundsDelimiter(index: let index):
+			return .intervalLowerBoundScalar(index: index)
+			
+			case .intervalUpperBoundScalar(index: let index):
+			return .intervalBoundsDelimiter(index: index)
+			
+			case .trailingBoundary:
+			let index = members.endIndex
+			guard index > members.startIndex else { return .leadingBoundary }
+			return indexForMember(at: members.index(before: index), boundary: .trailing)
+			
+			case .end:
+			return .trailingBoundary
+			
+		}
 	}
 	
-	public func index(after i: Index) -> Index {
-		TODO.unimplemented
+	public func index(after index: Index) -> Index {
+		switch index {
+			
+			case .leadingBoundary:
+			guard !members.isEmpty else { return .trailingBoundary }
+			return indexForMember(at: members.startIndex, boundary: .leading)
+			
+			case .singletonScalarMember(index: let index):
+			let nextIndex = members.index(after: index)
+			guard nextIndex < members.endIndex else { return .trailingBoundary }
+			return indexForMember(at: nextIndex, boundary: .leading)
+			
+			case .intervalLowerBoundScalar(index: let index):
+			return .intervalBoundsDelimiter(index: index)
+			
+			case .intervalBoundsDelimiter(index: let index):
+			return .intervalUpperBoundScalar(index: index)
+			
+			case .intervalUpperBoundScalar(index: let index):
+			let nextIndex = members.index(after: index)
+			guard nextIndex < members.endIndex else { return .trailingBoundary }
+			return indexForMember(at: nextIndex, boundary: .leading)
+			
+			case .trailingBoundary:
+			return .end
+			
+			case .end:
+			indexOutOfBounds
+			
+		}
 	}
+	
+	private enum Boundary {
+		case leading
+		case trailing
+	}
+	
+	private func indexForMember(at index: Int, boundary: Boundary) -> Index {
+		switch (members[index], boundary) {
+		
+			case (.singletonScalar, _):
+			return .singletonScalarMember(index: index)
+			
+			case (.interval, .leading):
+			return .intervalLowerBoundScalar(index: index)
+			
+			case (.interval, .trailing):
+			return .intervalUpperBoundScalar(index: index)
+			
+		}
+	}
+	
 	
 }
 
@@ -154,11 +230,66 @@ extension CharacterSetRegularExpression.Symbol : SymbolProtocol {
 extension CharacterSetRegularExpression.Index : Comparable {
 	
 	public static func <(smallerIndex: CharacterSetRegularExpression.Index, greaterIndex: CharacterSetRegularExpression.Index) -> Bool {
-		TODO.unimplemented
+		
+		enum SimpleIndex : Int {
+			
+			case leadingBoundary
+			case singletonScalarMember
+			case intervalLowerBoundScalar
+			case intervalBoundsDelimiter
+			case intervalUpperBoundScalar
+			case trailingBoundary
+			case end
+			
+			init(_ index: CharacterSetRegularExpression.Index) {
+				switch index {
+					case .leadingBoundary:			self = .leadingBoundary
+					case .singletonScalarMember:	self = .singletonScalarMember
+					case .intervalLowerBoundScalar:	self = .intervalLowerBoundScalar
+					case .intervalBoundsDelimiter:	self = .intervalBoundsDelimiter
+					case .intervalUpperBoundScalar:	self = .intervalUpperBoundScalar
+					case .trailingBoundary:			self = .trailingBoundary
+					case .end:						self = .end
+				}
+			}
+			
+		}
+		
+		func memberIndex(of index: CharacterSetRegularExpression.Index) -> Int? {
+			switch index {
+				case .singletonScalarMember(index: let index):		return index
+				case .intervalLowerBoundScalar(index: let index):	return index
+				case .intervalBoundsDelimiter(index: let index):	return index
+				case .intervalUpperBoundScalar(index: let index):	return index
+				default:											return nil
+			}
+		}
+		
+		if let memberIndexOfSmallerIndex = memberIndex(of: smallerIndex), let memberIndexOfGreaterIndex = memberIndex(of: greaterIndex) {
+			if memberIndexOfSmallerIndex < memberIndexOfGreaterIndex {
+				return true
+			} else if memberIndexOfSmallerIndex > memberIndexOfGreaterIndex {
+				return false
+			} else {
+				return SimpleIndex(smallerIndex).rawValue < SimpleIndex(greaterIndex).rawValue
+			}
+		} else {
+			return SimpleIndex(smallerIndex).rawValue < SimpleIndex(greaterIndex).rawValue
+		}
+		
 	}
 	
 	public static func ==(firstIndex: CharacterSetRegularExpression.Index, otherIndex: CharacterSetRegularExpression.Index) -> Bool {
-		TODO.unimplemented
+		switch (firstIndex, otherIndex) {
+			case (.leadingBoundary, .leadingBoundary):																	return true
+			case (.singletonScalarMember(index: let firstIndex), .singletonScalarMember(index: let otherIndex)):		return firstIndex == otherIndex
+			case (.intervalLowerBoundScalar(index: let firstIndex), .intervalLowerBoundScalar(index: let otherIndex)):	return firstIndex == otherIndex
+			case (.intervalBoundsDelimiter(index: let firstIndex), .intervalBoundsDelimiter(index: let otherIndex)):	return firstIndex == otherIndex
+			case (.intervalUpperBoundScalar(index: let firstIndex), .intervalUpperBoundScalar(index: let otherIndex)):	return firstIndex == otherIndex
+			case (.trailingBoundary, .trailingBoundary):																return true
+			case (.end, .end):																							return true
+			default:																									return false
+		}
 	}
 	
 }
