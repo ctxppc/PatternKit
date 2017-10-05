@@ -8,8 +8,22 @@ public struct CharacterSetRegularExpression {
 	/// Creates a character set regular expression with given members.
 	///
 	/// - Parameter members: The enumerated members of the character set. The default is the empty set.
-	public init(_ members: [Member] = []) {
+	/// - Parameter membership: Whether the set's members are considered positive or negative matches.
+	public init(_ members: [Member] = [], membership: Membership = .inclusive) {
 		self.members = members
+		self.membership = membership
+	}
+	
+	/// Whether the set's members are considered positive or negative matches.
+	public var membership: Membership
+	public enum Membership {
+		
+		/// The set's enumerated members are considered positive matches.
+		case inclusive
+		
+		/// The set's enumerated members are considered negative matches.
+		case exclusive
+		
 	}
 	
 	/// The enumerated members of the character set.
@@ -31,19 +45,23 @@ public struct CharacterSetRegularExpression {
 	public enum Symbol {
 		
 		/// A symbol that represents the leading boundary of a character set.
-		case leadingBoundary
+		///
+		/// - Parameter membership: Whether the set's members are considered positive or negative matches.
+		case leadingBoundary(membership: Membership)
 		
 		/// A symbol that represents a single scalar member in a character set.
 		///
 		/// - Parameter 1: The Unicode scalar that is a member of the character set.
 		/// - Parameter firstInSet: Whether the scalar is the first member in the character set.
-		case singletonScalar(UnicodeScalar, firstInSet: Bool)
+		/// - Parameter membership: Whether the set's members are considered positive or negative matches.
+		case singletonScalar(UnicodeScalar, firstInSet: Bool, membership: Membership)
 		
 		/// A symbol that represents a lower bound scalar of an interval.
 		///
 		/// - Parameter 1: The Unicode scalar at the lower bound of the interval.
 		/// - Parameter firstInSet: Whether the interval is the first member in the character set.
-		case intervalLowerBoundScalar(UnicodeScalar, firstInSet: Bool)
+		/// - Parameter membership: Whether the set's members are considered positive or negative matches.
+		case intervalLowerBoundScalar(UnicodeScalar, firstInSet: Bool, membership: Membership)
 		
 		/// A symbol that represents a delimiter between the lower bound and upper bound symbols in an interval.
 		case intervalBoundsDelimiter
@@ -107,15 +125,15 @@ extension CharacterSetRegularExpression : RegularExpression {
 		switch index {
 			
 			case .leadingBoundary:
-			return Symbol.leadingBoundary
+			return Symbol.leadingBoundary(membership: membership)
 			
 			case .singletonScalarMember(index: let index):
 			guard case .singletonScalar(let scalar) = members[index] else { fatalError("Incompatible member type of index") }
-			return Symbol.singletonScalar(scalar, firstInSet: index == members.startIndex)
+			return Symbol.singletonScalar(scalar, firstInSet: index == members.startIndex, membership: membership)
 			
 			case .intervalLowerBoundScalar(index: let index):
 			guard case .interval(let range) = members[index] else { fatalError("Incompatible member type of index") }
-			return Symbol.intervalLowerBoundScalar(range.lowerBound, firstInSet: index == members.startIndex)
+			return Symbol.intervalLowerBoundScalar(range.lowerBound, firstInSet: index == members.startIndex, membership: membership)
 			
 			case .intervalBoundsDelimiter:
 			return Symbol.intervalBoundsDelimiter
@@ -222,7 +240,29 @@ extension CharacterSetRegularExpression : RegularExpression {
 extension CharacterSetRegularExpression.Symbol : SymbolProtocol {
 	
 	public func serialisation(language: Language) throws -> String {
-		TODO.unimplemented
+		
+		func serialiseScalar(_ scalar: UnicodeScalar, firstInSet: Bool, membership: CharacterSetRegularExpression.Membership) -> String {
+			switch (scalar, firstInSet, membership) {
+				case ("^", true, .inclusive):	return "\\^"
+				case ("-", false, _):			return "\\-"
+				case ("\\", _, _):				return "\\\\"
+				case ("]", _, _):				return "\\]"
+				case ("\u{8}", _, _):			return "\\b"
+				default:						return serialiseGeneralScalar(scalar, language: language)
+			}
+		}
+		
+		switch self {
+			case .leadingBoundary(membership: let membership):													return membership == .inclusive ? "[" : "[^"
+			case .singletonScalar(let scalar, firstInSet: let firstInSet, membership: let membership):			return serialiseScalar(scalar, firstInSet: firstInSet, membership: membership)
+			case .intervalLowerBoundScalar(let scalar, firstInSet: let firstInSet, membership: let membership):	return serialiseScalar(scalar, firstInSet: firstInSet, membership: membership)
+			case .intervalBoundsDelimiter:																		return "-"
+			case .intervalUpperBoundScalar("\\"):																return "\\\\"
+			case .intervalUpperBoundScalar("]"):																return "\\]"
+			case .intervalUpperBoundScalar(let scalar):															return String(scalar)
+			case .trailingBoundary:																				return "]"
+		}
+		
 	}
 	
 }
