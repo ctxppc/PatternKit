@@ -4,7 +4,7 @@ import DepthKit
 import PatternKitBundle
 
 /// A realisation of a concatenated regular expression with realisable subexpressions.
-public struct RecursiveConcatenatedRegularExpressionRealisation<LeadingExpressionRealisation : Realisation, TrailingExpressionRealisation : Realisation> : Realisation where
+public struct ConcatenatedRegularExpressionRealisation<LeadingExpressionRealisation : Realisation, TrailingExpressionRealisation : Realisation> : Realisation where
 	
 	LeadingExpressionRealisation.Expression.Indices : BidirectionalCollection,
 	TrailingExpressionRealisation.Expression.Indices : BidirectionalCollection,
@@ -22,19 +22,20 @@ public struct RecursiveConcatenatedRegularExpressionRealisation<LeadingExpressio
 	public typealias TrailingExpression = TrailingExpressionRealisation.Expression
 	
 	// See protocol.
-	public typealias Expression = ConcatenatedRegularExpression<LeadingExpression, TrailingExpression>
-	
-	// See protocol.
-	public typealias PatternType = Concatenation<LeadingExpressionRealisation.PatternType, TrailingExpressionRealisation.PatternType>
-	
-	// See protocol.
-	public init(of regularExpression: Expression) {
-		TODO.unimplemented
+	public init(of regularExpression: ConcatenatedRegularExpression<LeadingExpression, TrailingExpression>) {
+		realisationOfLeadingExpression = LeadingExpressionRealisation(of: regularExpression.leadingExpression)
+		realisationOfTrailingExpression = TrailingExpressionRealisation(of: regularExpression.trailingExpression)
 	}
 	
+	/// The realisation of the leading expression.
+	public let realisationOfLeadingExpression: LeadingExpressionRealisation
+	
+	/// The realisation of the trailing expression.
+	public let realisationOfTrailingExpression: TrailingExpressionRealisation
+	
 	// See protocol.
-	public var pattern: PatternType {
-		TODO.unimplemented
+	public var pattern: Concatenation<LeadingExpressionRealisation.PatternType, TrailingExpressionRealisation.PatternType> {
+		return realisationOfLeadingExpression.pattern • realisationOfTrailingExpression.pattern
 	}
 	
 }

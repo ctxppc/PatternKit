@@ -4,7 +4,7 @@ import DepthKit
 import PatternKitBundle
 
 /// A realisation of an alternation regular expression with realisable subexpressions.
-public struct RecursiveAlternationRegularExpressionRealisation<MainExpressionRealisation : Realisation, AlternativeExpressionRealisation : Realisation> : Realisation where
+public struct AlternationRegularExpressionRealisation<MainExpressionRealisation : Realisation, AlternativeExpressionRealisation : Realisation> : Realisation where
 	
 	MainExpressionRealisation.Expression.Indices : BidirectionalCollection,
 	AlternativeExpressionRealisation.Expression.Indices : BidirectionalCollection,
@@ -22,19 +22,20 @@ public struct RecursiveAlternationRegularExpressionRealisation<MainExpressionRea
 	public typealias AlternativeExpression = AlternativeExpressionRealisation.Expression
 	
 	// See protocol.
-	public typealias Expression = AlternationRegularExpression<MainExpression, AlternativeExpression>
-	
-	// See protocol.
-	public typealias PatternType = Alternation<MainExpressionRealisation.PatternType, AlternativeExpressionRealisation.PatternType>
-	
-	// See protocol.
-	public init(of regularExpression: Expression) {
-		TODO.unimplemented
+	public init(of regularExpression: AlternationRegularExpression<MainExpression, AlternativeExpression>) {
+		realisationOfMainExpression = MainExpressionRealisation(of: regularExpression.mainExpression)
+		realisationOfAlternativeExpression = AlternativeExpressionRealisation(of: regularExpression.alternativeExpression)
 	}
 	
+	/// The realisation of the main expression.
+	public let realisationOfMainExpression: MainExpressionRealisation
+	
+	/// The realisation of the alternative expression.
+	public let realisationOfAlternativeExpression: AlternativeExpressionRealisation
+	
 	// See protocol.
-	public var pattern: PatternType {
-		TODO.unimplemented
+	public var pattern: Alternation<MainExpressionRealisation.PatternType, AlternativeExpressionRealisation.PatternType> {
+		return realisationOfMainExpression.pattern | realisationOfAlternativeExpression.pattern
 	}
 	
 }
