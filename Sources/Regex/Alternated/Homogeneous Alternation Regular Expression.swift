@@ -2,10 +2,10 @@
 
 import DepthKit
 
-/// A regular expression that expresses a homogeneous alternation pattern.
-public struct HomogeneousAlternationRegularExpression<Subexpression : RegularExpression> where Subexpression.Indices : BidirectionalCollection {
+/// An expression that expresses a homogeneous alternation pattern.
+public struct HomogeneousAlternationExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
 	
-	/// Creates a homogeneous concatenated regular expression with given subexpressions.
+	/// Creates a homogeneous concatenated expression with given subexpressions.
 	///
 	/// - Parameter firstExpression: The first subexpression.
 	/// - Parameter otherExpressions: The other subexpressions.
@@ -13,7 +13,7 @@ public struct HomogeneousAlternationRegularExpression<Subexpression : RegularExp
 		self.subexpressions = [firstExpression] + otherExpressions
 	}
 	
-	/// Creates a homogeneous concatenated regular expression with given subexpressions.
+	/// Creates a homogeneous concatenated expression with given subexpressions.
 	///
 	/// - Requires: `subexpressions` contains at least two subexpressions.
 	///
@@ -34,7 +34,7 @@ public struct HomogeneousAlternationRegularExpression<Subexpression : RegularExp
 	
 }
 
-extension HomogeneousAlternationRegularExpression : RegularExpression {
+extension HomogeneousAlternationExpression : Expression {
 	
 	public enum Index {
 		
@@ -144,9 +144,9 @@ extension HomogeneousAlternationRegularExpression : RegularExpression {
 	
 }
 
-extension HomogeneousAlternationRegularExpression.Index : Comparable {
+extension HomogeneousAlternationExpression.Index : Comparable {
 	
-	public static func <(smallerIndex: HomogeneousAlternationRegularExpression.Index, greaterIndex: HomogeneousAlternationRegularExpression.Index) -> Bool {
+	public static func <(smallerIndex: HomogeneousAlternationExpression.Index, greaterIndex: HomogeneousAlternationExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let smallerSubexpressionIndex, innerIndex: let smallerInnerIndex), .inSubexpression(subexpressionIndex: let greaterSubexpressionIndex, innerIndex: let greaterInnerIndex)):
@@ -173,7 +173,7 @@ extension HomogeneousAlternationRegularExpression.Index : Comparable {
 		}
 	}
 	
-	public static func ==(firstIndex: HomogeneousAlternationRegularExpression.Index, otherIndex: HomogeneousAlternationRegularExpression.Index) -> Bool {
+	public static func ==(firstIndex: HomogeneousAlternationExpression.Index, otherIndex: HomogeneousAlternationExpression.Index) -> Bool {
 		switch (firstIndex, otherIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let firstSubexpressionIndex, innerIndex: let firstInnerIndex), .inSubexpression(subexpressionIndex: let otherSubexpressionIndex, innerIndex: let otherInnerIndex)):

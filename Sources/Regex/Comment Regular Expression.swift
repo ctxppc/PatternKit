@@ -2,7 +2,7 @@
 
 import DepthKit
 
-/// A regular expression with arbitrary literal symbols that expresses no pattern.
+/// An expression with arbitrary literal symbols that expresses no pattern.
 public struct CommentRegularExpression {
 	
 	/// The comment or unevaluated serialisation.
@@ -25,7 +25,7 @@ public struct CommentRegularExpression {
 	
 }
 
-extension CommentRegularExpression : RegularExpression {
+extension CommentRegularExpression : Expression {
 	
 	public enum Index {
 		

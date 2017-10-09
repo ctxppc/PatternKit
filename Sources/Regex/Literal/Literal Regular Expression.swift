@@ -3,8 +3,8 @@
 import DepthKit
 import struct Foundation.CharacterSet
 
-/// A regular expression that expresses a literal pattern.
-public struct LiteralRegularExpression {
+/// An expression that expresses a literal pattern.
+public struct LiteralExpression {
 	
 	/// Creates a pattern that matches an exact string.
 	///
@@ -25,7 +25,7 @@ public struct LiteralRegularExpression {
 		}
 	}
 	
-	/// A symbol that represents a literal character in a literal regular expression.
+	/// A symbol that represents a literal character in a literal expression.
 	public struct Symbol {
 		
 		/// The character represented by the symbol.
@@ -35,7 +35,7 @@ public struct LiteralRegularExpression {
 	
 }
 
-extension LiteralRegularExpression : RegularExpression {
+extension LiteralExpression : Expression {
 	
 	public typealias Index = String.Index
 	
@@ -61,7 +61,7 @@ extension LiteralRegularExpression : RegularExpression {
 	
 }
 
-extension LiteralRegularExpression.Symbol : SymbolProtocol {
+extension LiteralExpression.Symbol : SymbolProtocol {
 	
 	public func serialisation(language: Language) -> String {
 		

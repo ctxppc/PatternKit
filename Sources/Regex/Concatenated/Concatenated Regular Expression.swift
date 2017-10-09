@@ -2,12 +2,12 @@
 
 import DepthKit
 
-/// A regular expression that concatenates two subexpressions.
-public struct ConcatenatedRegularExpression<LeadingExpression : RegularExpression, TrailingExpression : RegularExpression> where
+/// An expression that concatenates two subexpressions.
+public struct ConcatenatedExpression<LeadingExpression : Expression, TrailingExpression : Expression> where
 	LeadingExpression.Indices : BidirectionalCollection,
 	TrailingExpression.Indices : BidirectionalCollection {
 	
-	/// Creates a concatenated regular expression with given subexpressions.
+	/// Creates a concatenated expression with given subexpressions.
 	///
 	/// - Parameter leadingExpression: The expression that forms the first part of the concatenated expression.
 	/// - Parameter trailingExpression: The expression that follows the leading expression.
@@ -24,7 +24,7 @@ public struct ConcatenatedRegularExpression<LeadingExpression : RegularExpressio
 	
 }
 
-extension ConcatenatedRegularExpression : RegularExpression {
+extension ConcatenatedExpression : Expression {
 	
 	public enum Index {
 		
@@ -116,9 +116,9 @@ extension ConcatenatedRegularExpression : RegularExpression {
 	
 }
 
-extension ConcatenatedRegularExpression.Index : Comparable {
+extension ConcatenatedExpression.Index : Comparable {
 	
-	public static func <(smallerIndex: ConcatenatedRegularExpression.Index, greaterIndex: ConcatenatedRegularExpression.Index) -> Bool {
+	public static func <(smallerIndex: ConcatenatedExpression.Index, greaterIndex: ConcatenatedExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.inLeadingExpression(innerIndex: let smallerIndex), .inLeadingExpression(innerIndex: let greaterIndex)):		return smallerIndex < greaterIndex
 			case (.inLeadingExpression, _):																						return true
@@ -129,7 +129,7 @@ extension ConcatenatedRegularExpression.Index : Comparable {
 		}
 	}
 	
-	public static func ==(firstIndex: ConcatenatedRegularExpression.Index, otherIndex: ConcatenatedRegularExpression.Index) -> Bool {
+	public static func ==(firstIndex: ConcatenatedExpression.Index, otherIndex: ConcatenatedExpression.Index) -> Bool {
 		switch (firstIndex, otherIndex) {
 			case (.inLeadingExpression(innerIndex: let firstIndex), .inLeadingExpression(innerIndex: let otherIndex)):		return firstIndex == otherIndex
 			case (.inTrailingExpression(innerIndex: let firstIndex), .inTrailingExpression(innerIndex: let otherIndex)):	return firstIndex == otherIndex

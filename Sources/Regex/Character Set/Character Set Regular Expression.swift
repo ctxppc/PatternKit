@@ -2,10 +2,10 @@
 
 import DepthKit
 
-/// A regular expression that expresses a character set.
-public struct CharacterSetRegularExpression {
+/// An expression that expresses a character set.
+public struct CharacterSetExpression {
 	
-	/// Creates a character set regular expression with given members.
+	/// Creates a character set expression with given members.
 	///
 	/// - Parameter members: The enumerated members of the character set. The default is the empty set.
 	/// - Parameter membership: Whether the set's members are considered positive or negative matches.
@@ -78,7 +78,7 @@ public struct CharacterSetRegularExpression {
 	
 }
 
-extension CharacterSetRegularExpression : RegularExpression {
+extension CharacterSetExpression : Expression {
 	
 	public enum Index {
 		
@@ -237,11 +237,11 @@ extension CharacterSetRegularExpression : RegularExpression {
 	
 }
 
-extension CharacterSetRegularExpression.Symbol : SymbolProtocol {
+extension CharacterSetExpression.Symbol : SymbolProtocol {
 	
 	public func serialisation(language: Language) throws -> String {
 		
-		func serialiseScalar(_ scalar: UnicodeScalar, firstInSet: Bool, membership: CharacterSetRegularExpression.Membership) -> String {
+		func serialiseScalar(_ scalar: UnicodeScalar, firstInSet: Bool, membership: CharacterSetExpression.Membership) -> String {
 			switch (scalar, firstInSet, membership) {
 				case ("^", true, .inclusive):	return "\\^"
 				case ("-", false, _):			return "\\-"
@@ -267,9 +267,9 @@ extension CharacterSetRegularExpression.Symbol : SymbolProtocol {
 	
 }
 
-extension CharacterSetRegularExpression.Index : Comparable {
+extension CharacterSetExpression.Index : Comparable {
 	
-	public static func <(smallerIndex: CharacterSetRegularExpression.Index, greaterIndex: CharacterSetRegularExpression.Index) -> Bool {
+	public static func <(smallerIndex: CharacterSetExpression.Index, greaterIndex: CharacterSetExpression.Index) -> Bool {
 		
 		enum SimpleIndex : Int {
 			
@@ -281,7 +281,7 @@ extension CharacterSetRegularExpression.Index : Comparable {
 			case trailingBoundary
 			case end
 			
-			init(_ index: CharacterSetRegularExpression.Index) {
+			init(_ index: CharacterSetExpression.Index) {
 				switch index {
 					case .leadingBoundary:			self = .leadingBoundary
 					case .singletonScalarMember:	self = .singletonScalarMember
@@ -295,7 +295,7 @@ extension CharacterSetRegularExpression.Index : Comparable {
 			
 		}
 		
-		func memberIndex(of index: CharacterSetRegularExpression.Index) -> Int? {
+		func memberIndex(of index: CharacterSetExpression.Index) -> Int? {
 			switch index {
 				case .singletonScalarMember(index: let index):		return index
 				case .intervalLowerBoundScalar(index: let index):	return index
@@ -319,7 +319,7 @@ extension CharacterSetRegularExpression.Index : Comparable {
 		
 	}
 	
-	public static func ==(firstIndex: CharacterSetRegularExpression.Index, otherIndex: CharacterSetRegularExpression.Index) -> Bool {
+	public static func ==(firstIndex: CharacterSetExpression.Index, otherIndex: CharacterSetExpression.Index) -> Bool {
 		switch (firstIndex, otherIndex) {
 			case (.leadingBoundary, .leadingBoundary):																	return true
 			case (.singletonScalarMember(index: let firstIndex), .singletonScalarMember(index: let otherIndex)):		return firstIndex == otherIndex

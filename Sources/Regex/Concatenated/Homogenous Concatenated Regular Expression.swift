@@ -2,10 +2,10 @@
 
 import DepthKit
 
-/// A regular expression that concatenates two or more subexpressions of the same type.
-public struct HomogeneousConcatenatedRegularExpression<Subexpression : RegularExpression> where Subexpression.Indices : BidirectionalCollection {
+/// An expression that concatenates two or more subexpressions of the same type.
+public struct HomogeneousConcatenatedExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
 	
-	/// Creates a homogeneous concatenated regular expression with given subexpressions.
+	/// Creates a homogeneous concatenated expression with given subexpressions.
 	///
 	/// - Parameter firstExpression: The first subexpression.
 	/// - Parameter otherExpressions: The other subexpressions.
@@ -13,7 +13,7 @@ public struct HomogeneousConcatenatedRegularExpression<Subexpression : RegularEx
 		self.subexpressions = [firstExpression] + otherExpressions
 	}
 	
-	/// Creates a homogeneous concatenated regular expression with given subexpressions.
+	/// Creates a homogeneous concatenated expression with given subexpressions.
 	///
 	/// - Requires: `subexpressions` contains at least two subexpressions.
 	///
@@ -34,7 +34,7 @@ public struct HomogeneousConcatenatedRegularExpression<Subexpression : RegularEx
 	
 }
 
-extension HomogeneousConcatenatedRegularExpression : RegularExpression {
+extension HomogeneousConcatenatedExpression : Expression {
 	
 	public enum Index {
 		
@@ -128,9 +128,9 @@ extension HomogeneousConcatenatedRegularExpression : RegularExpression {
 	
 }
 
-extension HomogeneousConcatenatedRegularExpression.Index : Comparable {
+extension HomogeneousConcatenatedExpression.Index : Comparable {
 	
-	public static func <(smallerIndex: HomogeneousConcatenatedRegularExpression.Index, greaterIndex: HomogeneousConcatenatedRegularExpression.Index) -> Bool {
+	public static func <(smallerIndex: HomogeneousConcatenatedExpression.Index, greaterIndex: HomogeneousConcatenatedExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let smallerSubexpressionIndex, innerIndex: let smallerInnerIndex), .inSubexpression(subexpressionIndex: let greaterSubexpressionIndex, innerIndex: let greaterInnerIndex)):
@@ -145,7 +145,7 @@ extension HomogeneousConcatenatedRegularExpression.Index : Comparable {
 		}
 	}
 	
-	public static func ==(firstIndex: HomogeneousConcatenatedRegularExpression.Index, otherIndex: HomogeneousConcatenatedRegularExpression.Index) -> Bool {
+	public static func ==(firstIndex: HomogeneousConcatenatedExpression.Index, otherIndex: HomogeneousConcatenatedExpression.Index) -> Bool {
 		switch (firstIndex, otherIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let firstSubexpressionIndex, innerIndex: let firstInnerIndex), .inSubexpression(subexpressionIndex: let otherSubexpressionIndex, innerIndex: let otherInnerIndex)):

@@ -2,7 +2,7 @@
 
 import DepthKit
 
-public struct LiteralRegularExpressionRealisation {
+public struct LiteralExpressionRealisation {
 	
 	// TODO
 	

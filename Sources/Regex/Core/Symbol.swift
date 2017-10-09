@@ -1,6 +1,6 @@
 // PatternKit © 2017 Constantino Tsarouhas
 
-/// A indivisible sequence of characters that forms a lexical unit in a regular expression.
+/// A indivisible sequence of characters that forms a lexical unit in an expression.
 ///
 /// Note that a symbol value doesn't only carry a specific serialisation for a set of languages, but also a precise lexical meaning. It is, for example, incorrect to represent an alternation delimiter with a literal symbol serialising to `|`.
 public protocol SymbolProtocol {

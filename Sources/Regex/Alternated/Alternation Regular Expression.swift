@@ -2,12 +2,12 @@
 
 import DepthKit
 
-/// A regular expression that expresses an alternation pattern.
-public struct AlternationRegularExpression<MainExpression : RegularExpression, AlternativeExpression : RegularExpression> where
+/// An expression that expresses an alternation pattern.
+public struct AlternationExpression<MainExpression : Expression, AlternativeExpression : Expression> where
 	MainExpression.Indices : BidirectionalCollection,
 	AlternativeExpression.Indices : BidirectionalCollection {
 	
-	/// Creates an alternation regular expression with given subexpressions.
+	/// Creates an alternation expression with given subexpressions.
 	///
 	/// - Parameter mainExpression: The expression that represents the main pattern of the alternation.
 	/// - Parameter alternativeExpression: The expression that represents the alternative pattern of the alternation.
@@ -24,7 +24,7 @@ public struct AlternationRegularExpression<MainExpression : RegularExpression, A
 	
 }
 
-extension AlternationRegularExpression : RegularExpression {
+extension AlternationExpression : Expression {
 	
 	public enum Index {
 		
@@ -113,9 +113,9 @@ extension AlternationRegularExpression : RegularExpression {
 	
 }
 
-extension AlternationRegularExpression.Index : Comparable {
+extension AlternationExpression.Index : Comparable {
 	
-	public static func <(smallerIndex: AlternationRegularExpression.Index, greaterIndex: AlternationRegularExpression.Index) -> Bool {
+	public static func <(smallerIndex: AlternationExpression.Index, greaterIndex: AlternationExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.inMainExpression(innerIndex: let smallerIndex), .inMainExpression(innerIndex: let greaterIndex)):				return smallerIndex < greaterIndex
 			case (.inMainExpression, _):																							return true
@@ -130,7 +130,7 @@ extension AlternationRegularExpression.Index : Comparable {
 		}
 	}
 	
-	public static func ==(firstIndex: AlternationRegularExpression.Index, otherIndex: AlternationRegularExpression.Index) -> Bool {
+	public static func ==(firstIndex: AlternationExpression.Index, otherIndex: AlternationExpression.Index) -> Bool {
 		switch (firstIndex, otherIndex) {
 			case (.inMainExpression(innerIndex: let firstIndex), .inMainExpression(innerIndex: let otherIndex)):				return firstIndex == otherIndex
 			case (.delimiter, .delimiter):																						return true

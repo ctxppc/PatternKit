@@ -3,11 +3,11 @@
 import DepthKit
 import PatternKitBundle
 
-/// A realisation of a concatenated regular expression with realisable subexpressions.
-public struct ConcatenatedRegularExpressionRealisation<LeadingExpressionRealisation : Realisation, TrailingExpressionRealisation : Realisation> : Realisation where
+/// A realisation of a concatenated expression with realisable subexpressions.
+public struct ConcatenatedExpressionRealisation<LeadingExpressionRealisation : Realisation, TrailingExpressionRealisation : Realisation> : Realisation where
 	
-	LeadingExpressionRealisation.Expression.Indices : BidirectionalCollection,
-	TrailingExpressionRealisation.Expression.Indices : BidirectionalCollection,
+	LeadingExpressionRealisation.ExpressionType.Indices : BidirectionalCollection,
+	TrailingExpressionRealisation.ExpressionType.Indices : BidirectionalCollection,
 	
 	LeadingExpressionRealisation.PatternType.ForwardMatchCollection.Indices : OrderedCollection,
 	TrailingExpressionRealisation.PatternType.ForwardMatchCollection.Indices : OrderedCollection,
@@ -15,16 +15,16 @@ public struct ConcatenatedRegularExpressionRealisation<LeadingExpressionRealisat
 	LeadingExpressionRealisation.PatternType.BackwardMatchCollection.Indices : OrderedCollection,
 	TrailingExpressionRealisation.PatternType.BackwardMatchCollection.Indices : OrderedCollection {
 	
-	/// The type of the concatenated regular expression's leading expression.
-	public typealias LeadingExpression = LeadingExpressionRealisation.Expression
+	/// The type of the concatenated expression's leading expression.
+	public typealias LeadingExpression = LeadingExpressionRealisation.ExpressionType
 	
-	/// The type of the concatenated regular expression's trailing expression.
-	public typealias TrailingExpression = TrailingExpressionRealisation.Expression
+	/// The type of the concatenated expression's trailing expression.
+	public typealias TrailingExpression = TrailingExpressionRealisation.ExpressionType
 	
 	// See protocol.
-	public init(of regularExpression: ConcatenatedRegularExpression<LeadingExpression, TrailingExpression>) {
-		realisationOfLeadingExpression = LeadingExpressionRealisation(of: regularExpression.leadingExpression)
-		realisationOfTrailingExpression = TrailingExpressionRealisation(of: regularExpression.trailingExpression)
+	public init(of expression: ConcatenatedExpression<LeadingExpression, TrailingExpression>) {
+		realisationOfLeadingExpression = LeadingExpressionRealisation(of: expression.leadingExpression)
+		realisationOfTrailingExpression = TrailingExpressionRealisation(of: expression.trailingExpression)
 	}
 	
 	/// The realisation of the leading expression.
