@@ -5,6 +5,13 @@ import DepthKit
 /// An expression that expresses a forward assertion.
 public struct ForwardAssertionExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
 	
+	/// Creates a forward assertion expression with given subexpression.
+	///
+	/// - Parameter comment: The expression that expresses the asserted pattern.
+	public init(_ subexpression: Subexpression) {
+		self.subexpression = subexpression
+	}
+	
 	/// The expression that expresses the asserted pattern.
 	public var subexpression: Subexpression
 	
@@ -30,8 +37,11 @@ extension ForwardAssertionExpression.BoundarySymbol : BoundarySymbolProtocol {
 		return (.leadingBoundary, .trailingBoundary)
 	}
 	
-	public func serialisation(language: Language) throws -> String {
-		TODO.unimplemented
+	public func serialisation(language: Language) -> String {
+		switch self {
+			case .leadingBoundary:	return "(?="
+			case .trailingBoundary:	return ")"
+		}
 	}
 	
 }

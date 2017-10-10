@@ -2,10 +2,17 @@
 
 import DepthKit
 
-/// An expression that expresses a forward assertion.
+/// An expression that expresses an arbitrary negated backward assertion.
 public struct NegatedBackwardAssertionExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
 	
-	/// The expression that expresses the asserted pattern.
+	/// Creates a negated backward assertion expression with given subexpression.
+	///
+	/// - Parameter comment: The expression that expresses the negatively asserted pattern.
+	public init(_ subexpression: Subexpression) {
+		self.subexpression = subexpression
+	}
+	
+	/// The expression that expresses the negatively asserted pattern.
 	public var subexpression: Subexpression
 	
 }
@@ -31,7 +38,11 @@ extension NegatedBackwardAssertionExpression.BoundarySymbol : BoundarySymbolProt
 	}
 	
 	public func serialisation(language: Language) throws -> String {
-		TODO.unimplemented
+		guard language == .perlCompatibleREs else { throw SymbolSerialisationError.unsupportedByLanguage }
+		switch self {
+			case .leadingBoundary:	return "(?<!"
+			case .trailingBoundary:	return ")"
+		}
 	}
 	
 }

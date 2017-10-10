@@ -5,6 +5,13 @@ import DepthKit
 /// An expression with arbitrary literal symbols that expresses no pattern.
 public struct CommentRegularExpression {
 	
+	/// Creates an expression with given arbitrary characters that expresses no pattern.
+	///
+	/// - Parameter comment: The comment or unevaluated serialisation.
+	public init(_ comment: String) {
+		self.comment = comment
+	}
+	
 	/// The comment or unevaluated serialisation.
 	public var comment: String
 	
@@ -116,7 +123,13 @@ extension CommentRegularExpression : Expression {
 extension CommentRegularExpression.Symbol : SymbolProtocol {
 	
 	public func serialisation(language: Language) throws -> String {
-		TODO.unimplemented
+		guard language == .perlCompatibleREs else { throw SymbolSerialisationError.unsupportedByLanguage }
+		switch self {
+			case .leadingBoundary:						return "(?#"
+			case .unevaluatedCharacter(")"):			throw SymbolSerialisationError.unsupportedByLanguage
+			case .unevaluatedCharacter(let character):	return String(character)
+			case .trailingBoundary:						return ")"
+		}
 	}
 	
 }

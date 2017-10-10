@@ -250,7 +250,7 @@ extension CharacterSetExpression : Expression {
 
 extension CharacterSetExpression.Symbol : SymbolProtocol {
 	
-	public func serialisation(language: Language) throws -> String {
+	public func serialisation(language: Language) -> String {
 		
 		func serialiseScalar(_ scalar: UnicodeScalar, firstInSet: Bool, membership: CharacterSetExpression.Membership) -> String {
 			switch (scalar, firstInSet, membership) {

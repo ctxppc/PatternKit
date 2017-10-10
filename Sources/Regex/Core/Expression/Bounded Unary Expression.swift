@@ -101,11 +101,26 @@ public enum BoundedUnaryExpressionIndex<Subexpression : Expression> {
 extension BoundedUnaryExpressionIndex : Comparable {
 	
 	public static func <(smallerIndex: BoundedUnaryExpressionIndex, greaterIndex: BoundedUnaryExpressionIndex) -> Bool {
-		TODO.unimplemented
+		switch (smallerIndex, greaterIndex) {
+			case (.leadingBoundary, .leadingBoundary):																return false
+			case (.leadingBoundary, _):																				return true
+			case (.inSubexpression, .leadingBoundary):																return false
+			case (.inSubexpression(innerIndex: let smallerIndex), .inSubexpression(innerIndex: let greaterIndex)):	return smallerIndex < greaterIndex
+			case (.inSubexpression, _):																				return true
+			case (.trailingBoundary, .end):																			return true
+			case (.trailingBoundary, _):																			return false
+			case (.end, _):																							return false
+		}
 	}
 	
 	public static func ==(firstIndex: BoundedUnaryExpressionIndex, otherIndex: BoundedUnaryExpressionIndex) -> Bool {
-		TODO.unimplemented
+		switch (firstIndex, otherIndex) {
+			case (.leadingBoundary, .leadingBoundary):															return true
+			case (.inSubexpression(innerIndex: let firstIndex), .inSubexpression(innerIndex: let otherIndex)):	return firstIndex == otherIndex
+			case (.trailingBoundary, .trailingBoundary):														return true
+			case (.end, .end):																					return true
+			default:																							return false
+		}
 	}
 	
 }
