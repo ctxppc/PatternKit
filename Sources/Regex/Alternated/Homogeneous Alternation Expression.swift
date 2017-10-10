@@ -38,13 +38,18 @@ extension HomogeneousAlternationExpression : Expression {
 	
 	public enum Index {
 		
-		/// A position to a symbol in a subexpression.
+		/// A position of a symbol in a subexpression.
+		///
+		/// - Invariant: `subexpressionIndex` is an index to a subexpression.
+		/// - Invariant: `innerIndex` is an index to a symbol in the subexpression.
 		///
 		/// - Parameter subexpressionIndex: The position of the subexpression.
 		/// - Parameter innerIndex: The position of the symbol within the subexpression.
 		case inSubexpression(subexpressionIndex: Int, innerIndex: Subexpression.Index)
 		
-		/// A position to a delimiter symbol.
+		/// A position of a delimiter symbol.
+		///
+		/// - Invariant: `indexOfPreviousSubexpression` is an index to a subexpression.
 		///
 		/// - Parameter indexOfPreviousSubexpression: The position of the subexpression preceding the delimiter.
 		case delimiter(indexOfPreviousSubexpression: Int)
@@ -140,6 +145,10 @@ extension HomogeneousAlternationExpression : Expression {
 			
 		}
 		
+	}
+	
+	public var bindingClass: BindingClass {
+		return .alternation
 	}
 	
 }

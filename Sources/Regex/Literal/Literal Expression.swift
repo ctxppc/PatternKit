@@ -59,6 +59,10 @@ extension LiteralExpression : Expression {
 		return literal.index(after: index)
 	}
 	
+	public var bindingClass: BindingClass {
+		return .concatenation
+	}
+	
 }
 
 extension LiteralExpression.Symbol : SymbolProtocol {

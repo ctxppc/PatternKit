@@ -82,30 +82,38 @@ extension CharacterSetExpression : Expression {
 	
 	public enum Index {
 		
-		/// The position to the leading boundary symbol.
+		/// The position of the leading boundary symbol.
 		case leadingBoundary
 		
-		/// A position to a symbol representing a singleton scalar member.
+		/// A position of a symbol representing a singleton scalar member.
+		///
+		/// - Invariant: `index` is an index to a singleton scalar member in the character set.
 		///
 		/// - Parameter index: The index of the member.
 		case singletonScalarMember(index: Int)
 		
-		/// A position to a symbol representing a lower bound scalar of an interval member.
+		/// A position of a symbol representing a lower bound scalar of an interval member.
+		///
+		/// - Invariant: `index` is an index to an interval member in the character set.
 		///
 		/// - Parameter index: The index of the member.
 		case intervalLowerBoundScalar(index: Int)
 		
-		/// A position to a symbol representing a delimiter between the lower bound and upper bound symbols in an interval member.
+		/// A position of a symbol representing a delimiter between the lower bound and upper bound symbols in an interval member.
+		///
+		/// - Invariant: `index` is an index to an interval member in the character set.
 		///
 		/// - Parameter index: The index of the member.
 		case intervalBoundsDelimiter(index: Int)
 		
-		/// A position to a symbol representing an upper bound scalar of an interval member.
+		/// A position of a symbol representing an upper bound scalar of an interval member.
+		///
+		/// - Invariant: `index` is an index to an interval member in the character set.
 		///
 		/// - Parameter index: The index of the member.
 		case intervalUpperBoundScalar(index: Int)
 		
-		/// The position to the trailing boundary symbol.
+		/// The position of the trailing boundary symbol.
 		case trailingBoundary
 		
 		/// The position after the last symbol.
@@ -234,6 +242,9 @@ extension CharacterSetExpression : Expression {
 		}
 	}
 	
+	public var bindingClass: BindingClass {
+		return .atomic
+	}
 	
 }
 

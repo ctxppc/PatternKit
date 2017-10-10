@@ -28,12 +28,16 @@ extension ConcatenatedExpression : Expression {
 	
 	public enum Index {
 		
-		/// A position to a symbol in the leading expression.
+		/// A position of a symbol in the leading expression.
+		///
+		/// - Invariant: `innerIndex` is an index to a symbol in the leading expression.
 		///
 		/// - Parameter innerIndex: The position of the symbol within the leading expression.
 		case inLeadingExpression(innerIndex: LeadingExpression.Index)
 		
-		/// A position to a symbol in the trailing expression.
+		/// A position of a symbol in the trailing expression.
+		///
+		/// - Invariant: `innerIndex` is an index to a symbol in the trailing expression.
 		///
 		/// - Parameter innerIndex: The position of the symbol within the trailing expression.
 		case inTrailingExpression(innerIndex: TrailingExpression.Index)
@@ -112,6 +116,10 @@ extension ConcatenatedExpression : Expression {
 			indexOutOfBounds
 			
 		}
+	}
+	
+	public var bindingClass: BindingClass {
+		return .concatenation
 	}
 	
 }

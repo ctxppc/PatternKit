@@ -38,7 +38,10 @@ extension HomogeneousConcatenatedExpression : Expression {
 	
 	public enum Index {
 		
-		/// A position to a symbol in a subexpression.
+		/// A position of a symbol in a subexpression.
+		///
+		/// - Invariant: `subexpressionIndex` is an index to a subexpression.
+		/// - Invariant: `innerIndex` is an index to a symbol in the subexpression.
 		///
 		/// - Parameter subexpressionIndex: The position of the subexpression.
 		/// - Parameter innerIndex: The position of the symbol within the subexpression.
@@ -124,6 +127,10 @@ extension HomogeneousConcatenatedExpression : Expression {
 		
 		return .end
 		
+	}
+	
+	public var bindingClass: BindingClass {
+		return .concatenation
 	}
 	
 }

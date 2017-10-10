@@ -28,15 +28,19 @@ extension AlternationExpression : Expression {
 	
 	public enum Index {
 		
-		/// A position to a symbol in the main expression.
+		/// A position of a symbol in the main expression.
+		///
+		/// - Invariant: `innerIndex` is an index to a symbol in the main expression.
 		///
 		/// - Parameter innerIndex: The position of the symbol within the main expression.
 		case inMainExpression(innerIndex: MainExpression.Index)
 		
-		/// The position to the delimiter symbol.
+		/// The position of the delimiter symbol.
 		case delimiter
 		
-		/// A position to a symbol in the alternative expression.
+		/// A position of a symbol in the alternative expression.
+		///
+		/// - Invariant: `innerIndex` is an index to a symbol in the alternative expression.
 		///
 		/// - Parameter innerIndex: The position of the symbol within the alternative expression.
 		case inAlternativeExpression(innerIndex: AlternativeExpression.Index)
@@ -109,6 +113,10 @@ extension AlternationExpression : Expression {
 			indexOutOfBounds
 			
 		}
+	}
+	
+	public var bindingClass: BindingClass {
+		return .alternation
 	}
 	
 }

@@ -29,17 +29,17 @@ extension CommentRegularExpression : Expression {
 	
 	public enum Index {
 		
-		/// The position to the leading boundary symbol.
+		/// The position of the leading boundary symbol.
 		case leadingBoundary
 		
-		/// A position to a symbol that represents a character in the comment.
+		/// A position of a symbol that represents a character in the comment.
 		///
-		/// - Invariant: `index` is a valid, subscriptable index of the comment.
+		/// - Invariant: `index` is an index to a character in the comment.
 		///
 		/// - Parameter index: The position of the represented character in the comment.
 		case unevaluatedCharacter(index: String.Index)
 		
-		/// The position to the trailing boundary symbol.
+		/// The position of the trailing boundary symbol.
 		case trailingBoundary
 		
 		/// The position after the last symbol.
@@ -105,6 +105,10 @@ extension CommentRegularExpression : Expression {
 			indexOutOfBounds
 			
 		}
+	}
+	
+	public var bindingClass: BindingClass {
+		return .atomic
 	}
 	
 }
