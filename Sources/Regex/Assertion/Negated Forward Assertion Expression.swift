@@ -3,14 +3,14 @@
 import DepthKit
 
 /// An expression that expresses a forward assertion.
-public struct ForwardAssertionExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
+public struct NegatedForwardAssertionExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
 	
 	/// The expression that expresses the asserted pattern.
 	public var subexpression: Subexpression
 	
 }
 
-extension ForwardAssertionExpression : BoundedUnaryExpression {
+extension NegatedForwardAssertionExpression : BoundedUnaryExpression {
 	
 	public enum BoundarySymbol {
 		
@@ -24,9 +24,9 @@ extension ForwardAssertionExpression : BoundedUnaryExpression {
 	
 }
 
-extension ForwardAssertionExpression.BoundarySymbol : BoundarySymbolProtocol {
+extension NegatedForwardAssertionExpression.BoundarySymbol : BoundarySymbolProtocol {
 	
-	public static var boundaries: (leading: ForwardAssertionExpression.BoundarySymbol, trailing: ForwardAssertionExpression.BoundarySymbol) {
+	public static var boundaries: (leading: NegatedForwardAssertionExpression.BoundarySymbol, trailing: NegatedForwardAssertionExpression.BoundarySymbol) {
 		return (.leadingBoundary, .trailingBoundary)
 	}
 	
