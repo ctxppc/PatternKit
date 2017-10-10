@@ -5,8 +5,6 @@
 /// Note that a symbol value doesn't only carry a specific serialisation for a set of languages, but also a precise lexical meaning. It is, for example, incorrect to represent an alternation delimiter with a literal symbol serialising to `|`.
 public protocol SymbolProtocol {
 	
-	// TODO
-	
 	/// Returns a serialisation of the symbol in a given language.
 	///
 	/// - Throws: An error if the symbol can't be serialised.

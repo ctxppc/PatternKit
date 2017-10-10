@@ -25,7 +25,7 @@ extension BoundedUnaryExpression where Subexpression.Indices : BidirectionalColl
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
 			case .leadingBoundary:						return BoundarySymbol.boundaries.leading
-			case .subexpression(innerIndex: let index):	return subexpression[index]
+			case .inSubexpression(innerIndex: let index):	return subexpression[index]
 			case .trailingBoundary:						return BoundarySymbol.boundaries.trailing
 			case .end:									indexOutOfBounds
 		}
@@ -37,13 +37,13 @@ extension BoundedUnaryExpression where Subexpression.Indices : BidirectionalColl
 			case .leadingBoundary:
 			indexOutOfBounds
 			
-			case .subexpression(innerIndex: let index):
+			case .inSubexpression(innerIndex: let index):
 			guard index > subexpression.startIndex else { return .leadingBoundary }
-			return .subexpression(innerIndex: subexpression.index(before: index))
+			return .inSubexpression(innerIndex: subexpression.index(before: index))
 			
 			case .trailingBoundary:
 			guard let lastIndex = subexpression.indices.last else { return .leadingBoundary }
-			return .subexpression(innerIndex: lastIndex)
+			return .inSubexpression(innerIndex: lastIndex)
 			
 			case .end:
 			return .trailingBoundary
@@ -56,12 +56,12 @@ extension BoundedUnaryExpression where Subexpression.Indices : BidirectionalColl
 			
 			case .leadingBoundary:
 			guard let firstIndex = subexpression.indices.first else { return .trailingBoundary }
-			return .subexpression(innerIndex: firstIndex)
+			return .inSubexpression(innerIndex: firstIndex)
 			
-			case .subexpression(innerIndex: let index):
+			case .inSubexpression(innerIndex: let index):
 			let nextIndex = subexpression.index(after: index)
 			guard nextIndex < subexpression.endIndex else { return .trailingBoundary }
-			return .subexpression(innerIndex: nextIndex)
+			return .inSubexpression(innerIndex: nextIndex)
 			
 			case .trailingBoundary:
 			return .end
@@ -88,7 +88,7 @@ public enum BoundedUnaryExpressionIndex<Subexpression : Expression> {
 	/// - Invariant: `innerIndex` is an index to a symbol in the subexpression.
 	///
 	/// - Parameter innerIndex: The position of the symbol within the subexpression.
-	case subexpression(innerIndex: Subexpression.Index)
+	case inSubexpression(innerIndex: Subexpression.Index)
 	
 	/// The position of the trailing boundary.
 	case trailingBoundary

@@ -101,12 +101,12 @@ extension AlternationExpression : Expression {
 			return .inMainExpression(innerIndex: nextIndex)
 			
 			case .delimiter:
-			guard let firstIndex = alternativeExpression.indices.first else { indexOutOfBounds }
+			guard let firstIndex = alternativeExpression.indices.first else { return .end }
 			return .inAlternativeExpression(innerIndex: firstIndex)
 			
 			case .inAlternativeExpression(innerIndex: let index):
 			let nextIndex = alternativeExpression.index(after: index)
-			guard nextIndex < alternativeExpression.endIndex else { indexOutOfBounds }
+			guard nextIndex < alternativeExpression.endIndex else { return .end }
 			return .inAlternativeExpression(innerIndex: nextIndex)
 			
 			case .end:

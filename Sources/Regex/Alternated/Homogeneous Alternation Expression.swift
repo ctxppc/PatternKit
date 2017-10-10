@@ -49,7 +49,7 @@ extension HomogeneousAlternationExpression : Expression {
 		
 		/// A position of a delimiter symbol.
 		///
-		/// - Invariant: `indexOfPreviousSubexpression` is an index to a subexpression.
+		/// - Invariant: `indexOfPreviousSubexpression` is an index to a subexpression that is not the last subexpression of the alternation expression.
 		///
 		/// - Parameter indexOfPreviousSubexpression: The position of the subexpression preceding the delimiter.
 		case delimiter(indexOfPreviousSubexpression: Int)
@@ -60,10 +60,11 @@ extension HomogeneousAlternationExpression : Expression {
 	}
 	
 	public var startIndex: Index {
-		if let firstIndex = subexpressions.first!.indices.first {
-			return .inSubexpression(subexpressionIndex: subexpressions.indices.first!, innerIndex: firstIndex)
+		let firstSubexpressionIndex = subexpressions.indices.first !! "There are always at least two subexpressions"
+		if let firstIndex = subexpressions[firstSubexpressionIndex].indices.first {
+			return .inSubexpression(subexpressionIndex: firstSubexpressionIndex, innerIndex: firstIndex)
 		} else {
-			return .delimiter(indexOfPreviousSubexpression: subexpressions.indices.first!)
+			return .delimiter(indexOfPreviousSubexpression: firstSubexpressionIndex)
 		}
 	}
 	
@@ -88,12 +89,13 @@ extension HomogeneousAlternationExpression : Expression {
 	
 	public func index(before index: Index) -> Index {
 		
+		// Returns the index with the last inner index in the subexpression at given index, or failing that, the index of the delimiter following the subexpression preceding the one at given index.
 		func lastIndexInSubexpression(at subexpressionIndex: Int) -> Index {
 			let subexpression = subexpressions[subexpressionIndex]
 			if let lastInnerIndex = subexpression.indices.last {
 				return .inSubexpression(subexpressionIndex: subexpressionIndex, innerIndex: lastInnerIndex)
 			} else {
-				return .delimiter(indexOfPreviousSubexpression: subexpressionIndex)
+				return .delimiter(indexOfPreviousSubexpression: subexpressions.index(before: subexpressionIndex))
 			}
 		}
 		
@@ -111,7 +113,7 @@ extension HomogeneousAlternationExpression : Expression {
 			return lastIndexInSubexpression(at: subexpressionIndex)
 			
 			case .end:
-			return lastIndexInSubexpression(at: subexpressions.indices.last!)
+			return lastIndexInSubexpression(at: subexpressions.indices.last !! "There are always at least two subexpressions")
 			
 		}
 		
@@ -125,18 +127,18 @@ extension HomogeneousAlternationExpression : Expression {
 			let nextInnerIndex = subexpression.index(after: innerIndex)
 			if nextInnerIndex < subexpression.endIndex {
 				return .inSubexpression(subexpressionIndex: subexpressionIndex, innerIndex: nextInnerIndex)
-			} else {
+			} else if subexpressions.indices.dropLast().contains(subexpressionIndex) {
 				return .delimiter(indexOfPreviousSubexpression: subexpressionIndex)
+			} else {
+				return .end
 			}
 			
 			case .delimiter(indexOfPreviousSubexpression: let previousSubexpressionIndex):
-			let subexpressionIndex = subexpressions.index(after: previousSubexpressionIndex)
-			guard subexpressionIndex < subexpressions.endIndex else { return .end }
+			let subexpressionIndex = subexpressions.index(after: previousSubexpressionIndex)	// never end index because no delimiter follows the last subexpression
 			if let firstInnerIndex = subexpressions[subexpressionIndex].indices.first {
 				return .inSubexpression(subexpressionIndex: subexpressionIndex, innerIndex: firstInnerIndex)
 			} else {
-				let nextSubexpressionIndex = subexpressions.index(after: subexpressionIndex)
-				guard nextSubexpressionIndex < subexpressions.endIndex else { return .end }
+				guard subexpressions.indices.dropLast().contains(subexpressionIndex) else { return .end }	// exclude last
 				return .delimiter(indexOfPreviousSubexpression: subexpressionIndex)
 			}
 			
@@ -144,7 +146,6 @@ extension HomogeneousAlternationExpression : Expression {
 			indexOutOfBounds
 			
 		}
-		
 	}
 	
 	public var bindingClass: BindingClass {

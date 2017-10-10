@@ -9,3 +9,18 @@ public protocol Expression : BidirectionalCollection where Element == SymbolProt
 	var bindingClass: BindingClass { get }
 	
 }
+
+extension Expression {
+	
+	/// Returns a serialisation of the expression in a given language.
+	///
+	/// - Throws: An error if the expression can't be serialised.
+	///
+	/// - Parameter language: The language in which to serialise the expression.
+	func serialisation(language: Language) throws -> String {
+		return try map {
+			try $0.serialisation(language: language)
+		}.joined()
+	}
+	
+}
