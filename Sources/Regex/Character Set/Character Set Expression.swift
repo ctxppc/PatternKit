@@ -148,7 +148,7 @@ extension CharacterSetExpression : Expression {
 			
 			case .intervalUpperBoundScalar(index: let index):
 			guard case .interval(let range) = members[index] else { fatalError("Incompatible member type of index") }
-			return Symbol.intervalUpperBoundScalar(range.lowerBound)
+			return Symbol.intervalUpperBoundScalar(range.upperBound)
 			
 			case .trailingBoundary:
 			return Symbol.trailingBoundary
@@ -246,6 +246,16 @@ extension CharacterSetExpression : Expression {
 		return .atomic
 	}
 	
+}
+
+extension CharacterSetExpression.Member : ExpressibleByUnicodeScalarLiteral {
+	public init(unicodeScalarLiteral value: UnicodeScalar) {
+		self = .singletonScalar(value)
+	}
+}
+
+public func ...(lowerBound: UnicodeScalar, upperBound: UnicodeScalar) -> CharacterSetExpression.Member {
+	return .interval(lowerBound...upperBound)
 }
 
 extension CharacterSetExpression.Symbol : SymbolProtocol {
