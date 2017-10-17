@@ -13,7 +13,7 @@ public enum BindingClass : Int, Equatable {
 	/// The binding class of concatenations.
 	case concatenation
 	
-	/// The binding class of quantified expressions.
+	/// The binding class of quantified expressions (the subexpression and associated quantifier).
 	case quantified
 	
 	/// The binding class of atomic expressions, i.e., expressions whose symbols form a lexically indivisible unit.
