@@ -1,16 +1,22 @@
 # The *PatternKit* library
-**PatternKit** is a nondeterministic automaton parser for Swift clients, and an excellent regular expression engine.
+**PatternKit** is a Swift-based nondeterministic automaton parser and regular expression engine.
 
 + Fully designed for and written in Swift
-+ Supports arbitrary `Sequence`s with `Equatable` elements
++ Supports arbitrary `Sequence`s with `Equatable` elements (`String`, `[Int]`, and so on)
++ Batteries included — including full support for matching over Unicode extended grapheme clusters
++ Type-safe — syntax checked at build time by the compiler
++ No parsing/building overhead
++ Value semantics
 + Extensible architecture
 + Backreferences
 + Backtracking
 + Shorthand and longhand notation
-+ Value semantics
-+ Batteries included, including full support for Unicode extended grapheme clusters.
+
+PatternKit is still a pre-1.0 project — please use with care. :-)
 
 ## Usage
+(Author's note: Some examples in this document might become outdated as PatternKit evolves.)
+
 The following matches very simple e-mail addresses.
 
 	import PatternKit

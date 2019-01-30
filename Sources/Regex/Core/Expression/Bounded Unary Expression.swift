@@ -3,7 +3,7 @@
 import DepthKit
 
 /// A unary expression that is a sequence consisting of a leading boundary symbol, the subexpression's symbols, and a trailing boundary symbol.
-public protocol BoundedUnaryExpression : UnaryExpression {
+public protocol BoundedUnaryExpression : UnaryExpression where Index == BoundedUnaryExpressionIndex<Subexpression> {
 	
 	/// A symbol that indicates the expression's edges.
 	associatedtype BoundarySymbol : BoundarySymbolProtocol
@@ -11,8 +11,6 @@ public protocol BoundedUnaryExpression : UnaryExpression {
 }
 
 extension BoundedUnaryExpression where Subexpression.Indices : BidirectionalCollection {
-	
-	public typealias Index = BoundedUnaryExpressionIndex<Subexpression>
 	
 	public var startIndex: Index {
 		return .leadingBoundary
@@ -24,10 +22,10 @@ extension BoundedUnaryExpression where Subexpression.Indices : BidirectionalColl
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
-			case .leadingBoundary:						return BoundarySymbol.boundaries.leading
+			case .leadingBoundary:							return BoundarySymbol.boundaries.leading
 			case .inSubexpression(innerIndex: let index):	return subexpression[index]
-			case .trailingBoundary:						return BoundarySymbol.boundaries.trailing
-			case .end:									indexOutOfBounds
+			case .trailingBoundary:							return BoundarySymbol.boundaries.trailing
+			case .end:										indexOutOfBounds
 		}
 	}
 	
