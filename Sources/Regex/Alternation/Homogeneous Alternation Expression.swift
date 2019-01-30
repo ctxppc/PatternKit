@@ -1,9 +1,9 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
 /// An expression that expresses a homogeneous alternation pattern.
-public struct HomogeneousAlternationExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
+public struct HomogeneousAlternationExpression<Subexpression : Expression> {
 	
 	/// Creates a homogeneous concatenated expression with given subexpressions.
 	///

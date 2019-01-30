@@ -1,11 +1,10 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 import PatternKitBundle
 
 /// A realisation of a homogeneous alternation expression with realisable subexpressions.
-public struct HomogeneousAlternationRegularExpressionRealisation<SubexpressionRealisation : Realisation> : Realisation
-	where SubexpressionRealisation.ExpressionType.Indices : BidirectionalCollection {
+public struct HomogeneousAlternationRegularExpressionRealisation<SubexpressionRealisation : Realisation> : Realisation {
 	
 	/// The type of the alternation expression's subexpressions.
 	public typealias Subexpression = SubexpressionRealisation.ExpressionType

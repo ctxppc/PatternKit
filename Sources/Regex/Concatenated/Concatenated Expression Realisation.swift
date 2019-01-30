@@ -1,13 +1,10 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 import PatternKitBundle
 
 /// A realisation of a concatenated expression with realisable subexpressions.
 public struct ConcatenatedExpressionRealisation<LeadingExpressionRealisation : Realisation, TrailingExpressionRealisation : Realisation> : Realisation where
-	
-	LeadingExpressionRealisation.ExpressionType.Indices : BidirectionalCollection,
-	TrailingExpressionRealisation.ExpressionType.Indices : BidirectionalCollection,
 	
 	LeadingExpressionRealisation.PatternType.ForwardMatchCollection.Indices : OrderedCollection,
 	TrailingExpressionRealisation.PatternType.ForwardMatchCollection.Indices : OrderedCollection,

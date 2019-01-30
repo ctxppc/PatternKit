@@ -1,11 +1,11 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
 /// An expression that expresses an arbitrary backward assertion.
 ///
 /// Some languages support backward assertions but not arbitrary backward assertions. Typical constraints involve the length of the backward matched substring.
-public struct BackwardAssertionExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
+public struct BackwardAssertionExpression<Subexpression : Expression> {
 	
 	/// Creates a backward assertion expression with given subexpression.
 	///

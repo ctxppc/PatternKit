@@ -1,4 +1,4 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 /// A indivisible sequence of characters that forms a lexical unit in an expression.
 ///

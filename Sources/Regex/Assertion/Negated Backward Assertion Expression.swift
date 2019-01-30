@@ -1,9 +1,9 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
 /// An expression that expresses an arbitrary negated backward assertion.
-public struct NegatedBackwardAssertionExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
+public struct NegatedBackwardAssertionExpression<Subexpression : Expression> {
 	
 	/// Creates a negated backward assertion expression with given subexpression.
 	///

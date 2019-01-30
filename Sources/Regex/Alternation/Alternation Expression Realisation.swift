@@ -1,13 +1,10 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 import PatternKitBundle
 
 /// A realisation of an alternation expression with realisable subexpressions.
 public struct AlternationExpressionRealisation<MainExpressionRealisation : Realisation, AlternativeExpressionRealisation : Realisation> : Realisation where
-	
-	MainExpressionRealisation.ExpressionType.Indices : BidirectionalCollection,
-	AlternativeExpressionRealisation.ExpressionType.Indices : BidirectionalCollection,
 	
 	MainExpressionRealisation.PatternType.ForwardMatchCollection.Indices : OrderedCollection,
 	AlternativeExpressionRealisation.PatternType.ForwardMatchCollection.Indices : OrderedCollection,

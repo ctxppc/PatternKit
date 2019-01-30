@@ -1,11 +1,10 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 import PatternKitBundle
 
 /// A realisation of a homogeneous concatenated expression with realisable subexpressions.
-public struct HomogeneousConcatenatedExpressionRealisation<SubexpressionRealisation : Realisation> : Realisation
-	where SubexpressionRealisation.ExpressionType.Indices : BidirectionalCollection {
+public struct HomogeneousConcatenatedExpressionRealisation<SubexpressionRealisation : Realisation> : Realisation {
 	
 	/// The type of the concatenated expression's subexpressions.
 	public typealias Subexpression = SubexpressionRealisation.ExpressionType

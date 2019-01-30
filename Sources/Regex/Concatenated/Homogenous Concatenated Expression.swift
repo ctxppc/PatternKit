@@ -1,9 +1,9 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
 /// An expression that concatenates two or more subexpressions of the same type.
-public struct HomogeneousConcatenatedExpression<Subexpression : Expression> where Subexpression.Indices : BidirectionalCollection {
+public struct HomogeneousConcatenatedExpression<Subexpression : Expression> {
 	
 	/// Creates a homogeneous concatenated expression with given subexpressions.
 	///

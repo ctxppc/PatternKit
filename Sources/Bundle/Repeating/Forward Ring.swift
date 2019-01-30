@@ -1,4 +1,4 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import PatternKitCore
 
@@ -34,7 +34,7 @@ public struct ForwardRing<RepeatedPattern : Pattern> {
 	public let successorMatches: MatchCollection
 	
 	/// The rings that represent the next iteration, one for every successor match.
-	public var successorRings: LazyMapBidirectionalCollection<MatchCollection, ForwardRing> {
+	public var successorRings: LazyMapCollection<MatchCollection, ForwardRing> {
 		let repeatedPattern = self.repeatedPattern
 		let newDepth = depth + 1
 		return successorMatches.lazy.map { successorMatch in

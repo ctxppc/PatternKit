@@ -1,12 +1,9 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import PatternKitCore
 
 /// A pattern that matches an exact subcollection.
-public struct Literal<Subject : BidirectionalCollection> where
-	Subject.Element : Equatable,
-	Subject.IndexDistance == Subject.SubSequence.IndexDistance,
-	Subject.SubSequence : BidirectionalCollection {					// TODO: Remove constraints when recursive conformances land in Swift.
+public struct Literal<Subject : BidirectionalCollection> where Subject.Element : Equatable {
 	
 	/// Creates a pattern that matches an exact collection.
 	///

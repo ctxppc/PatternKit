@@ -1,11 +1,9 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
 /// An expression that expresses an alternation pattern.
-public struct AlternationExpression<MainExpression : Expression, AlternativeExpression : Expression> where
-	MainExpression.Indices : BidirectionalCollection,
-	AlternativeExpression.Indices : BidirectionalCollection {
+public struct AlternationExpression<MainExpression : Expression, AlternativeExpression : Expression> {
 	
 	/// Creates an alternation expression with given subexpressions.
 	///

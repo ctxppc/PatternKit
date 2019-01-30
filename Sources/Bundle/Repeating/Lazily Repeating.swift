@@ -1,4 +1,4 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 import PatternKitCore
@@ -53,7 +53,7 @@ public func repeating<RepeatedPattern>(_ repeatedPattern: RepeatedPattern, exact
 
 extension LazilyRepeating : Pattern {
 	
-	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<Subject>> {
+	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapCollection<LazyFilterCollection<PreOrderFlatteningBidirectionalCollection<ForwardRing<RepeatedPattern>>>, Match<Subject>> {
 		let minimumDepth = multiplicityRange.lowerBound
 		let maximumDepth = multiplicityRange.upperBound == .max ? .max : multiplicityRange.upperBound + 1
 		return ForwardRing(repeatedPattern: repeatedPattern, baseMatch: base)
@@ -63,7 +63,7 @@ extension LazilyRepeating : Pattern {
 			.map { $0.baseMatch }
 	}
 	
-	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<LazyFilterBidirectionalCollection<PreOrderFlatteningBidirectionalCollection<BackwardRing<RepeatedPattern>>>, Match<Subject>> {
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapCollection<LazyFilterCollection<PreOrderFlatteningBidirectionalCollection<BackwardRing<RepeatedPattern>>>, Match<Subject>> {
 		let minimumDepth = multiplicityRange.lowerBound
 		let maximumDepth = multiplicityRange.upperBound == .max ? .max : multiplicityRange.upperBound + 1
 		return BackwardRing(repeatedPattern: repeatedPattern, baseMatch: base)

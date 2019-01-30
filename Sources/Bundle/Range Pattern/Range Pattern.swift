@@ -1,9 +1,9 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import PatternKitCore
 
 /// A pattern that matches any one element that is contained in a range.
-public struct RangePattern<Subject : BidirectionalCollection> where Subject.Element : Comparable, Subject.SubSequence : BidirectionalCollection {		// TODO: Remove constraint when recursive conformances land in Swift
+public struct RangePattern<Subject : BidirectionalCollection> where Subject.Element : Comparable {
 	
 	/// Creates a range pattern.
 	///

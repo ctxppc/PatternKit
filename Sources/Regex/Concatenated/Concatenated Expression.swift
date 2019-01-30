@@ -1,11 +1,9 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
 /// An expression that concatenates two subexpressions.
-public struct ConcatenatedExpression<LeadingExpression : Expression, TrailingExpression : Expression> where
-	LeadingExpression.Indices : BidirectionalCollection,
-	TrailingExpression.Indices : BidirectionalCollection {
+public struct ConcatenatedExpression<LeadingExpression : Expression, TrailingExpression : Expression> {
 	
 	/// Creates a concatenated expression with given subexpressions.
 	///

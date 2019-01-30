@@ -1,4 +1,4 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
@@ -119,7 +119,9 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	///
 	/// - Postcondition: A match where `completedIndices(direction: direction).contains(range)`.
 	public func matchingElements(at range: ClosedRange<Subject.Index>, direction: MatchingDirection) -> Match {
-		return withCopy(of: self, mutator: Match.matchElements(at:direction:), arguments: range, direction)
+		var match = self
+		match.matchElements(at: range, direction: direction)
+		return match
 	}
 	
 	/// Moves the input position forward or backward over a given distance.
@@ -129,7 +131,7 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	///
 	/// - Parameter distance: The (absolute) distance over which to move the input position.
 	/// - Parameter direction: The direction.
-	public mutating func moveInputPosition(distance: Subject.IndexDistance, direction: MatchingDirection) {
+	public mutating func moveInputPosition(distance: Int, direction: MatchingDirection) {
 		precondition(distance >= 0, "Negative absolute distance.")
 		switch direction {
 			case .forward:	subject.formIndex(&inputPosition, offsetBy: distance)
@@ -146,8 +148,10 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	/// - Parameter direction: The direction.
 	///
 	/// - Returns: A match whose input position is moved over `distance`.
-	public func movingInputPosition(distance: Subject.IndexDistance, direction: MatchingDirection) -> Match {
-		return withCopy(of: self, mutator: Match.moveInputPosition, arguments: distance, direction)
+	public func movingInputPosition(distance: Int, direction: MatchingDirection) -> Match {
+		var match = self
+		match.moveInputPosition(distance: distance, direction: direction)
+		return match
 	}
 	
 	/// Returns a match whose input position is set to the input position of a given match.
@@ -196,7 +200,9 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	///
 	/// - Returns: A match where `capturedRanges(for: token).last == range`.
 	internal func capturing<P>(_ range: Range<Subject.Index>, for token: Token<P>) -> Match {
-		return withCopy(of: self, mutator: Match.capture(_:for:), arguments: range, token)
+		var match = self
+		match.capture(range, for: token)
+		return self
 	}
 	
 	/// Returns the ranges captured by a token.

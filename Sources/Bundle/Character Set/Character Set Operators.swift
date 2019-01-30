@@ -1,4 +1,4 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import Foundation
 import DepthKit
@@ -30,7 +30,9 @@ public func |(firstSet: CharacterSet, secondSet: CharacterSet) -> CharacterSet {
 ///
 /// - Returns: A superset of `set` such that `set.contains(scalar)`.
 public func |(set: CharacterSet, scalar: UnicodeScalar) -> CharacterSet {
-	return withCopy(of: set, mutator: CharacterSet.insert(_:), argument: scalar)
+	var set = set
+	set.insert(scalar)
+	return set
 }
 
 /// Returns the union of a character set with a Unicode scalar.
@@ -40,7 +42,9 @@ public func |(set: CharacterSet, scalar: UnicodeScalar) -> CharacterSet {
 ///
 /// - Returns: A superset of `set` such that `set.contains(scalar)`.
 public func |(scalar: UnicodeScalar, set: CharacterSet) -> CharacterSet {
-	return withCopy(of: set, mutator: CharacterSet.insert(_:), argument: scalar)
+	var set = set
+	set.insert(scalar)
+	return set
 }
 
 /// Returns a character set containing two Unicode scalars.

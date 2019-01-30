@@ -1,4 +1,4 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 public final class Token<CapturedPattern : Pattern> {
 	
@@ -18,14 +18,14 @@ public final class Token<CapturedPattern : Pattern> {
 
 extension Token : Pattern {
 	
-	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<CapturedPattern.ForwardMatchCollection, Match<Subject>> {
+	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapCollection<CapturedPattern.ForwardMatchCollection, Match<Subject>> {
 		return capturedPattern
 			.forwardMatches(enteringFrom: base)
 			.lazy
 			.map { $0.capturing(base.inputPosition..<$0.inputPosition, for: self) }
 	}
 	
-	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapBidirectionalCollection<CapturedPattern.BackwardMatchCollection, Match<Subject>> {
+	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapCollection<CapturedPattern.BackwardMatchCollection, Match<Subject>> {
 		return capturedPattern
 			.backwardMatches(recedingFrom: base)
 			.lazy

@@ -1,4 +1,4 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 /// The unbounded Kleene operator with eager matching semantics.
 postfix operator *

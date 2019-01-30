@@ -1,11 +1,11 @@
-// PatternKit © 2017 Constantino Tsarouhas
+// PatternKit © 2017–19 Constantino Tsarouhas
 
 import DepthKit
 
 /// A unary expression that is a sequence consisting of an optional leading boundary symbol, the subexpression's symbols, an optional trailing boundary symbol, and a postfix operator symbol.
 ///
 /// The boundary symbols are added if the subexpression is of a lower binding class than the unary expression.
-public protocol PostfixOperatorExpression : UnaryExpression {
+public protocol PostfixOperatorExpression : UnaryExpression where Index == PostfixOperatorExpressionIndex<Subexpression> {
 	
 	/// A symbol that indicates the subexpression's edges.
 	associatedtype BoundarySymbol : BoundarySymbolProtocol
@@ -16,8 +16,6 @@ public protocol PostfixOperatorExpression : UnaryExpression {
 }
 
 extension PostfixOperatorExpression where Subexpression.Indices : BidirectionalCollection {
-	
-	public typealias Index = PostfixOperatorExpressionIndex<Subexpression>
 	
 	public var startIndex: Index {
 		
