@@ -119,11 +119,9 @@ extension EagerlyRepeating : BidirectionalCollection {
 }
 
 extension EagerlyRepeating.Index : Comparable {
-	
-	public static func <<P>(leftIndex: EagerlyRepeating<P>.Index, rightIndex: EagerlyRepeating<P>.Index) -> Bool {
+	public static func < <P>(leftIndex: EagerlyRepeating<P>.Index, rightIndex: EagerlyRepeating<P>.Index) -> Bool {
 		return leftIndex.rawValue < rightIndex.rawValue
 	}
-	
 }
 
 // TODO: Add literal & element initialisers (for autowrapping in Literal) when bugfix lands, in Swift 4 (or later)

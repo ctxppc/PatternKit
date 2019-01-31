@@ -131,7 +131,7 @@ extension ForwardConcatenationMatchCollection : BidirectionalCollection {
 	
 }
 
-public enum ForwardConcatenationMatchCollectionIndex<LeadingPattern : Pattern, TrailingPattern : Pattern> where LeadingPattern.Subject == TrailingPattern.Subject {
+public enum ForwardConcatenationMatchCollectionIndex<LeadingPattern : Pattern, TrailingPattern : Pattern> : Equatable where LeadingPattern.Subject == TrailingPattern.Subject {
 	
 	/// A position to a valid match.
 	///
@@ -147,8 +147,7 @@ public enum ForwardConcatenationMatchCollectionIndex<LeadingPattern : Pattern, T
 }
 
 extension ForwardConcatenationMatchCollectionIndex : Comparable {
-	
-	public static func <<LeadingPattern, TrailingPattern>(leftIndex: ForwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>, rightIndex: ForwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>) -> Bool {
+	public static func < <LeadingPattern, TrailingPattern>(leftIndex: ForwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>, rightIndex: ForwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>) -> Bool {
 		switch (leftIndex, rightIndex) {
 			
 			case (.some(indexForLeadingPattern: let leadingLeft, indexForTrailingPattern: let trailingLeft), .some(indexForLeadingPattern: let leadingRight, indexForTrailingPattern: let trailingRight)):
@@ -162,20 +161,4 @@ extension ForwardConcatenationMatchCollectionIndex : Comparable {
 			
 		}
 	}
-	
-	public static func ==<LeadingPattern, TrailingPattern>(leftIndex: ForwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>, rightIndex: ForwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>) -> Bool {
-		switch (leftIndex, rightIndex) {
-			
-			case (.some(indexForLeadingPattern: let ilpl, indexForTrailingPattern: let itpl), .some(indexForLeadingPattern: let ilpr, indexForTrailingPattern: let itpr)):
-			return (ilpl, itpl) == (ilpr, itpr)
-			
-			case (.end, .end):
-			return true
-			
-			default:
-			return false
-			
-		}
-	}
-	
 }

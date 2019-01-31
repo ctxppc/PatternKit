@@ -31,7 +31,7 @@ public struct NegatedBackwardAssertionMatchCollection<AssertedPattern : Pattern>
 
 extension NegatedBackwardAssertionMatchCollection : BidirectionalCollection {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// The position of the base match if the negated assertion holds, otherwise the end index of the collection.
 		case baseMatch
@@ -75,9 +75,7 @@ extension NegatedBackwardAssertionMatchCollection : BidirectionalCollection {
 }
 
 extension NegatedBackwardAssertionMatchCollection.Index : Comparable {
-	
-	public static func <(leftIndex: NegatedBackwardAssertionMatchCollection<AssertedPattern>.Index, rightIndex: NegatedBackwardAssertionMatchCollection<AssertedPattern>.Index) -> Bool {
+	public static func < (leftIndex: NegatedBackwardAssertionMatchCollection<AssertedPattern>.Index, rightIndex: NegatedBackwardAssertionMatchCollection<AssertedPattern>.Index) -> Bool {
 		return (leftIndex, rightIndex) == (.baseMatch, .afterBaseMatch)
 	}
-	
 }

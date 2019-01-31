@@ -2,7 +2,7 @@
 
 import DepthKit
 
-public enum MultiplicityRange {
+public enum MultiplicityRange : Equatable {
 	
 	/// A closed range.
 	///
@@ -49,26 +49,16 @@ public enum MultiplicityRange {
 	
 }
 
-public func ...(lowerBound: Int, upperBound: Int) -> MultiplicityRange {
+public func ... (lowerBound: Int, upperBound: Int) -> MultiplicityRange {
 	return .closed(lowerBound...upperBound)
 }
 
-public postfix func ...(lowerBound: Int) -> MultiplicityRange {
+public postfix func ... (lowerBound: Int) -> MultiplicityRange {
 	return .partial(lowerBound...)
 }
 
-extension MultiplicityRange : Equatable {
-	public static func ==(firstRange: MultiplicityRange, otherRange: MultiplicityRange) -> Bool {
-		switch (firstRange, otherRange) {
-			case (.closed(let firstRange), .closed(let otherRange)):	return firstRange == otherRange
-			case (.partial(let firstRange), .partial(let otherRange)):	return firstRange == otherRange
-			default:													return false
-		}
-	}
-}
-
 extension PartialRangeFrom : Equatable {
-	public static func ==(firstRange: PartialRangeFrom, otherRange: PartialRangeFrom) -> Bool {
+	public static func == (firstRange: PartialRangeFrom, otherRange: PartialRangeFrom) -> Bool {
 		return firstRange.lowerBound == otherRange.lowerBound
 	}
 }

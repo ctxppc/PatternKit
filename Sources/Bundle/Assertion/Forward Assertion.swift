@@ -83,9 +83,7 @@ extension ForwardAssertion : BidirectionalCollection {
 }
 
 extension ForwardAssertion.Index : Comparable {
-	
-	public static func <<P>(leftIndex: ForwardAssertion<P>.Index, rightIndex: ForwardAssertion<P>.Index) -> Bool {
+	public static func < <P>(leftIndex: ForwardAssertion<P>.Index, rightIndex: ForwardAssertion<P>.Index) -> Bool {
 		return leftIndex.rawValue < rightIndex.rawValue
 	}
-	
 }

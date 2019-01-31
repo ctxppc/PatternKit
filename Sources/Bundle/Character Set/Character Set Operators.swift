@@ -9,7 +9,7 @@ import DepthKit
 /// - Parameter lastScalar: The last scalar in the range, inclusive.
 ///
 /// - Returns: `CharacterSet(charactersIn: firstScalar...lastScalar)`
-public func ...(firstScalar: UnicodeScalar, lastScalar: UnicodeScalar) -> CharacterSet {
+public func ... (firstScalar: UnicodeScalar, lastScalar: UnicodeScalar) -> CharacterSet {
 	return CharacterSet(charactersIn: firstScalar...lastScalar)
 }
 
@@ -19,7 +19,7 @@ public func ...(firstScalar: UnicodeScalar, lastScalar: UnicodeScalar) -> Charac
 /// - Parameter secondSet: The second set.
 ///
 /// - Returns: `firstSet.union(secondSet)`
-public func |(firstSet: CharacterSet, secondSet: CharacterSet) -> CharacterSet {
+public func | (firstSet: CharacterSet, secondSet: CharacterSet) -> CharacterSet {
 	return firstSet.union(secondSet)
 }
 
@@ -29,7 +29,7 @@ public func |(firstSet: CharacterSet, secondSet: CharacterSet) -> CharacterSet {
 /// - Parameter scalar: The scalar.
 ///
 /// - Returns: A superset of `set` such that `set.contains(scalar)`.
-public func |(set: CharacterSet, scalar: UnicodeScalar) -> CharacterSet {
+public func | (set: CharacterSet, scalar: UnicodeScalar) -> CharacterSet {
 	var set = set
 	set.insert(scalar)
 	return set
@@ -41,7 +41,7 @@ public func |(set: CharacterSet, scalar: UnicodeScalar) -> CharacterSet {
 /// - Parameter set: The set.
 ///
 /// - Returns: A superset of `set` such that `set.contains(scalar)`.
-public func |(scalar: UnicodeScalar, set: CharacterSet) -> CharacterSet {
+public func | (scalar: UnicodeScalar, set: CharacterSet) -> CharacterSet {
 	var set = set
 	set.insert(scalar)
 	return set
@@ -53,6 +53,6 @@ public func |(scalar: UnicodeScalar, set: CharacterSet) -> CharacterSet {
 /// - Parameter secondScalar: The second scalar.
 ///
 /// - Returns: `CharacterSet([firstScalar, secondScalar])`
-public func |(firstScalar: UnicodeScalar, secondScalar: UnicodeScalar) -> CharacterSet {
+public func | (firstScalar: UnicodeScalar, secondScalar: UnicodeScalar) -> CharacterSet {
 	return CharacterSet([firstScalar, secondScalar])
 }

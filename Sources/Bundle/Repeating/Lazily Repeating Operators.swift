@@ -8,7 +8,7 @@ postfix operator *?
 /// - Parameter repeatedPattern: The pattern that is repeated.
 ///
 /// - Returns: An arbitrarily, lazily repeating pattern over `repeatedPattern`.
-public postfix func *?<P>(repeatedPattern: P) -> LazilyRepeating<P> {
+public postfix func *? <P>(repeatedPattern: P) -> LazilyRepeating<P> {
 	return LazilyRepeating(repeatedPattern)
 }
 
@@ -17,7 +17,7 @@ public postfix func *?<P>(repeatedPattern: P) -> LazilyRepeating<P> {
 /// - Parameter repeatedlyMatchedCollection: The collection that is repeatedly matched exactly.
 ///
 /// - Returns: An arbitrarily, lazily repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
-public postfix func *?<C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Literal<C>> {
+public postfix func *? <C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Literal<C>> {
 	return LazilyRepeating(Literal(repeatedlyMatchedCollection))
 }
 
@@ -31,7 +31,7 @@ postfix operator +?
 /// - Parameter repeatedPattern: The pattern that is repeated.
 ///
 /// - Returns: An arbitrarily, nonoptional, lazily repeating pattern over `repeatedPattern`.
-public postfix func +?<P>(repeatedPattern: P) -> LazilyRepeating<P> {
+public postfix func +? <P>(repeatedPattern: P) -> LazilyRepeating<P> {
 	return LazilyRepeating(repeatedPattern, min: 1)
 }
 
@@ -40,7 +40,7 @@ public postfix func +?<P>(repeatedPattern: P) -> LazilyRepeating<P> {
 /// - Parameter repeatedlyMatchedCollection: The collection that is repeatedly matched exactly.
 ///
 /// - Returns: An arbitrarily, nonoptional, lazily repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
-public postfix func +?<C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Literal<C>> {
+public postfix func +? <C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Literal<C>> {
 	return LazilyRepeating(Literal(repeatedlyMatchedCollection), min: 1)
 }
 
@@ -54,7 +54,7 @@ postfix operator /??
 /// - Parameter optionalPattern: The pattern that is lazily matched.
 ///
 /// - Returns: A pattern that optionally and lazily matches `optionalPattern`.
-public postfix func /??<P>(optionalPattern: P) -> LazilyRepeating<P> {
+public postfix func /?? <P>(optionalPattern: P) -> LazilyRepeating<P> {
 	return LazilyRepeating(optionalPattern, max: 1)
 }
 
@@ -63,6 +63,6 @@ public postfix func /??<P>(optionalPattern: P) -> LazilyRepeating<P> {
 /// - Parameter optionalCollection: The collection that is lazily matched.
 ///
 /// - Returns: A pattern that optionally and lazily matches the literal `optionalCollection`.
-public postfix func /??<C>(optionalCollection: C) -> LazilyRepeating<Literal<C>> {
+public postfix func /?? <C>(optionalCollection: C) -> LazilyRepeating<Literal<C>> {
 	return LazilyRepeating(Literal(optionalCollection), max: 1)
 }

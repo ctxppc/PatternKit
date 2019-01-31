@@ -24,7 +24,7 @@ public struct ConcatenatedExpression<LeadingExpression : Expression, TrailingExp
 
 extension ConcatenatedExpression : Expression {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// A position of a symbol in the leading expression.
 		///
@@ -123,8 +123,7 @@ extension ConcatenatedExpression : Expression {
 }
 
 extension ConcatenatedExpression.Index : Comparable {
-	
-	public static func <(smallerIndex: ConcatenatedExpression.Index, greaterIndex: ConcatenatedExpression.Index) -> Bool {
+	public static func < (smallerIndex: ConcatenatedExpression.Index, greaterIndex: ConcatenatedExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.inLeadingExpression(innerIndex: let smallerIndex), .inLeadingExpression(innerIndex: let greaterIndex)):		return smallerIndex < greaterIndex
 			case (.inLeadingExpression, _):																						return true
@@ -134,14 +133,4 @@ extension ConcatenatedExpression.Index : Comparable {
 			case (.end, _):																										return false
 		}
 	}
-	
-	public static func ==(firstIndex: ConcatenatedExpression.Index, otherIndex: ConcatenatedExpression.Index) -> Bool {
-		switch (firstIndex, otherIndex) {
-			case (.inLeadingExpression(innerIndex: let firstIndex), .inLeadingExpression(innerIndex: let otherIndex)):		return firstIndex == otherIndex
-			case (.inTrailingExpression(innerIndex: let firstIndex), .inTrailingExpression(innerIndex: let otherIndex)):	return firstIndex == otherIndex
-			case (.end, .end):																								return true
-			default:																										return false
-		}
-	}
-	
 }

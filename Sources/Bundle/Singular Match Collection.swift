@@ -18,7 +18,7 @@ extension SingularMatchCollection : ExpressibleByNilLiteral {
 
 extension SingularMatchCollection : BidirectionalCollection {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// The position of the result match if it exists, otherwise the end index of the collection.
 		case resultMatch
@@ -66,9 +66,7 @@ extension SingularMatchCollection : BidirectionalCollection {
 }
 
 extension SingularMatchCollection.Index : Comparable {
-	
-	public static func <<Subject>(left: SingularMatchCollection<Subject>.Index, right: SingularMatchCollection<Subject>.Index) -> Bool {
+	public static func < <Subject>(left: SingularMatchCollection<Subject>.Index, right: SingularMatchCollection<Subject>.Index) -> Bool {
 		return (left, right) == (.resultMatch, .afterResultMatch)
 	}
-	
 }

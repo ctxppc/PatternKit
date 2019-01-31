@@ -25,7 +25,7 @@ public struct BackwardAssertionMatchCollection<AssertedPattern : Pattern> {
 
 extension BackwardAssertionMatchCollection : BidirectionalCollection {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// A position within the asserted pattern.
 		///
@@ -76,28 +76,11 @@ extension BackwardAssertionMatchCollection : BidirectionalCollection {
 }
 
 extension BackwardAssertionMatchCollection.Index : Comparable {
-	
-	public static func <(leftIndex: BackwardAssertionMatchCollection<AssertedPattern>.Index, rightIndex: BackwardAssertionMatchCollection<AssertedPattern>.Index) -> Bool {
+	public static func < (leftIndex: BackwardAssertionMatchCollection<AssertedPattern>.Index, rightIndex: BackwardAssertionMatchCollection<AssertedPattern>.Index) -> Bool {
 		if case (.some, .end) = (leftIndex, rightIndex) {
 			return true
 		} else {
 			return false
 		}
 	}
-	
-	public static func ==(leftIndex: BackwardAssertionMatchCollection<AssertedPattern>.Index, rightIndex: BackwardAssertionMatchCollection<AssertedPattern>.Index) -> Bool {
-		switch (leftIndex, rightIndex) {
-			
-			case (.some(let innerIndex), .some(let otherInnerIndex)):
-			return innerIndex == otherInnerIndex
-			
-			case (.end, .end):
-			return true
-			
-			default:
-			return false
-			
-		}
-	}
-	
 }

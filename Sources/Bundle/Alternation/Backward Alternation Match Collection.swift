@@ -109,7 +109,7 @@ extension BackwardAlternationMatchCollection : BidirectionalCollection {
 	
 }
 
-public enum BackwardAlternationMatchCollectionIndex<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Subject == AlternativePattern.Subject {
+public enum BackwardAlternationMatchCollectionIndex<MainPattern : Pattern, AlternativePattern : Pattern> : Equatable where MainPattern.Subject == AlternativePattern.Subject {
 	
 	/// A position within the main pattern.
 	///
@@ -131,8 +131,7 @@ public enum BackwardAlternationMatchCollectionIndex<MainPattern : Pattern, Alter
 }
 
 extension BackwardAlternationMatchCollectionIndex : Comparable {
-	
-	public static func <<MainPattern, AlternativePattern>(leftIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>, rightIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>) -> Bool {
+	public static func < <MainPattern, AlternativePattern>(leftIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>, rightIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>) -> Bool {
 		switch (leftIndex, rightIndex) {
 			
 			case (.inMainPattern(innerIndex: let innerIndexOfLeftIndex), .inMainPattern(innerIndex: let innerIndexOfRightIndex)):
@@ -158,26 +157,4 @@ extension BackwardAlternationMatchCollectionIndex : Comparable {
 			
 		}
 	}
-	
-	public static func ==<MainPattern, AlternativePattern>(firstIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>, secondIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>) -> Bool {
-		switch (firstIndex, secondIndex) {
-			
-			case (.inMainPattern(innerIndex: let innerIndexOfLeftIndex), .inMainPattern(innerIndex: let innerIndexOfRightIndex)):
-			return innerIndexOfLeftIndex == innerIndexOfRightIndex
-			
-			case (.inAlternativePattern(innerIndex: let innerIndexOfLeftIndex), .inAlternativePattern(innerIndex: let innerIndexOfRightIndex)):
-			return innerIndexOfLeftIndex == innerIndexOfRightIndex
-			
-			case (.end, .end):
-			return true
-			
-			default:
-			return false
-			
-		}
-	}
-	
 }
-
-
-

@@ -6,6 +6,6 @@
 /// - Parameter alternativePattern: The pattern whose matches are generated after those of the main pattern.
 ///
 /// - Returns: `Alternation(mainPattern, alternativePattern)`
-public func |<L, R>(mainPattern: L, alternativePattern: R) -> Alternation<L, R> {
+public func | <L, R>(mainPattern: L, alternativePattern: R) -> Alternation<L, R> {
 	return Alternation(mainPattern, alternativePattern)
 }

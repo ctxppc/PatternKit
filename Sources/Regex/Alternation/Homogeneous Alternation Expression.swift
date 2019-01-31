@@ -36,7 +36,7 @@ public struct HomogeneousAlternationExpression<Subexpression : Expression> {
 
 extension HomogeneousAlternationExpression : Expression {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// A position of a symbol in a subexpression.
 		///
@@ -155,8 +155,7 @@ extension HomogeneousAlternationExpression : Expression {
 }
 
 extension HomogeneousAlternationExpression.Index : Comparable {
-	
-	public static func <(smallerIndex: HomogeneousAlternationExpression.Index, greaterIndex: HomogeneousAlternationExpression.Index) -> Bool {
+	public static func < (smallerIndex: HomogeneousAlternationExpression.Index, greaterIndex: HomogeneousAlternationExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let smallerSubexpressionIndex, innerIndex: let smallerInnerIndex), .inSubexpression(subexpressionIndex: let greaterSubexpressionIndex, innerIndex: let greaterInnerIndex)):
@@ -182,23 +181,4 @@ extension HomogeneousAlternationExpression.Index : Comparable {
 			
 		}
 	}
-	
-	public static func ==(firstIndex: HomogeneousAlternationExpression.Index, otherIndex: HomogeneousAlternationExpression.Index) -> Bool {
-		switch (firstIndex, otherIndex) {
-			
-			case (.inSubexpression(subexpressionIndex: let firstSubexpressionIndex, innerIndex: let firstInnerIndex), .inSubexpression(subexpressionIndex: let otherSubexpressionIndex, innerIndex: let otherInnerIndex)):
-			return (firstSubexpressionIndex, firstInnerIndex) == (otherSubexpressionIndex, otherInnerIndex)
-			
-			case (.delimiter(indexOfPreviousSubexpression: let firstIndex), .delimiter(indexOfPreviousSubexpression: let otherIndex)):
-			return firstIndex == otherIndex
-			
-			case (.end, .end):
-			return true
-			
-			default:
-			return false
-			
-		}
-	}
-	
 }

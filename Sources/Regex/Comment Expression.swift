@@ -34,7 +34,7 @@ public struct CommentRegularExpression {
 
 extension CommentRegularExpression : Expression {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// The position of the leading boundary symbol.
 		case leadingBoundary
@@ -135,8 +135,7 @@ extension CommentRegularExpression.Symbol : SymbolProtocol {
 }
 
 extension CommentRegularExpression.Index : Comparable {
-	
-	public static func <(smallerIndex: CommentRegularExpression.Index, greaterIndex: CommentRegularExpression.Index) -> Bool {
+	public static func < (smallerIndex: CommentRegularExpression.Index, greaterIndex: CommentRegularExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.leadingBoundary, .leadingBoundary):																return false
 			case (.leadingBoundary, _):																				return true
@@ -148,15 +147,4 @@ extension CommentRegularExpression.Index : Comparable {
 			case (.end, _):																							return false
 		}
 	}
-	
-	public static func ==(firstIndex: CommentRegularExpression.Index, otherIndex: CommentRegularExpression.Index) -> Bool {
-		switch (firstIndex, otherIndex) {
-			case (.leadingBoundary, .leadingBoundary):															return true
-			case (.unevaluatedCharacter(index: let firstIndex), .unevaluatedCharacter(index: let otherIndex)):	return firstIndex == otherIndex
-			case (.trailingBoundary, .trailingBoundary):														return true
-			case (.end, .end):																					return true
-			default:																							return false
-		}
-	}
-	
 }

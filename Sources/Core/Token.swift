@@ -80,9 +80,7 @@ extension Token : BidirectionalCollection {
 }
 
 extension Token.Index : Comparable {
-	
-	public static func <<P>(leftIndex: Token<P>.Index, rightIndex: Token<P>.Index) -> Bool {
+	public static func < <P>(leftIndex: Token<P>.Index, rightIndex: Token<P>.Index) -> Bool {
 		return leftIndex.rawValue < rightIndex.rawValue
 	}
-	
 }

@@ -15,7 +15,7 @@ public protocol PostfixOperatorExpression : UnaryExpression where Index == Postf
 	
 }
 
-extension PostfixOperatorExpression where Subexpression.Indices : BidirectionalCollection {
+extension PostfixOperatorExpression {
 	
 	public var startIndex: Index {
 		
@@ -105,7 +105,7 @@ extension PostfixOperatorExpression where Subexpression.Indices : BidirectionalC
 	
 }
 
-public enum PostfixOperatorExpressionIndex<Subexpression : Expression> {
+public enum PostfixOperatorExpressionIndex<Subexpression : Expression> : Equatable {
 	
 	/// The position of the leading boundary.
 	case leadingBoundary
@@ -129,8 +129,7 @@ public enum PostfixOperatorExpressionIndex<Subexpression : Expression> {
 }
 
 extension PostfixOperatorExpressionIndex : Comparable {
-	
-	public static func <<S>(smallerIndex: PostfixOperatorExpressionIndex<S>, greaterIndex: PostfixOperatorExpressionIndex<S>) -> Bool {
+	public static func < <S>(smallerIndex: PostfixOperatorExpressionIndex<S>, greaterIndex: PostfixOperatorExpressionIndex<S>) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.leadingBoundary, .leadingBoundary):																return false
 			case (.leadingBoundary, _):																				return true
@@ -145,17 +144,5 @@ extension PostfixOperatorExpressionIndex : Comparable {
 			case (.end, _):																							return false
 		}
 	}
-	
-	public static func ==<S>(firstIndex: PostfixOperatorExpressionIndex<S>, otherIndex: PostfixOperatorExpressionIndex<S>) -> Bool {
-		switch (firstIndex, otherIndex) {
-			case (.leadingBoundary, .leadingBoundary):															return true
-			case (.inSubexpression(innerIndex: let firstIndex), .inSubexpression(innerIndex: let otherIndex)):	return firstIndex == otherIndex
-			case (.trailingBoundary, .trailingBoundary):														return true
-			case (.postfixOperator, .postfixOperator):															return true
-			case (.end, .end):																					return true
-			default:																							return false
-		}
-	}
-	
 }
 

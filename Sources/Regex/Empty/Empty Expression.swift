@@ -7,7 +7,7 @@ public struct EmptyExpression {}
 
 extension EmptyExpression : Expression {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		case end
 	}
 	
@@ -38,13 +38,7 @@ extension EmptyExpression : Expression {
 }
 
 extension EmptyExpression.Index : Comparable {
-	
-	public static func <(smallerIndex: EmptyExpression.Index, greaterIndex: EmptyExpression.Index) -> Bool {
+	public static func < (smallerIndex: EmptyExpression.Index, greaterIndex: EmptyExpression.Index) -> Bool {
 		return false
 	}
-	
-	public static func ==(firstIndex: EmptyExpression.Index, otherIndex: EmptyExpression.Index) -> Bool {
-		return true
-	}
-	
 }

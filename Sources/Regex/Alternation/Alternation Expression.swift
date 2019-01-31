@@ -24,7 +24,7 @@ public struct AlternationExpression<MainExpression : Expression, AlternativeExpr
 
 extension AlternationExpression : Expression {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// A position of a symbol in the main expression.
 		///
@@ -120,8 +120,7 @@ extension AlternationExpression : Expression {
 }
 
 extension AlternationExpression.Index : Comparable {
-	
-	public static func <(smallerIndex: AlternationExpression.Index, greaterIndex: AlternationExpression.Index) -> Bool {
+	public static func < (smallerIndex: AlternationExpression.Index, greaterIndex: AlternationExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.inMainExpression(innerIndex: let smallerIndex), .inMainExpression(innerIndex: let greaterIndex)):				return smallerIndex < greaterIndex
 			case (.inMainExpression, _):																							return true
@@ -135,17 +134,6 @@ extension AlternationExpression.Index : Comparable {
 			case (.end, _):																											return false
 		}
 	}
-	
-	public static func ==(firstIndex: AlternationExpression.Index, otherIndex: AlternationExpression.Index) -> Bool {
-		switch (firstIndex, otherIndex) {
-			case (.inMainExpression(innerIndex: let firstIndex), .inMainExpression(innerIndex: let otherIndex)):				return firstIndex == otherIndex
-			case (.delimiter, .delimiter):																						return true
-			case (.inAlternativeExpression(innerIndex: let firstIndex), .inAlternativeExpression(innerIndex: let otherIndex)):	return firstIndex == otherIndex
-			case (.end, .end):																									return true
-			default:																											return false
-		}
-	}
-	
 }
 
 /// A symbol that separates the different subexpressions in an alternation.

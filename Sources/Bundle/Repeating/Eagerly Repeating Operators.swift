@@ -8,7 +8,7 @@ postfix operator *
 /// - Parameter repeatedPattern: The pattern that is repeated.
 ///
 /// - Returns: An arbitrarily, eagerly repeating pattern over `repeatedPattern`.
-public postfix func *<P>(repeatedPattern: P) -> EagerlyRepeating<P> {
+public postfix func * <P>(repeatedPattern: P) -> EagerlyRepeating<P> {
 	return EagerlyRepeating(repeatedPattern)
 }
 
@@ -17,7 +17,7 @@ public postfix func *<P>(repeatedPattern: P) -> EagerlyRepeating<P> {
 /// - Parameter repeatedlyMatchedCollection: The collection that is repeatedly matched exactly.
 ///
 /// - Returns: An arbitrarily, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
-public postfix func *<C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
+public postfix func * <C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
 	return EagerlyRepeating(Literal(repeatedlyMatchedCollection))
 }
 
@@ -31,7 +31,7 @@ postfix operator +
 /// - Parameter repeatedPattern: The pattern that is repeated.
 ///
 /// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over `repeatedPattern`.
-public postfix func +<P>(repeatedPattern: P) -> EagerlyRepeating<P> {
+public postfix func + <P>(repeatedPattern: P) -> EagerlyRepeating<P> {
 	return EagerlyRepeating(repeatedPattern, min: 1)
 }
 
@@ -40,7 +40,7 @@ public postfix func +<P>(repeatedPattern: P) -> EagerlyRepeating<P> {
 /// - Parameter repeatedlyMatchedCollection: The collection that is repeatedly matched exactly.
 ///
 /// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
-public postfix func +<C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
+public postfix func + <C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
 	return EagerlyRepeating(Literal(repeatedlyMatchedCollection), min: 1)
 }
 
@@ -54,7 +54,7 @@ postfix operator /?
 /// - Parameter optionalPattern: The pattern that is eagerly but optionally matched.
 ///
 /// - Returns: A pattern that optionally and eagerly matches `optionalPattern`.
-public postfix func /?<P>(optionalPattern: P) -> EagerlyRepeating<P> {
+public postfix func /? <P>(optionalPattern: P) -> EagerlyRepeating<P> {
 	return EagerlyRepeating(optionalPattern, max: 1)
 }
 
@@ -63,6 +63,6 @@ public postfix func /?<P>(optionalPattern: P) -> EagerlyRepeating<P> {
 /// - Parameter optionalCollection: The collection that is eagerly but optionally matched.
 ///
 /// - Returns: A pattern that optionally and eagerly matches the literal `optionalCollection`.
-public postfix func /?<C>(optionalCollection: C) -> EagerlyRepeating<Literal<C>> {
+public postfix func /? <C>(optionalCollection: C) -> EagerlyRepeating<Literal<C>> {
 	return EagerlyRepeating(Literal(optionalCollection), max: 1)
 }

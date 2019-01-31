@@ -30,7 +30,7 @@ public struct BackwardHomogeneousAlternationMatchCollection<Subpattern : Pattern
 
 extension BackwardHomogeneousAlternationMatchCollection : BidirectionalCollection {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// A position to a valid match.
 		///
@@ -67,13 +67,7 @@ extension BackwardHomogeneousAlternationMatchCollection : BidirectionalCollectio
 }
 
 extension BackwardHomogeneousAlternationMatchCollection.Index : Comparable {
-	
 	public static func <(lhs: BackwardHomogeneousAlternationMatchCollection.Index, rhs: BackwardHomogeneousAlternationMatchCollection.Index) -> Bool {
 		TODO.unimplemented
 	}
-	
-	public static func ==(lhs: BackwardHomogeneousAlternationMatchCollection.Index, rhs: BackwardHomogeneousAlternationMatchCollection.Index) -> Bool {
-		TODO.unimplemented
-	}
-	
 }

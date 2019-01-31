@@ -104,9 +104,7 @@ extension Alternation : BidirectionalCollection {
 }
 
 extension Alternation.Index : Comparable {
-	
-	public static func <<M, A>(leftIndex: Alternation<M, A>.Index, rightIndex: Alternation<M, A>.Index) -> Bool {
+	public static func < <M, A>(leftIndex: Alternation<M, A>.Index, rightIndex: Alternation<M, A>.Index) -> Bool {
 		return leftIndex.rawValue < rightIndex.rawValue
 	}
-	
 }

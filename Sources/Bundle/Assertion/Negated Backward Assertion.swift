@@ -71,9 +71,7 @@ extension NegatedBackwardAssertion : BidirectionalCollection {
 }
 
 extension NegatedBackwardAssertion.Index : Comparable {
-	
-	public static func <<P>(leftIndex: NegatedBackwardAssertion<P>.Index, rightIndex: NegatedBackwardAssertion<P>.Index) -> Bool {
+	public static func < <P>(leftIndex: NegatedBackwardAssertion<P>.Index, rightIndex: NegatedBackwardAssertion<P>.Index) -> Bool {
 		return leftIndex.rawValue < rightIndex.rawValue
 	}
-	
 }

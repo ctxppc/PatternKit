@@ -80,7 +80,7 @@ public struct CharacterSetExpression {
 
 extension CharacterSetExpression : Expression {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// The position of the leading boundary symbol.
 		case leadingBoundary
@@ -289,8 +289,7 @@ extension CharacterSetExpression.Symbol : SymbolProtocol {
 }
 
 extension CharacterSetExpression.Index : Comparable {
-	
-	public static func <(smallerIndex: CharacterSetExpression.Index, greaterIndex: CharacterSetExpression.Index) -> Bool {
+	public static func < (smallerIndex: CharacterSetExpression.Index, greaterIndex: CharacterSetExpression.Index) -> Bool {
 		
 		enum SimpleIndex : Int {
 			
@@ -339,18 +338,4 @@ extension CharacterSetExpression.Index : Comparable {
 		}
 		
 	}
-	
-	public static func ==(firstIndex: CharacterSetExpression.Index, otherIndex: CharacterSetExpression.Index) -> Bool {
-		switch (firstIndex, otherIndex) {
-			case (.leadingBoundary, .leadingBoundary):																	return true
-			case (.singletonScalarMember(index: let firstIndex), .singletonScalarMember(index: let otherIndex)):		return firstIndex == otherIndex
-			case (.intervalLowerBoundScalar(index: let firstIndex), .intervalLowerBoundScalar(index: let otherIndex)):	return firstIndex == otherIndex
-			case (.intervalBoundsDelimiter(index: let firstIndex), .intervalBoundsDelimiter(index: let otherIndex)):	return firstIndex == otherIndex
-			case (.intervalUpperBoundScalar(index: let firstIndex), .intervalUpperBoundScalar(index: let otherIndex)):	return firstIndex == otherIndex
-			case (.trailingBoundary, .trailingBoundary):																return true
-			case (.end, .end):																							return true
-			default:																									return false
-		}
-	}
-	
 }

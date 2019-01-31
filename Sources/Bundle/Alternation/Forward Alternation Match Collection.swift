@@ -110,7 +110,7 @@ extension ForwardAlternationMatchCollection : BidirectionalCollection {
 	
 }
 
-public enum ForwardAlternationMatchCollectionIndex<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Subject == AlternativePattern.Subject {
+public enum ForwardAlternationMatchCollectionIndex<MainPattern : Pattern, AlternativePattern : Pattern> : Equatable where MainPattern.Subject == AlternativePattern.Subject {
 	
 	/// A position within the main pattern.
 	///
@@ -132,8 +132,7 @@ public enum ForwardAlternationMatchCollectionIndex<MainPattern : Pattern, Altern
 }
 
 extension ForwardAlternationMatchCollectionIndex : Comparable {
-	
-	public static func <<MainPattern, AlternativePattern>(leftIndex: ForwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>, rightIndex: ForwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>) -> Bool {
+	public static func < <MainPattern, AlternativePattern>(leftIndex: ForwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>, rightIndex: ForwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>) -> Bool {
 		switch (leftIndex, rightIndex) {
 			
 			case (.inMainPattern(innerIndex: let innerIndexOfLeftIndex), .inMainPattern(innerIndex: let innerIndexOfRightIndex)):
@@ -159,26 +158,4 @@ extension ForwardAlternationMatchCollectionIndex : Comparable {
 			
 		}
 	}
-	
-	public static func ==<MainPattern, AlternativePattern>(firstIndex: ForwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>, secondIndex: ForwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>) -> Bool {
-		switch (firstIndex, secondIndex) {
-			
-			case (.inMainPattern(innerIndex: let innerIndexOfLeftIndex), .inMainPattern(innerIndex: let innerIndexOfRightIndex)):
-			return innerIndexOfLeftIndex == innerIndexOfRightIndex
-			
-			case (.inAlternativePattern(innerIndex: let innerIndexOfLeftIndex), .inAlternativePattern(innerIndex: let innerIndexOfRightIndex)):
-			return innerIndexOfLeftIndex == innerIndexOfRightIndex
-			
-			case (.end, .end):
-			return true
-			
-			default:
-			return false
-			
-		}
-	}
-	
 }
-
-
-

@@ -36,7 +36,7 @@ public struct HomogeneousConcatenatedExpression<Subexpression : Expression> {
 
 extension HomogeneousConcatenatedExpression : Expression {
 	
-	public enum Index {
+	public enum Index : Equatable {
 		
 		/// A position of a symbol in a subexpression.
 		///
@@ -136,8 +136,7 @@ extension HomogeneousConcatenatedExpression : Expression {
 }
 
 extension HomogeneousConcatenatedExpression.Index : Comparable {
-	
-	public static func <(smallerIndex: HomogeneousConcatenatedExpression.Index, greaterIndex: HomogeneousConcatenatedExpression.Index) -> Bool {
+	public static func < (smallerIndex: HomogeneousConcatenatedExpression.Index, greaterIndex: HomogeneousConcatenatedExpression.Index) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let smallerSubexpressionIndex, innerIndex: let smallerInnerIndex), .inSubexpression(subexpressionIndex: let greaterSubexpressionIndex, innerIndex: let greaterInnerIndex)):
@@ -151,20 +150,4 @@ extension HomogeneousConcatenatedExpression.Index : Comparable {
 			
 		}
 	}
-	
-	public static func ==(firstIndex: HomogeneousConcatenatedExpression.Index, otherIndex: HomogeneousConcatenatedExpression.Index) -> Bool {
-		switch (firstIndex, otherIndex) {
-			
-			case (.inSubexpression(subexpressionIndex: let firstSubexpressionIndex, innerIndex: let firstInnerIndex), .inSubexpression(subexpressionIndex: let otherSubexpressionIndex, innerIndex: let otherInnerIndex)):
-			return (firstSubexpressionIndex, firstInnerIndex) == (otherSubexpressionIndex, otherInnerIndex)
-			
-			case (.end, .end):
-			return true
-			
-			default:
-			return false
-			
-		}
-	}
-	
 }

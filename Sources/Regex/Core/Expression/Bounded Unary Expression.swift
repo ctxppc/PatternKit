@@ -10,7 +10,7 @@ public protocol BoundedUnaryExpression : UnaryExpression where Index == BoundedU
 	
 }
 
-extension BoundedUnaryExpression where Subexpression.Indices : BidirectionalCollection {
+extension BoundedUnaryExpression {
 	
 	public var startIndex: Index {
 		return .leadingBoundary
@@ -76,7 +76,7 @@ extension BoundedUnaryExpression where Subexpression.Indices : BidirectionalColl
 	
 }
 
-public enum BoundedUnaryExpressionIndex<Subexpression : Expression> {
+public enum BoundedUnaryExpressionIndex<Subexpression : Expression> : Equatable {
 	
 	/// The position of the leading boundary.
 	case leadingBoundary
@@ -97,8 +97,7 @@ public enum BoundedUnaryExpressionIndex<Subexpression : Expression> {
 }
 
 extension BoundedUnaryExpressionIndex : Comparable {
-	
-	public static func <(smallerIndex: BoundedUnaryExpressionIndex, greaterIndex: BoundedUnaryExpressionIndex) -> Bool {
+	public static func < (smallerIndex: BoundedUnaryExpressionIndex, greaterIndex: BoundedUnaryExpressionIndex) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.leadingBoundary, .leadingBoundary):																return false
 			case (.leadingBoundary, _):																				return true
@@ -110,15 +109,4 @@ extension BoundedUnaryExpressionIndex : Comparable {
 			case (.end, _):																							return false
 		}
 	}
-	
-	public static func ==(firstIndex: BoundedUnaryExpressionIndex, otherIndex: BoundedUnaryExpressionIndex) -> Bool {
-		switch (firstIndex, otherIndex) {
-			case (.leadingBoundary, .leadingBoundary):															return true
-			case (.inSubexpression(innerIndex: let firstIndex), .inSubexpression(innerIndex: let otherIndex)):	return firstIndex == otherIndex
-			case (.trailingBoundary, .trailingBoundary):														return true
-			case (.end, .end):																					return true
-			default:																							return false
-		}
-	}
-	
 }

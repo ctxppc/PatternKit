@@ -20,9 +20,7 @@ extension Bin : Pattern {
 }
 
 extension Bin : ExpressibleByNilLiteral {
-	
 	public init(nilLiteral: ()) {
 		self.init()
 	}
-	
 }
