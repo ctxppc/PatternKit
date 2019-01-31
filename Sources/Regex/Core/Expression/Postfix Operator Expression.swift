@@ -7,8 +7,11 @@ import DepthKit
 /// The boundary symbols are added if the subexpression is of a lower binding class than the unary expression.
 public protocol PostfixOperatorExpression : UnaryExpression where Index == PostfixOperatorExpressionIndex<Subexpression> {
 	
-	/// A symbol that indicates the subexpression's edges.
-	associatedtype BoundarySymbol : BoundarySymbolProtocol
+	/// The symbol leading the subexpression.
+	static var leadingBoundarySymbol: SymbolProtocol { get }
+	
+	/// The symbol trailing the subexpression.
+	static var trailingBoundarySymbol: SymbolProtocol { get }
 	
 	/// The symbol that represents the postfix operator.
 	var postfixOperatorSymbol: SymbolProtocol { get }
@@ -33,9 +36,9 @@ extension PostfixOperatorExpression {
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
-			case .leadingBoundary:							return NoncapturingGroupBoundarySymbol.leadingBoundary
+			case .leadingBoundary:							return Self.leadingBoundarySymbol
 			case .inSubexpression(innerIndex: let index):	return subexpression[index]
-			case .trailingBoundary:							return NoncapturingGroupBoundarySymbol.trailingBoundary
+			case .trailingBoundary:							return Self.trailingBoundarySymbol
 			case .postfixOperator:							return postfixOperatorSymbol
 			case .end:										indexOutOfBounds
 		}

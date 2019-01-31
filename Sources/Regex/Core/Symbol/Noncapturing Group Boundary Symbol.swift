@@ -1,23 +1,18 @@
 // PatternKit © 2017–19 Constantino Tsarouhas
 
-public enum NoncapturingGroupBoundarySymbol : BoundarySymbolProtocol {
+public enum NoncapturingGroupBoundarySymbol : SymbolProtocol {
 	
-	/// The leading boundary.
-	case leadingBoundary
+	/// The leading boundary symbol.
+	case leading
 	
-	/// The trailing boundary.
-	case trailingBoundary
-	
-	// See protocol.
-	public static var boundaries: (leading: NoncapturingGroupBoundarySymbol, trailing: NoncapturingGroupBoundarySymbol) {
-		return (.leadingBoundary, .trailingBoundary)
-	}
+	/// The trailing boundary symbol.
+	case trailing
 	
 	// See protocol.
 	public func serialisation(language: Language) -> String {
 		switch self {
-			case .leadingBoundary:	return "(?:"
-			case .trailingBoundary:	return ")"
+			case .leading:	return "(?:"
+			case .trailing:	return ")"
 		}
 	}
 	
