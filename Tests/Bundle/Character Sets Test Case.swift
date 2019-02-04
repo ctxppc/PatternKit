@@ -60,8 +60,8 @@ class CharacterSetsTestCase : XCTestCase {
 		
 		let matches = pattern.matches(over: "ab")
 		guard let firstMatch = matches.first else { return XCTFail() }
-		guard let firstCapture = firstMatch.capturedSubsequences(for: firstToken).first else { return XCTFail() }
-		guard let secondCapture = firstMatch.capturedSubsequences(for: secondToken).first else { return XCTFail() }
+		guard let firstCapture = firstMatch.captures(for: firstToken).first else { return XCTFail() }
+		guard let secondCapture = firstMatch.captures(for: secondToken).first else { return XCTFail() }
 		
 		XCTAssert(String(firstCapture) == "a")
 		XCTAssert(String(secondCapture) == "b")
@@ -76,8 +76,8 @@ class CharacterSetsTestCase : XCTestCase {
 		
 		let matches = pattern.backwardMatches(over: "ab")
 		guard let firstMatch = matches.first else { return XCTFail() }
-		guard let firstCapture = firstMatch.capturedSubsequences(for: firstToken).first else { return XCTFail() }
-		guard let secondCapture = firstMatch.capturedSubsequences(for: secondToken).first else { return XCTFail() }
+		guard let firstCapture = firstMatch.captures(for: firstToken).first else { return XCTFail() }
+		guard let secondCapture = firstMatch.captures(for: secondToken).first else { return XCTFail() }
 		
 		XCTAssert(String(firstCapture) == "a")
 		XCTAssert(String(secondCapture) == "b")

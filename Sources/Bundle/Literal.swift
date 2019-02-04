@@ -44,4 +44,23 @@ extension Literal where Subject : RangeReplaceableCollection {
 	
 }
 
-// TODO: Add `ExpressibleByArrayLiteral` and `ExpressibleByStringLiteral` conformances when conditional conformances land, in Swift 4
+extension Literal : ExpressibleByUnicodeScalarLiteral where Subject : ExpressibleByUnicodeScalarLiteral {
+	public typealias UnicodeScalarLiteralType = Subject.UnicodeScalarLiteralType
+	public init(unicodeScalarLiteral: Subject.UnicodeScalarLiteralType) {
+		self.init(Subject(unicodeScalarLiteral: unicodeScalarLiteral))
+	}
+}
+
+extension Literal : ExpressibleByExtendedGraphemeClusterLiteral where Subject : ExpressibleByExtendedGraphemeClusterLiteral {
+	public typealias ExtendedGraphemeClusterLiteralType = Subject.ExtendedGraphemeClusterLiteralType
+	public init(extendedGraphemeClusterLiteral: Subject.ExtendedGraphemeClusterLiteralType) {
+		self.init(Subject(extendedGraphemeClusterLiteral: extendedGraphemeClusterLiteral))
+	}
+}
+
+extension Literal : ExpressibleByStringLiteral where Subject : ExpressibleByStringLiteral {
+	public typealias StringLiteralType = Subject.StringLiteralType
+	public init(stringLiteral: Subject.StringLiteralType) {
+		self.init(Subject(stringLiteral: stringLiteral))
+	}
+}

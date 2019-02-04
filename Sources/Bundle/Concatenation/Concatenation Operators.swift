@@ -15,9 +15,33 @@ public func • <L, R>(leadingPattern: L, trailingPattern: R) -> Concatenation<L
 	return Concatenation(leadingPattern, trailingPattern)
 }
 
+/// Returns a concatenation of an arbitrary pattern with a literal pattern.
+///
+/// This overload is defined to guide the type checker into allowing for (Swift) literals to be used in concatenation patterns, e.g., `somePattern • "this is a literal"`. `Literal` conforms to the `ExpressibleByStringLiteral` protocol but the compiler won't even consider that conformance if it cannot find an overload that specifies `Literal` (instead of just `Pattern`).
+///
+/// - Parameter leadingPattern: The pattern that matches the first part of the concatenation.
+/// - Parameter trailingPattern: The pattern that matches the part after the part matched by the leading pattern.
+///
+/// - Returns: `Concatenation(leadingPattern, trailingPattern)`
+public func • <L>(leadingPattern: L, trailingPattern: Literal<L.Subject>) -> Concatenation<L, Literal<L.Subject>> {
+	return Concatenation(leadingPattern, trailingPattern)
+}
+
+/// Returns a concatenation of a literal pattern with an arbitrary pattern.
+///
+/// This overload is defined to guide the type checker into allowing for (Swift) literals to be used in concatenation patterns, e.g., `"this is a literal" • somePattern`. `Literal` conforms to the `ExpressibleByStringLiteral` protocol but the compiler won't even consider that conformance if it cannot find an overload that specifies `Literal` (instead of just `Pattern`).
+///
+/// - Parameter leadingPattern: The pattern that matches the first part of the concatenation.
+/// - Parameter trailingPattern: The pattern that matches the part after the part matched by the leading pattern.
+///
+/// - Returns: `Concatenation(leadingPattern, trailingPattern)`
+public func • <R>(leadingPattern: Literal<R.Subject>, trailingPattern: R) -> Concatenation<Literal<R.Subject>, R> {
+	return Concatenation(leadingPattern, trailingPattern)
+}
+
 /// Returns a concatenation of two literal patterns.
 ///
-/// This operator optimises the concatenation by merging the adjacent literals instead of creating a new concatenation construct over both literals.
+/// This overload optimises the concatenation by merging the adjacent literals instead of creating a new concatenation construct over both literals.
 ///
 /// - Parameter leadingLiteral: The literal pattern that matches the first part of the concatenation.
 /// - Parameter trailingPattern: The literal pattern that matches the part after the part matched by the leading literal.
@@ -29,7 +53,7 @@ public func • <C : RangeReplaceableCollection>(leadingLiteral: Literal<C>, tra
 
 /// Returns a concatenation of a literal pattern with a concatenation with a leading literal pattern.
 ///
-/// This operator optimises the resulting concatenation by merging the adjacent literals.
+/// This overload optimises the resulting concatenation by merging the adjacent literals.
 ///
 /// - Parameter leadingLiteral: The literal pattern that matches the first part of the encompassing concatenation.
 /// - Parameter trailingConcatenation: The concatenation pattern that matches the part after the part matched by the leading literal.
@@ -42,7 +66,7 @@ public func • <C : RangeReplaceableCollection, P>(leadingLiteral: Literal<C>, 
 
 /// Returns a concatenation of a concatenation (with a trailing literal pattern) with another literal pattern.
 ///
-/// This operator optimises the resulting concatenation by merging the adjacent literals.
+/// This overload optimises the resulting concatenation by merging the adjacent literals.
 ///
 /// - Parameter leadingConcatenation: The concatenation pattern that matches the first part of the encompassing concatenation.
 /// - Parameter trailingPattern: The literal pattern that matches the part after the part matched by the leading concatenation pattern.

@@ -210,7 +210,7 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	/// - Parameter token: The token.
 	///
 	/// - Returns: The ranges captured by `token`.
-	public func capturedRanges<P>(for token: Token<P>) -> [Range<Subject.Index>] {
+	public func ranges<P>(for token: Token<P>) -> [Range<Subject.Index>] {
 		return capturedRangesByToken[ObjectIdentifier(token)] ?? []
 	}
 	
@@ -219,8 +219,8 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	/// - Parameter token: The token.
 	///
 	/// - Returns: The subsequences captured by `token`.
-	public func capturedSubsequences<P>(for token: Token<P>) -> [Subject.SubSequence] {
-		return capturedRanges(for: token).map { subject[$0] }
+	public func captures<P>(for token: Token<P>) -> [Subject.SubSequence] {
+		return ranges(for: token).map { subject[$0] }
 	}
 	
 }

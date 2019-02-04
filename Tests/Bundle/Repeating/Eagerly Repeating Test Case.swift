@@ -35,7 +35,7 @@ class EagerlyRepeatingTestCase : XCTestCase {
 		let pattern = prefix • suffix
 		
 		let matches = pattern.matches(over: "aaa")
-		let captures = Array(matches.map { (String($0.capturedSubsequences(for: prefix).first!), String($0.capturedSubsequences(for: suffix).first!)) })
+		let captures = Array(matches.map { (String($0.captures(for: prefix).first!), String($0.captures(for: suffix).first!)) })
 		
 		XCTAssert(captures[0] == ("aa", "a"))
 		XCTAssert(captures[1] == ("a", "aa"))

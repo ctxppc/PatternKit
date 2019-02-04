@@ -17,7 +17,7 @@ class TokenTestCase : XCTestCase {
 		
 		guard let match = matches.first, matches.count == 1 else { return XCTFail() }
 		
-		let captures = match.capturedSubsequences(for: token)
+		let captures = match.captures(for: token)
 		guard let capture = captures.first, captures.count == 1 else { return XCTFail() }
 		
 		XCTAssert(capture == [2, 3])
@@ -35,7 +35,7 @@ class TokenTestCase : XCTestCase {
 		
 		guard let match = matches.first, matches.count == 1 else { return XCTFail() }
 		
-		let captures = match.capturedSubsequences(for: token)
+		let captures = match.captures(for: token)
 		guard let capture = captures.first, captures.count == 1 else { return XCTFail() }
 		
 		XCTAssert(capture == [2, 3])
@@ -50,7 +50,7 @@ class TokenTestCase : XCTestCase {
 		
 		guard let match = matches.first, matches.count == 1 else { return XCTFail() }
 		
-		let captures = match.capturedSubsequences(for: token)
+		let captures = match.captures(for: token)
 		guard let capture = captures.first, captures.count == 1 else { return XCTFail() }
 		
 		XCTAssert(String(capture) == "bb")
@@ -65,7 +65,7 @@ class TokenTestCase : XCTestCase {
 		
 		guard let match = matches.first, matches.count == 1 else { return XCTFail() }
 		
-		let captures = match.capturedSubsequences(for: token)
+		let captures = match.captures(for: token)
 		guard let capture = captures.first, captures.count == 1 else { return XCTFail() }
 		
 		XCTAssert(String(capture) == "bb")
