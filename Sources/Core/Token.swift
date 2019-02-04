@@ -22,7 +22,7 @@ extension Token : Pattern {
 		return capturedPattern
 			.forwardMatches(enteringFrom: base)
 			.lazy
-			.map { $0.capturing(base.inputPosition..<$0.inputPosition, for: self) }
+			.map { match in match.capturing(base.inputPosition..<match.inputPosition, for: self) }
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapCollection<CapturedPattern.BackwardMatchCollection, Match<Subject>> {

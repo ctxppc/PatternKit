@@ -202,7 +202,7 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	internal func capturing<P>(_ range: Range<Subject.Index>, for token: Token<P>) -> Match {
 		var match = self
 		match.capture(range, for: token)
-		return self
+		return match
 	}
 	
 	/// Returns the ranges captured by a token.
