@@ -19,29 +19,32 @@ public struct ForwardAssertionExpression<Subexpression : Expression> {
 
 extension ForwardAssertionExpression : BoundedUnaryExpression {
 	
-	public enum BoundarySymbol {
+	public typealias Index = BoundedUnaryExpressionIndex<Subexpression>
+	
+	public static var leadingBoundarySymbol: SymbolProtocol {
+		return BoundarySymbol.leading
+	}
+	
+	public static var trailingBoundarySymbol: SymbolProtocol {
+		return BoundarySymbol.trailing
+	}
+	
+	public enum BoundarySymbol : SymbolProtocol {
 		
 		/// A symbol that represents the leading boundary.
-		case leadingBoundary
+		case leading
 		
 		/// A symbol that represents the trailing boundary.
-		case trailingBoundary
+		case trailing
 		
-	}
-	
-}
-
-extension ForwardAssertionExpression.BoundarySymbol : BoundarySymbolProtocol {
-	
-	public static var boundaries: (leading: ForwardAssertionExpression.BoundarySymbol, trailing: ForwardAssertionExpression.BoundarySymbol) {
-		return (.leadingBoundary, .trailingBoundary)
-	}
-	
-	public func serialisation(language: Language) -> String {
-		switch self {
-			case .leadingBoundary:	return "(?="
-			case .trailingBoundary:	return ")"
+		// See protocol.
+		public func serialisation(language: Language) -> String {
+			switch self {
+				case .leading:	return "(?="
+				case .trailing:	return ")"
+			}
 		}
+		
 	}
 	
 }

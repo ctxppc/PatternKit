@@ -5,7 +5,7 @@ import DepthKit
 /// A unary expression that is a sequence consisting of an optional leading boundary symbol, the subexpression's symbols, an optional trailing boundary symbol, and a postfix operator symbol.
 ///
 /// The boundary symbols are added if the subexpression is of a lower binding class than the unary expression.
-public protocol PostfixOperatorExpression : UnaryExpression where Index == PostfixOperatorExpressionIndex<Subexpression> {
+public protocol PostfixOperatorExpression : UnaryExpression {
 	
 	/// The symbol leading the subexpression.
 	static var leadingBoundarySymbol: SymbolProtocol { get }
@@ -18,7 +18,7 @@ public protocol PostfixOperatorExpression : UnaryExpression where Index == Postf
 	
 }
 
-extension PostfixOperatorExpression {
+extension PostfixOperatorExpression where Index == PostfixOperatorExpressionIndex<Subexpression> {
 	
 	public var startIndex: Index {
 		
@@ -148,4 +148,3 @@ extension PostfixOperatorExpressionIndex : Comparable {
 		}
 	}
 }
-

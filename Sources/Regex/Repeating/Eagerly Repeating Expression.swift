@@ -39,7 +39,15 @@ public struct EagerlyRepeatingExpression<Subexpression : Expression> {
 
 extension EagerlyRepeatingExpression : PostfixOperatorExpression {
 	
-	public typealias BoundarySymbol = NoncapturingGroupBoundarySymbol
+	public typealias Index = PostfixOperatorExpressionIndex<Subexpression>
+	
+	public static var leadingBoundarySymbol: SymbolProtocol {
+		return NoncapturingGroupBoundarySymbol.leading
+	}
+	
+	public static var trailingBoundarySymbol: SymbolProtocol {
+		return NoncapturingGroupBoundarySymbol.trailing
+	}
 	
 	public var postfixOperatorSymbol: SymbolProtocol {
 		return QuantifierSymbol(multiplicityRange: multiplicityRange, possessive: possessive)

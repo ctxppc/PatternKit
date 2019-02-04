@@ -19,30 +19,33 @@ public struct NegatedBackwardAssertionExpression<Subexpression : Expression> {
 
 extension NegatedBackwardAssertionExpression : BoundedUnaryExpression {
 	
-	public enum BoundarySymbol {
+	public typealias Index = BoundedUnaryExpressionIndex<Subexpression>
+	
+	public static var leadingBoundarySymbol: SymbolProtocol {
+		return BoundarySymbol.leading
+	}
+	
+	public static var trailingBoundarySymbol: SymbolProtocol {
+		return BoundarySymbol.trailing
+	}
+	
+	public enum BoundarySymbol : SymbolProtocol {
 		
 		/// A symbol that represents the leading boundary.
-		case leadingBoundary
+		case leading
 		
 		/// A symbol that represents the trailing boundary.
-		case trailingBoundary
+		case trailing
 		
-	}
-	
-}
-
-extension NegatedBackwardAssertionExpression.BoundarySymbol : BoundarySymbolProtocol {
-	
-	public static var boundaries: (leading: NegatedBackwardAssertionExpression.BoundarySymbol, trailing: NegatedBackwardAssertionExpression.BoundarySymbol) {
-		return (.leadingBoundary, .trailingBoundary)
-	}
-	
-	public func serialisation(language: Language) throws -> String {
-		guard language == .perlCompatibleREs else { throw SymbolSerialisationError.unsupportedByLanguage }
-		switch self {
-			case .leadingBoundary:	return "(?<!"
-			case .trailingBoundary:	return ")"
+		// See protocol.
+		public func serialisation(language: Language) throws -> String {
+			guard language == .perlCompatibleREs else { throw SymbolSerialisationError.unsupportedByLanguage }
+			switch self {
+				case .leading:	return "(?<!"
+				case .trailing:	return ")"
+			}
 		}
+		
 	}
 	
 }
