@@ -22,8 +22,14 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Elemen
 			AnyBidirectionalCollection(pattern.backwardMatches(recedingFrom: base))
 		}
 		
-		forwardEstimator = P.underestimatedSmallestInputPositionForForwardMatching(pattern)
-		backwardEstimator = P.overestimatedLargestInputPositionForBackwardMatching(pattern)
+		forwardEstimator = { subject, index in
+			pattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: index)
+		}
+		
+		backwardEstimator = { subject, index in
+			pattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: index)
+		}
+		
 		self.pattern = pattern
 		
 	}

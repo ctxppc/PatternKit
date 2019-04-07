@@ -118,7 +118,7 @@ extension ForwardConcatenationMatchCollection : BidirectionalCollection {
 		let nextIndexOfLeadingPattern = matchesOfLeadingPattern.index(after: indexForLeadingPattern)
 		guard nextIndexOfLeadingPattern < matchesOfLeadingPattern.endIndex else { return .end }
 		
-		for nextIndexOfLeadingPattern in matchesOfLeadingPattern.indices.suffix(from: nextIndexOfLeadingPattern) {	// index range includes nextIndexOfLeadingPattern, excludes endIndex
+		for nextIndexOfLeadingPattern in matchesOfLeadingPattern.indices[nextIndexOfLeadingPattern...] {	// index range includes nextIndexOfLeadingPattern, excludes endIndex
 			let matchesOfTrailingPattern = trailingPattern.forwardMatches(enteringFrom: matchesOfLeadingPattern[nextIndexOfLeadingPattern]) as TrailingPattern.ForwardMatchCollection
 			if matchesOfTrailingPattern.startIndex != matchesOfTrailingPattern.endIndex {
 				return .some(indexForLeadingPattern: nextIndexOfLeadingPattern, indexForTrailingPattern: matchesOfTrailingPattern.startIndex)
