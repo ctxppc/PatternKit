@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.1
 // PatternKit © 2017–19 Constantino Tsarouhas
 
 import PackageDescription
@@ -18,7 +18,7 @@ let package = Package(
 		
 	],
 	dependencies: [
-		.package(url: "https://github.com/ctxppc/DepthKit.git", from: "0.7.0")
+		.package(url: "https://github.com/ctxppc/DepthKit.git", from: "0.8.0")
 	],
 	targets: [
 		
@@ -34,5 +34,5 @@ let package = Package(
 		.testTarget(name: "PatternKitRegex Tests", dependencies: ["PatternKitRegex"], path: "Tests/Regex")
 		
 	],
-	swiftLanguageVersions: [4]
+	swiftLanguageVersions: [.v4, .v4_2, .v5]
 )
