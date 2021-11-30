@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// A pattern that matches two patterns separately.
 public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Subject == AlternativePattern.Subject {
 	
@@ -27,19 +25,19 @@ public struct Alternation<MainPattern : Pattern, AlternativePattern : Pattern> w
 extension Alternation : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> ForwardAlternationMatchCollection<MainPattern, AlternativePattern> {
-		return ForwardAlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base)
+		.init(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base)
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> BackwardAlternationMatchCollection<MainPattern, AlternativePattern> {
-		return BackwardAlternationMatchCollection(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base)
+		.init(mainPattern: mainPattern, alternativePattern: alternativePattern, baseMatch: base)
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return Swift.min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
+		Swift.min(mainPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return Swift.max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
+		Swift.max(mainPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition), alternativePattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition))
 	}
 	
 }
@@ -69,13 +67,9 @@ extension Alternation : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .mainPattern
-	}
+	public var startIndex: Index { .mainPattern }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> Element {
 		switch index {
@@ -104,7 +98,7 @@ extension Alternation : BidirectionalCollection {
 }
 
 extension Alternation.Index : Comparable {
-	public static func < <M, A>(leftIndex: Alternation<M, A>.Index, rightIndex: Alternation<M, A>.Index) -> Bool {
-		return leftIndex.rawValue < rightIndex.rawValue
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
+		leftIndex.rawValue < rightIndex.rawValue
 	}
 }

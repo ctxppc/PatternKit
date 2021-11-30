@@ -7,5 +7,5 @@
 ///
 /// - Returns: `Alternation(mainPattern, alternativePattern)`
 public func | <L, R>(mainPattern: L, alternativePattern: R) -> Alternation<L, R> {
-	return Alternation(mainPattern, alternativePattern)
+	.init(mainPattern, alternativePattern)
 }

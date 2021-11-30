@@ -1,7 +1,6 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
 import DepthKit
-import PatternKitCore
 
 /// A pattern that matches two patterns sequentially.
 public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern> where
@@ -36,19 +35,19 @@ public struct Concatenation<LeadingPattern : Pattern, TrailingPattern : Pattern>
 extension Concatenation : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> ForwardConcatenationMatchCollection<LeadingPattern, TrailingPattern> {
-		return ForwardConcatenationMatchCollection(leadingPattern: leadingPattern, trailingPattern: trailingPattern, baseMatch: base)
+		.init(leadingPattern: leadingPattern, trailingPattern: trailingPattern, baseMatch: base)
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> BackwardConcatenationMatchCollection<LeadingPattern, TrailingPattern> {
-		return BackwardConcatenationMatchCollection(leadingPattern: leadingPattern, trailingPattern: trailingPattern, baseMatch: base)
+		.init(leadingPattern: leadingPattern, trailingPattern: trailingPattern, baseMatch: base)
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return leadingPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
+		leadingPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return trailingPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
+		trailingPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 }
@@ -78,13 +77,9 @@ extension Concatenation : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .leadingPattern
-	}
+	public var startIndex: Index { .leadingPattern }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> Element {
 		switch index {
@@ -114,6 +109,6 @@ extension Concatenation : BidirectionalCollection {
 
 extension Concatenation.Index : Comparable {
 	public static func < <L, T>(leftIndex: Concatenation<L, T>.Index, rightIndex: Concatenation<L, T>.Index) -> Bool {
-		return leftIndex.rawValue < rightIndex.rawValue
+		leftIndex.rawValue < rightIndex.rawValue
 	}
 }

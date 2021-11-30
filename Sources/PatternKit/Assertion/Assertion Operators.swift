@@ -9,7 +9,7 @@ prefix operator ?=
 ///
 /// - Returns: A forward-matching assertion.
 public prefix func ?=<P>(assertedPattern: P) -> ForwardAssertion<P> {
-	return ForwardAssertion(assertedPattern)
+	.init(assertedPattern)
 }
 
 /// The negated forward-matching pattern assertion operator.
@@ -21,7 +21,7 @@ prefix operator ?!
 ///
 /// - Returns: A negated forward-matching assertion.
 public prefix func ?!<P>(assertedPattern: P) -> NegatedForwardAssertion<P> {
-	return NegatedForwardAssertion(assertedPattern)
+	.init(assertedPattern)
 }
 
 /// The backward-matching pattern assertion operator.
@@ -33,7 +33,7 @@ prefix operator ?<=
 ///
 /// - Returns: A backward-matching assertion.
 public prefix func ?<=<P>(assertedPattern: P) -> BackwardAssertion<P> {
-	return BackwardAssertion(assertedPattern)
+	.init(assertedPattern)
 }
 
 /// The negated backward-matching pattern assertion operator.
@@ -45,5 +45,5 @@ prefix operator ?<!
 ///
 /// - Returns: A negated backward-matching assertion.
 public prefix func ?<!<P>(assertedPattern: P) -> NegatedBackwardAssertion<P> {
-	return NegatedBackwardAssertion(assertedPattern)
+	.init(assertedPattern)
 }

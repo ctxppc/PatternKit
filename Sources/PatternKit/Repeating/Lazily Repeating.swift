@@ -1,7 +1,6 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
 import DepthKit
-import PatternKitCore
 
 /// A pattern that performs matching of a subpattern repeatedly on consecutive subsequences of the target collection, preferring matching as few times as possible.
 public struct LazilyRepeating<RepeatedPattern : Pattern> {
@@ -48,7 +47,7 @@ extension LazilyRepeating {
 }
 
 public func repeating<RepeatedPattern>(_ repeatedPattern: RepeatedPattern, exactly multiplicity: Int) -> LazilyRepeating<RepeatedPattern> {
-	return LazilyRepeating(repeatedPattern, exactly: multiplicity)
+	.init(repeatedPattern, exactly: multiplicity)
 }
 
 extension LazilyRepeating : Pattern {

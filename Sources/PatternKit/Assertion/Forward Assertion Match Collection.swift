@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 public struct ForwardAssertionMatchCollection<AssertedPattern : Pattern> {
 	
 	public typealias Subject = AssertedPattern.Subject
@@ -46,9 +44,7 @@ extension ForwardAssertionMatchCollection : BidirectionalCollection {
 		return .some(innerIndex: indexOfFirstMatchOfAssertedPattern)
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> Match<Subject> {
 		let matchesOfAssertedPattern = assertedPattern.forwardMatches(enteringFrom: baseMatch)
@@ -76,7 +72,7 @@ extension ForwardAssertionMatchCollection : BidirectionalCollection {
 }
 
 extension ForwardAssertionMatchCollection.Index : Comparable {
-	public static func < (leftIndex: ForwardAssertionMatchCollection<AssertedPattern>.Index, rightIndex: ForwardAssertionMatchCollection<AssertedPattern>.Index) -> Bool {
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
 		if case (.some, .end) = (leftIndex, rightIndex) {
 			return true
 		} else {

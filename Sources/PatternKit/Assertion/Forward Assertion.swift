@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// A pattern that asserts that an asserted pattern matches the part of the subject following the input position, without actually moving the input position beyond the assertion; also known as a positive lookahead.
 ///
 /// For example, `ForwardAssertion(Repeating(1...9, min: 5)) • Literal([1, 2, 3]) • any()+` matches all arrays starting with at least 5 elements between 1 and 9; and starting with the elements 1, 2, and 3.
@@ -28,19 +26,19 @@ public struct ForwardAssertion<AssertedPattern : Pattern> {
 extension ForwardAssertion : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> ForwardAssertionMatchCollection<AssertedPattern> {
-		return ForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+		.init(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> ForwardAssertionMatchCollection<AssertedPattern> {
-		return ForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+		.init(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return assertedPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
+		assertedPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return assertedPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
+		assertedPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 }
@@ -57,13 +55,9 @@ extension ForwardAssertion : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .assertedPattern
-	}
+	public var startIndex: Index { .assertedPattern }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> AssertedPattern {
 		precondition(index == .assertedPattern, "Index out of bounds")
@@ -83,7 +77,7 @@ extension ForwardAssertion : BidirectionalCollection {
 }
 
 extension ForwardAssertion.Index : Comparable {
-	public static func < <P>(leftIndex: ForwardAssertion<P>.Index, rightIndex: ForwardAssertion<P>.Index) -> Bool {
-		return leftIndex.rawValue < rightIndex.rawValue
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
+		leftIndex.rawValue < rightIndex.rawValue
 	}
 }

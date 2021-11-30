@@ -12,7 +12,7 @@ infix operator • : AdditionPrecedence
 ///
 /// - Returns: `Concatenation(leadingPattern, trailingPattern)`
 public func • <L, R>(leadingPattern: L, trailingPattern: R) -> Concatenation<L, R> {
-	return Concatenation(leadingPattern, trailingPattern)
+	.init(leadingPattern, trailingPattern)
 }
 
 /// Returns a concatenation of an arbitrary pattern with a literal pattern.
@@ -24,7 +24,7 @@ public func • <L, R>(leadingPattern: L, trailingPattern: R) -> Concatenation<L
 ///
 /// - Returns: `Concatenation(leadingPattern, trailingPattern)`
 public func • <L>(leadingPattern: L, trailingPattern: Literal<L.Subject>) -> Concatenation<L, Literal<L.Subject>> {
-	return Concatenation(leadingPattern, trailingPattern)
+	.init(leadingPattern, trailingPattern)
 }
 
 /// Returns a concatenation of a literal pattern with an arbitrary pattern.
@@ -36,7 +36,7 @@ public func • <L>(leadingPattern: L, trailingPattern: Literal<L.Subject>) -> C
 ///
 /// - Returns: `Concatenation(leadingPattern, trailingPattern)`
 public func • <R>(leadingPattern: Literal<R.Subject>, trailingPattern: R) -> Concatenation<Literal<R.Subject>, R> {
-	return Concatenation(leadingPattern, trailingPattern)
+	.init(leadingPattern, trailingPattern)
 }
 
 /// Returns a concatenation of two literal patterns.
@@ -48,7 +48,7 @@ public func • <R>(leadingPattern: Literal<R.Subject>, trailingPattern: R) -> C
 ///
 /// - Returns: A literal formed by concatenating `leadingLiteral` and `trailingLiteral`.
 public func • <C : RangeReplaceableCollection>(leadingLiteral: Literal<C>, trailingLiteral: Literal<C>) -> Literal<C> {
-	return Literal(leadingLiteral.literal.appending(contentsOf: trailingLiteral.literal))
+	.init(leadingLiteral.literal.appending(contentsOf: trailingLiteral.literal))
 }
 
 /// Returns a concatenation of a literal pattern with a concatenation with a leading literal pattern.
@@ -61,7 +61,7 @@ public func • <C : RangeReplaceableCollection>(leadingLiteral: Literal<C>, tra
 /// - Returns: A concatenation formed by prepending `leadingLiteral` to `trailingConcatenation`.
 public func • <C : RangeReplaceableCollection, P>(leadingLiteral: Literal<C>, trailingConcatenation: Concatenation<Literal<C>, P>) -> Concatenation<Literal<C>, P> {
 	let newLiteral = leadingLiteral.literal.appending(contentsOf: trailingConcatenation.leadingPattern.literal)
-	return Concatenation(Literal(newLiteral), trailingConcatenation.trailingPattern)
+	return .init(Literal(newLiteral), trailingConcatenation.trailingPattern)
 }
 
 /// Returns a concatenation of a concatenation (with a trailing literal pattern) with another literal pattern.
@@ -74,5 +74,5 @@ public func • <C : RangeReplaceableCollection, P>(leadingLiteral: Literal<C>, 
 /// - Returns: A concatenation formed by appending `trailingLiteral` to `leadingConcatenation`.
 public func • <C : RangeReplaceableCollection, P>(leadingConcatenation: Concatenation<P, Literal<C>>, trailingLiteral: Literal<C>) -> Concatenation<P, Literal<C>> {
 	let newLiteral = leadingConcatenation.trailingPattern.literal.appending(contentsOf: trailingLiteral.literal)
-	return Concatenation(leadingConcatenation.leadingPattern, Literal(newLiteral))
+	return .init(leadingConcatenation.leadingPattern, Literal(newLiteral))
 }

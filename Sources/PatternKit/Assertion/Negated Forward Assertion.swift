@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// A pattern that asserts that an asserted pattern does *not* match the part of the subject following the input position; also known as a negative lookahead.
 ///
 /// For example, `NegatedForwardAssertion(Repeating(1...9, min: 5)) • Literal([1, 2, 3]) • any()+` matches all arrays starting with the elements 1, 2, and 3 that do not start with 5 elements between 1 and 9.
@@ -26,11 +24,11 @@ public struct NegatedForwardAssertion<AssertedPattern : Pattern> {
 extension NegatedForwardAssertion : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<AssertedPattern.Subject>) -> NegatedForwardAssertionMatchCollection<AssertedPattern> {
-		return NegatedForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+		.init(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<AssertedPattern.Subject>) -> NegatedForwardAssertionMatchCollection<AssertedPattern> {
-		return NegatedForwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+		.init(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 }
@@ -47,13 +45,9 @@ extension NegatedForwardAssertion : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .assertedPattern
-	}
+	public var startIndex: Index { .assertedPattern }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> AssertedPattern {
 		precondition(index == .assertedPattern, "Index out of bounds")
@@ -73,7 +67,7 @@ extension NegatedForwardAssertion : BidirectionalCollection {
 }
 
 extension NegatedForwardAssertion.Index : Comparable {
-	public static func < <P>(leftIndex: NegatedForwardAssertion<P>.Index, rightIndex: NegatedForwardAssertion<P>.Index) -> Bool {
-		return leftIndex.rawValue < rightIndex.rawValue
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
+		leftIndex.rawValue < rightIndex.rawValue
 	}
 }

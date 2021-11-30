@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// A pattern that asserts that an asserted pattern matches the part of the subject preceding the input position, without actually moving the input position beyond the assertion; also known as a positive lookbehind.
 ///
 /// While the assertion does not change the input position, it does preserve captures by tokens contained within the asserted pattern. However, the assertion only produces one match from the asserted pattern.
@@ -26,11 +24,11 @@ public struct BackwardAssertion<AssertedPattern : Pattern> {
 extension BackwardAssertion : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> BackwardAssertionMatchCollection<AssertedPattern> {
-		return BackwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+		.init(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> BackwardAssertionMatchCollection<AssertedPattern> {
-		return BackwardAssertionMatchCollection(assertedPattern: assertedPattern, baseMatch: base)
+		.init(assertedPattern: assertedPattern, baseMatch: base)
 	}
 	
 }
@@ -47,13 +45,9 @@ extension BackwardAssertion : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .assertedPattern
-	}
+	public var startIndex: Index { .assertedPattern }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> AssertedPattern {
 		precondition(index == .assertedPattern, "Index out of bounds")
@@ -73,7 +67,7 @@ extension BackwardAssertion : BidirectionalCollection {
 }
 
 extension BackwardAssertion.Index : Comparable {
-	public static func < <P>(leftIndex: BackwardAssertion<P>.Index, rightIndex: BackwardAssertion<P>.Index) -> Bool {
-		return leftIndex.rawValue < rightIndex.rawValue
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
+		leftIndex.rawValue < rightIndex.rawValue
 	}
 }

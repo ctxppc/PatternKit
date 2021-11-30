@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// A collection of matches of a concatenation pattern.
 public struct BackwardAlternationMatchCollection<MainPattern : Pattern, AlternativePattern : Pattern> where MainPattern.Subject == AlternativePattern.Subject {
 	
@@ -43,9 +41,7 @@ extension BackwardAlternationMatchCollection : BidirectionalCollection {
 		}
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> Match<Subject> {
 		switch index {
@@ -131,7 +127,7 @@ public enum BackwardAlternationMatchCollectionIndex<MainPattern : Pattern, Alter
 }
 
 extension BackwardAlternationMatchCollectionIndex : Comparable {
-	public static func < <MainPattern, AlternativePattern>(leftIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>, rightIndex: BackwardAlternationMatchCollectionIndex<MainPattern, AlternativePattern>) -> Bool {
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
 		switch (leftIndex, rightIndex) {
 			
 			case (.inMainPattern(innerIndex: let innerIndexOfLeftIndex), .inMainPattern(innerIndex: let innerIndexOfRightIndex)):

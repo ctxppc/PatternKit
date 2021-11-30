@@ -1,8 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import DepthKit
-import PatternKitCore
-
 /// A pattern that matches a set of same-typed patterns separately.
 public struct HomogeneousAlternation<Subpattern : Pattern> {
 	
@@ -30,9 +27,7 @@ public struct HomogeneousAlternation<Subpattern : Pattern> {
 	///
 	/// - Invariant: `subpatterns` contains at least two subpatterns.
 	public var subpatterns: [Subpattern] {
-		willSet {
-			precondition(newValue.count >= 2, "Fewer than 2 subpatterns in alternation")
-		}
+		willSet { precondition(newValue.count >= 2, "Fewer than 2 subpatterns in alternation") }
 	}
 	
 }
@@ -40,21 +35,21 @@ public struct HomogeneousAlternation<Subpattern : Pattern> {
 extension HomogeneousAlternation : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> ForwardHomogeneousAlternationMatchCollection<Subpattern> {
-		return ForwardHomogeneousAlternationMatchCollection(subpatterns: subpatterns, baseMatch: base)
+		.init(subpatterns: subpatterns, baseMatch: base)
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> BackwardHomogeneousAlternationMatchCollection<Subpattern> {
-		return BackwardHomogeneousAlternationMatchCollection(subpatterns: subpatterns, baseMatch: base)
+		.init(subpatterns: subpatterns, baseMatch: base)
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subpattern.Subject, fromIndex inputPosition: Subpattern.Subject.Index) -> Subpattern.Subject.Index {
-		return subpatterns.map {
+		subpatterns.map {
 			$0.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
 		}.min()!
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subpattern.Subject, fromIndex inputPosition: Subpattern.Subject.Index) -> Subpattern.Subject.Index {
-		return subpatterns.map {
+		subpatterns.map {
 			$0.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
 		}.max()!
 	}

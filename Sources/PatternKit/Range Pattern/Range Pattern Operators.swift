@@ -7,7 +7,7 @@
 ///
 /// - Returns: A range pattern matching elements between `lowerBound` and `upperBound`, exclusive.
 public func ..< <Subject>(lowerBound: Subject.Element, upperBound: Subject.Element) -> RangePattern<Subject> {
-	return RangePattern(lowerBound..<upperBound)
+	.init(lowerBound..<upperBound)
 }
 
 /// Creates a range pattern.
@@ -17,5 +17,5 @@ public func ..< <Subject>(lowerBound: Subject.Element, upperBound: Subject.Eleme
 ///
 /// - Returns: A range pattern matching elements between `lowerBound` and `upperBound`, inclusive.
 public func ... <Subject>(lowerBound: Subject.Element, upperBound: Subject.Element) -> RangePattern<Subject> {
-	return RangePattern(lowerBound...upperBound)
+	.init(lowerBound...upperBound)
 }

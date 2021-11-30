@@ -1,8 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import DepthKit
-import PatternKitCore
-
 /// A collection of backward matches of a homogeneous concatenation pattern.
 public struct BackwardHomogeneousConcatenationMatchCollection<Subpattern : Pattern> {
 	

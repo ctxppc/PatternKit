@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 public struct NegatedForwardAssertionMatchCollection<AssertedPattern : Pattern> {
 	
 	public typealias Subject = AssertedPattern.Subject
@@ -41,17 +39,9 @@ extension NegatedForwardAssertionMatchCollection : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .baseMatch
-	}
+	public var startIndex: Index { .baseMatch }
 	
-	public var endIndex: Index {
-		if matchesOfAssertedPattern.isEmpty {
-			return .afterBaseMatch
-		} else {
-			return .baseMatch
-		}
-	}
+	public var endIndex: Index { matchesOfAssertedPattern.isEmpty ? .afterBaseMatch : .baseMatch }
 	
 	public subscript (index: Index) -> Match<Subject> {
 		guard matchesOfAssertedPattern.isEmpty else { preconditionFailure("Index out of bounds: negated assertion does not hold") }
@@ -75,7 +65,7 @@ extension NegatedForwardAssertionMatchCollection : BidirectionalCollection {
 }
 
 extension NegatedForwardAssertionMatchCollection.Index : Comparable {
-	public static func < (leftIndex: NegatedForwardAssertionMatchCollection<AssertedPattern>.Index, rightIndex: NegatedForwardAssertionMatchCollection<AssertedPattern>.Index) -> Bool {
-		return (leftIndex, rightIndex) == (.baseMatch, .afterBaseMatch)
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
+		(leftIndex, rightIndex) == (.baseMatch, .afterBaseMatch)
 	}
 }

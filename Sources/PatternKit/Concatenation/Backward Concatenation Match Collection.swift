@@ -1,7 +1,6 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
 import DepthKit
-import PatternKitCore
 
 /// A collection of backward matches of a concatenation pattern.
 public struct BackwardConcatenationMatchCollection<LeadingPattern : Pattern, TrailingPattern : Pattern> where
@@ -54,9 +53,7 @@ extension BackwardConcatenationMatchCollection : BidirectionalCollection {
 		
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> Match<Subject> {
 		

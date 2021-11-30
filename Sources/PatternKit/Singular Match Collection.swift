@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// A collection that contains at most one match.
 public struct SingularMatchCollection<Subject : BidirectionalCollection> where Subject.Element : Equatable {
 	

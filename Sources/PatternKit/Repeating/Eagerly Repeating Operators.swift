@@ -9,7 +9,7 @@ postfix operator *
 ///
 /// - Returns: An arbitrarily, eagerly repeating pattern over `repeatedPattern`.
 public postfix func * <P>(repeatedPattern: P) -> EagerlyRepeating<P> {
-	return EagerlyRepeating(repeatedPattern)
+	.init(repeatedPattern)
 }
 
 /// Returns an arbitrarily, eagerly repeating pattern over a given literal collection.
@@ -18,7 +18,7 @@ public postfix func * <P>(repeatedPattern: P) -> EagerlyRepeating<P> {
 ///
 /// - Returns: An arbitrarily, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
 public postfix func * <C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
-	return EagerlyRepeating(Literal(repeatedlyMatchedCollection))
+	.init(Literal(repeatedlyMatchedCollection))
 }
 
 
@@ -32,7 +32,7 @@ postfix operator +
 ///
 /// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over `repeatedPattern`.
 public postfix func + <P>(repeatedPattern: P) -> EagerlyRepeating<P> {
-	return EagerlyRepeating(repeatedPattern, min: 1)
+	.init(repeatedPattern, min: 1)
 }
 
 /// Returns an arbitrarily, eagerly repeating pattern over a given literal collection that must match at least once.
@@ -41,7 +41,7 @@ public postfix func + <P>(repeatedPattern: P) -> EagerlyRepeating<P> {
 ///
 /// - Returns: An arbitrarily, nonoptional, eagerly repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
 public postfix func + <C>(repeatedlyMatchedCollection: C) -> EagerlyRepeating<Literal<C>> {
-	return EagerlyRepeating(Literal(repeatedlyMatchedCollection), min: 1)
+	.init(.init(repeatedlyMatchedCollection), min: 1)
 }
 
 
@@ -55,7 +55,7 @@ postfix operator /?
 ///
 /// - Returns: A pattern that optionally and eagerly matches `optionalPattern`.
 public postfix func /? <P>(optionalPattern: P) -> EagerlyRepeating<P> {
-	return EagerlyRepeating(optionalPattern, max: 1)
+	.init(optionalPattern, max: 1)
 }
 
 /// Returns a pattern that eagerly matches a given optional collection.
@@ -64,5 +64,5 @@ public postfix func /? <P>(optionalPattern: P) -> EagerlyRepeating<P> {
 ///
 /// - Returns: A pattern that optionally and eagerly matches the literal `optionalCollection`.
 public postfix func /? <C>(optionalCollection: C) -> EagerlyRepeating<Literal<C>> {
-	return EagerlyRepeating(Literal(optionalCollection), max: 1)
+	.init(.init(optionalCollection), max: 1)
 }

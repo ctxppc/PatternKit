@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// An iteration of a repeatedly backward-matching pattern.
 ///
 /// A ring takes a base match and produces a successor ring for every match produced by the repeated pattern given the base match. The successor rings themselves can be used to generate further descendant rings. Given a *root* ring, one can determine a tree of ring and thus of matches.
@@ -38,7 +36,7 @@ public struct BackwardRing<RepeatedPattern : Pattern> {
 		let repeatedPattern = self.repeatedPattern
 		let newDepth = depth + 1
 		return successorMatches.lazy.map { successorMatch in
-			BackwardRing(repeatedPattern: repeatedPattern, baseMatch: successorMatch, depth: newDepth)
+			.init(repeatedPattern: repeatedPattern, baseMatch: successorMatch, depth: newDepth)
 		}
 	}
 	
@@ -52,27 +50,10 @@ public struct BackwardRing<RepeatedPattern : Pattern> {
 }
 
 extension BackwardRing : BidirectionalCollection {
-	
 	public typealias Index = MatchCollection.Index
-	
-	public var startIndex: Index {
-		return successorMatches.startIndex
-	}
-	
-	public var endIndex: Index {
-		return successorMatches.endIndex
-	}
-	
-	public subscript (index: Index) -> BackwardRing {
-		return successorRings[index]
-	}
-	
-	public func index(before index: Index) -> Index {
-		return successorMatches.index(before: index)
-	}
-	
-	public func index(after index: Index) -> Index {
-		return successorMatches.index(after: index)
-	}
-	
+	public var startIndex: Index { successorMatches.startIndex }
+	public var endIndex: Index { successorMatches.endIndex }
+	public subscript (index: Index) -> BackwardRing { successorRings[index] }
+	public func index(before index: Index) -> Index { successorMatches.index(before: index) }
+	public func index(after index: Index) -> Index { successorMatches.index(after: index) }
 }

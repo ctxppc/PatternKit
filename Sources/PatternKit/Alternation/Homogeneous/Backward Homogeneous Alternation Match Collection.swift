@@ -1,8 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import DepthKit
-import PatternKitCore
-
 /// A collection of backward matches of a homogeneous alternation pattern.
 public struct BackwardHomogeneousAlternationMatchCollection<Subpattern : Pattern> {
 	
@@ -67,7 +64,7 @@ extension BackwardHomogeneousAlternationMatchCollection : BidirectionalCollectio
 }
 
 extension BackwardHomogeneousAlternationMatchCollection.Index : Comparable {
-	public static func <(lhs: BackwardHomogeneousAlternationMatchCollection.Index, rhs: BackwardHomogeneousAlternationMatchCollection.Index) -> Bool {
+	public static func <(lhs: Self, rhs: Self) -> Bool {
 		TODO.unimplemented
 	}
 }

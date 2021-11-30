@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-import PatternKitCore
-
 /// A pattern that matches any one element that is contained in a range.
 public struct RangePattern<Subject : BidirectionalCollection> where Subject.Element : Comparable {
 	
@@ -39,7 +37,7 @@ extension RangePattern : Pattern {
 			case .closed(let range):	guard range.contains(element) else { return nil }
 		}
 		
-		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: 1, direction: .forward))
+		return .init(resultMatch: base.movingInputPosition(distance: 1, direction: .forward))
 		
 	}
 	
@@ -52,7 +50,7 @@ extension RangePattern : Pattern {
 			case .closed(let range):	guard range.contains(element) else { return nil }
 		}
 		
-		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: 1, direction: .backward))
+		return .init(resultMatch: base.movingInputPosition(distance: 1, direction: .backward))
 		
 	}
 	

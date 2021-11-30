@@ -1,7 +1,6 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
 import Foundation
-import DepthKit
 
 /// Returns a character set containing a range of Unicode scalars.
 ///
@@ -10,7 +9,7 @@ import DepthKit
 ///
 /// - Returns: `CharacterSet(charactersIn: firstScalar...lastScalar)`
 public func ... (firstScalar: UnicodeScalar, lastScalar: UnicodeScalar) -> CharacterSet {
-	return CharacterSet(charactersIn: firstScalar...lastScalar)
+	.init(charactersIn: firstScalar...lastScalar)
 }
 
 /// Returns the union of two character sets.
@@ -20,7 +19,7 @@ public func ... (firstScalar: UnicodeScalar, lastScalar: UnicodeScalar) -> Chara
 ///
 /// - Returns: `firstSet.union(secondSet)`
 public func | (firstSet: CharacterSet, secondSet: CharacterSet) -> CharacterSet {
-	return firstSet.union(secondSet)
+	firstSet.union(secondSet)
 }
 
 /// Returns the union of a character set with a Unicode scalar.
@@ -54,5 +53,5 @@ public func | (scalar: UnicodeScalar, set: CharacterSet) -> CharacterSet {
 ///
 /// - Returns: `CharacterSet([firstScalar, secondScalar])`
 public func | (firstScalar: UnicodeScalar, secondScalar: UnicodeScalar) -> CharacterSet {
-	return CharacterSet([firstScalar, secondScalar])
+	.init([firstScalar, secondScalar])
 }

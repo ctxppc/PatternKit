@@ -9,7 +9,7 @@ postfix operator *?
 ///
 /// - Returns: An arbitrarily, lazily repeating pattern over `repeatedPattern`.
 public postfix func *? <P>(repeatedPattern: P) -> LazilyRepeating<P> {
-	return LazilyRepeating(repeatedPattern)
+	.init(repeatedPattern)
 }
 
 /// Returns an arbitrarily, lazily repeating pattern over a given literal collection.
@@ -18,7 +18,7 @@ public postfix func *? <P>(repeatedPattern: P) -> LazilyRepeating<P> {
 ///
 /// - Returns: An arbitrarily, lazily repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
 public postfix func *? <C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Literal<C>> {
-	return LazilyRepeating(Literal(repeatedlyMatchedCollection))
+	.init(.init(repeatedlyMatchedCollection))
 }
 
 
@@ -32,7 +32,7 @@ postfix operator +?
 ///
 /// - Returns: An arbitrarily, nonoptional, lazily repeating pattern over `repeatedPattern`.
 public postfix func +? <P>(repeatedPattern: P) -> LazilyRepeating<P> {
-	return LazilyRepeating(repeatedPattern, min: 1)
+	.init(repeatedPattern, min: 1)
 }
 
 /// Returns an arbitrarily, lazily repeating pattern over a given literal collection that must match at least once.
@@ -41,7 +41,7 @@ public postfix func +? <P>(repeatedPattern: P) -> LazilyRepeating<P> {
 ///
 /// - Returns: An arbitrarily, nonoptional, lazily repeating pattern over a literal pattern matching `repeatedlyMatchedCollection`.
 public postfix func +? <C>(repeatedlyMatchedCollection: C) -> LazilyRepeating<Literal<C>> {
-	return LazilyRepeating(Literal(repeatedlyMatchedCollection), min: 1)
+	.init(.init(repeatedlyMatchedCollection), min: 1)
 }
 
 
@@ -55,7 +55,7 @@ postfix operator /??
 ///
 /// - Returns: A pattern that optionally and lazily matches `optionalPattern`.
 public postfix func /?? <P>(optionalPattern: P) -> LazilyRepeating<P> {
-	return LazilyRepeating(optionalPattern, max: 1)
+	.init(optionalPattern, max: 1)
 }
 
 /// Returns a pattern that lazily matches a given optional collection.
@@ -64,5 +64,5 @@ public postfix func /?? <P>(optionalPattern: P) -> LazilyRepeating<P> {
 ///
 /// - Returns: A pattern that optionally and lazily matches the literal `optionalCollection`.
 public postfix func /?? <C>(optionalCollection: C) -> LazilyRepeating<Literal<C>> {
-	return LazilyRepeating(Literal(optionalCollection), max: 1)
+	.init(.init(optionalCollection), max: 1)
 }

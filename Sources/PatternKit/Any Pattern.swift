@@ -15,11 +15,11 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Elemen
 	public init<P : Pattern>(_ pattern: P) where P.Subject == Subject {
 		
 		forwardMatchCollectionGenerator = { base in
-			AnyBidirectionalCollection(pattern.forwardMatches(enteringFrom: base))
+			.init(pattern.forwardMatches(enteringFrom: base))
 		}
 			
 		backwardMatchCollectionGenerator = { base in
-			AnyBidirectionalCollection(pattern.backwardMatches(recedingFrom: base))
+			.init(pattern.backwardMatches(recedingFrom: base))
 		}
 		
 		forwardEstimator = { subject, index in
