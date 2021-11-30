@@ -1,4 +1,4 @@
-// PatternKit © 2017–19 Constantino Tsarouhas
+// PatternKit © 2017–21 Constantino Tsarouhas
 
 /// A grammar for serialising and deserialising expressions.
 public enum Language : Hashable {

@@ -1,4 +1,4 @@
-// PatternKit © 2017–19 Constantino Tsarouhas
+// PatternKit © 2017–21 Constantino Tsarouhas
 
 /// A regular expression; a sequence of symbols that expresses a pattern that matches over strings.
 ///

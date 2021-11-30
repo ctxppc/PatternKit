@@ -1,5 +1,5 @@
-// swift-tools-version:5.1
-// PatternKit © 2017–19 Constantino Tsarouhas
+// swift-tools-version:5.5
+// PatternKit © 2017–21 Constantino Tsarouhas
 
 import PackageDescription
 
@@ -18,7 +18,7 @@ let package = Package(
 		
 	],
 	dependencies: [
-		.package(url: "https://github.com/ctxppc/DepthKit.git", from: "0.8.0")
+		.package(url: "https://github.com/ctxppc/DepthKit.git", from: "0.10.0")
 	],
 	targets: [
 		

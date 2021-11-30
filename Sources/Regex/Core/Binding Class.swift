@@ -1,4 +1,4 @@
-// PatternKit © 2017–19 Constantino Tsarouhas
+// PatternKit © 2017–21 Constantino Tsarouhas
 
 /// A categorisation that indicates how an expression's elements interact with elements in a superexpression.
 ///
