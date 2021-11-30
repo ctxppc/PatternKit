@@ -54,13 +54,9 @@ extension CommentRegularExpression : Expression {
 		
 	}
 	
-	public var startIndex: Index {
-		return .leadingBoundary
-	}
+	public var startIndex: Index { .leadingBoundary }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
@@ -114,9 +110,7 @@ extension CommentRegularExpression : Expression {
 		}
 	}
 	
-	public var bindingClass: BindingClass {
-		return .atomic
-	}
+	public var bindingClass: BindingClass { .atomic }
 	
 }
 
@@ -135,7 +129,7 @@ extension CommentRegularExpression.Symbol : SymbolProtocol {
 }
 
 extension CommentRegularExpression.Index : Comparable {
-	public static func < (smallerIndex: CommentRegularExpression.Index, greaterIndex: CommentRegularExpression.Index) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.leadingBoundary, .leadingBoundary):																return false
 			case (.leadingBoundary, _):																				return true

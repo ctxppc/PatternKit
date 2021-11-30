@@ -19,7 +19,7 @@ public struct HomogeneousConcatenatedExpressionRealisation<SubexpressionRealisat
 	
 	// See protocol.
 	public var pattern: HomogeneousConcatenation<SubexpressionRealisation.PatternType> {
-		return HomogeneousConcatenation(realisationsOfSubexpressions.map { $0.pattern })
+		.init(realisationsOfSubexpressions.map { $0.pattern })
 	}
 	
 }

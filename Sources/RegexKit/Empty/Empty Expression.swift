@@ -16,34 +16,17 @@ extension EmptyExpression : Expression {
 		case end
 	}
 	
-	public var startIndex: Index {
-		return .end
-	}
-	
-	public var endIndex: Index {
-		return .end
-	}
-	
-	public subscript (index: Index) -> SymbolProtocol {
-		indexOutOfBounds
-	}
-	
-	public func index(before index: Index) -> Index {
-		indexOutOfBounds
-	}
-	
-	public func index(after index: Index) -> Index {
-		indexOutOfBounds
-	}
-	
-	public var bindingClass: BindingClass {
-		return .atomic
-	}
+	public var startIndex: Index { .end }
+	public var endIndex: Index { .end }
+	public subscript (index: Index) -> SymbolProtocol { indexOutOfBounds }
+	public func index(before index: Index) -> Index { indexOutOfBounds }
+	public func index(after index: Index) -> Index { indexOutOfBounds }
+	public var bindingClass: BindingClass { .atomic }
 	
 }
 
 extension EmptyExpression.Index : Comparable {
-	public static func < (smallerIndex: EmptyExpression.Index, greaterIndex: EmptyExpression.Index) -> Bool {
-		return false
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
+		false
 	}
 }

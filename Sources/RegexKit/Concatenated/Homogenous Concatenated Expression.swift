@@ -27,9 +27,7 @@ public struct HomogeneousConcatenatedExpression<Subexpression : Expression> {
 	///
 	/// - Invariant: `subexpressions` contains at least two subexpressions.
 	public var subexpressions: [Subexpression] {
-		willSet {
-			precondition(newValue.count >= 2, "Fewer than 2 subexpressions in concatenation")
-		}
+		willSet { precondition(newValue.count >= 2, "Fewer than 2 subexpressions in concatenation") }
 	}
 	
 }
@@ -64,9 +62,7 @@ extension HomogeneousConcatenatedExpression : Expression {
 		
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		guard case .inSubexpression(subexpressionIndex: let subexpressionIndex, innerIndex: let innerIndex) = index else { indexOutOfBounds }
@@ -129,14 +125,12 @@ extension HomogeneousConcatenatedExpression : Expression {
 		
 	}
 	
-	public var bindingClass: BindingClass {
-		return .concatenation
-	}
+	public var bindingClass: BindingClass { .concatenation }
 	
 }
 
 extension HomogeneousConcatenatedExpression.Index : Comparable {
-	public static func < (smallerIndex: HomogeneousConcatenatedExpression.Index, greaterIndex: HomogeneousConcatenatedExpression.Index) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let smallerSubexpressionIndex, innerIndex: let smallerInnerIndex), .inSubexpression(subexpressionIndex: let greaterSubexpressionIndex, innerIndex: let greaterInnerIndex)):

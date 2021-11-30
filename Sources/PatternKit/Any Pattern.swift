@@ -1,7 +1,5 @@
 // PatternKit © 2017–21 Constantino Tsarouhas
 
-@_exported import PatternKitCore
-
 /// A type-erased pattern for some subject type.
 ///
 /// This pattern forwards its `matches(base:direction:)` method to an arbitrary, underlying pattern on `Collection`, hiding the specifics of the underlying `Pattern` conformance.
@@ -63,19 +61,19 @@ public struct AnyPattern<Subject : BidirectionalCollection> where Subject.Elemen
 extension AnyPattern : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> AnyBidirectionalCollection<Match<Subject>> {
-		return forwardMatchCollectionGenerator(base)
+		forwardMatchCollectionGenerator(base)
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> AnyBidirectionalCollection<Match<Subject>> {
-		return backwardMatchCollectionGenerator(base)
+		backwardMatchCollectionGenerator(base)
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return forwardEstimator(subject, inputPosition)
+		forwardEstimator(subject, inputPosition)
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return backwardEstimator(subject, inputPosition)
+		backwardEstimator(subject, inputPosition)
 	}
 	
 }

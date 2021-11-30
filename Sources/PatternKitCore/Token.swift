@@ -19,25 +19,25 @@ public final class Token<CapturedPattern : Pattern> {
 extension Token : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> LazyMapCollection<CapturedPattern.ForwardMatchCollection, Match<Subject>> {
-		return capturedPattern
+		capturedPattern
 			.forwardMatches(enteringFrom: base)
 			.lazy
 			.map { match in match.capturing(base.inputPosition..<match.inputPosition, for: self) }
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> LazyMapCollection<CapturedPattern.BackwardMatchCollection, Match<Subject>> {
-		return capturedPattern
+		capturedPattern
 			.backwardMatches(recedingFrom: base)
 			.lazy
 			.map { $0.capturing($0.inputPosition..<base.inputPosition, for: self) }
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return capturedPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
+		capturedPattern.underestimatedSmallestInputPositionForForwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return capturedPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
+		capturedPattern.overestimatedLargestInputPositionForBackwardMatching(on: subject, fromIndex: inputPosition)
 	}
 	
 }
@@ -54,13 +54,9 @@ extension Token : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .capturedPattern
-	}
+	public var startIndex: Index { .capturedPattern }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> CapturedPattern {
 		precondition(index == .capturedPattern, "Index out of bounds")
@@ -80,7 +76,7 @@ extension Token : BidirectionalCollection {
 }
 
 extension Token.Index : Comparable {
-	public static func < <P>(leftIndex: Token<P>.Index, rightIndex: Token<P>.Index) -> Bool {
-		return leftIndex.rawValue < rightIndex.rawValue
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
+		leftIndex.rawValue < rightIndex.rawValue
 	}
 }

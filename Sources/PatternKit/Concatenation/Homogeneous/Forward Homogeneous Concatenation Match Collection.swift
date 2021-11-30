@@ -65,7 +65,7 @@ extension ForwardHomogeneousConcatenationMatchCollection : BidirectionalCollecti
 }
 
 extension ForwardHomogeneousConcatenationMatchCollection.Index : Comparable {
-	public static func < (lhs: ForwardHomogeneousConcatenationMatchCollection.Index, rhs: ForwardHomogeneousConcatenationMatchCollection.Index) -> Bool {
+	public static func <(lhs: Self, rhs: Self) -> Bool {
 		TODO.unimplemented
 	}
 }

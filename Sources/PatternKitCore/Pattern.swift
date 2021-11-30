@@ -80,7 +80,7 @@ extension Pattern {
 	///
 	/// - Returns: A lazily computed collection of forward matches of `self` over `subject`.
 	public func matches(over subject: Subject) -> LazyFilterCollection<ForwardMatchCollection> {
-		return forwardMatches(enteringFrom: Match(over: subject, direction: .forward))
+		forwardMatches(enteringFrom: Match(over: subject, direction: .forward))
 			.lazy
 			.filter { candidateMatch in candidateMatch.remainingElements(direction: .forward).isEmpty }
 	}
@@ -93,7 +93,7 @@ extension Pattern {
 	///
 	/// - Returns: A lazily computed collection of backward matches of `self` over `subject`.
 	public func backwardMatches(over subject: Subject) -> LazyFilterCollection<BackwardMatchCollection> {
-		return backwardMatches(recedingFrom: Match(over: subject, direction: .backward))
+		backwardMatches(recedingFrom: Match(over: subject, direction: .backward))
 			.lazy
 			.filter { candidateMatch in candidateMatch.remainingElements(direction: .backward).isEmpty }
 	}
@@ -114,11 +114,11 @@ extension Pattern {
 	}
 	
 	public func underestimatedSmallestInputPositionForForwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return inputPosition
+		inputPosition
 	}
 	
 	public func overestimatedLargestInputPositionForBackwardMatching(on subject: Subject, fromIndex inputPosition: Subject.Index) -> Subject.Index {
-		return inputPosition
+		inputPosition
 	}
 	
 }

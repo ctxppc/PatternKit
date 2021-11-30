@@ -121,13 +121,9 @@ extension CharacterSetExpression : Expression {
 		
 	}
 	
-	public var startIndex: Index {
-		return .leadingBoundary
-	}
+	public var startIndex: Index { .leadingBoundary }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
@@ -242,9 +238,7 @@ extension CharacterSetExpression : Expression {
 		}
 	}
 	
-	public var bindingClass: BindingClass {
-		return .atomic
-	}
+	public var bindingClass: BindingClass { .atomic }
 	
 }
 
@@ -289,7 +283,7 @@ extension CharacterSetExpression.Symbol : SymbolProtocol {
 }
 
 extension CharacterSetExpression.Index : Comparable {
-	public static func < (smallerIndex: CharacterSetExpression.Index, greaterIndex: CharacterSetExpression.Index) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		
 		enum SimpleIndex : Int {
 			

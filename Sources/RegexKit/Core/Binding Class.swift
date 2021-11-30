@@ -24,7 +24,7 @@ public enum BindingClass : Int, Equatable {
 }
 
 extension BindingClass : Comparable {
-	public static func < (lowerClass: BindingClass, higherClass: BindingClass) -> Bool {
-		return lowerClass.rawValue < higherClass.rawValue
+	public static func <(lowerClass: Self, higherClass: Self) -> Bool {
+		lowerClass.rawValue < higherClass.rawValue
 	}
 }

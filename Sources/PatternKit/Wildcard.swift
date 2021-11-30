@@ -7,12 +7,12 @@ extension Wildcard : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> SingularMatchCollection<Subject> {
 		guard !base.remainingElements(direction: .forward).isEmpty else { return nil }
-		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: 1, direction: .forward))
+		return .init(resultMatch: base.movingInputPosition(distance: 1, direction: .forward))
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> SingularMatchCollection<Subject> {
 		guard !base.remainingElements(direction: .backward).isEmpty else { return nil }
-		return SingularMatchCollection(resultMatch: base.movingInputPosition(distance: 1, direction: .backward))
+		return .init(resultMatch: base.movingInputPosition(distance: 1, direction: .backward))
 	}
 	
 }
@@ -21,7 +21,7 @@ extension Wildcard : Pattern {
 ///
 /// - Returns: `Wildcard()`
 public func one<C>() -> Wildcard<C> {
-	return Wildcard()
+	.init()
 }
 
 /// Returns a pattern eagerly matching some number of arbitrary elements.
@@ -31,5 +31,5 @@ public func one<C>() -> Wildcard<C> {
 ///
 /// - Returns: A pattern eagerly matching some number of arbitrary elements.
 public func any<C>(min lowerBound: Int = 0, max upperBound: Int = .max) -> EagerlyRepeating<Wildcard<C>> {
-	return EagerlyRepeating(Wildcard(), min: lowerBound, max: upperBound)
+	.init(Wildcard(), min: lowerBound, max: upperBound)
 }

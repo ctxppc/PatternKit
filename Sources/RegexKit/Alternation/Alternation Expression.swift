@@ -56,9 +56,7 @@ extension AlternationExpression : Expression {
 		}
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
@@ -113,14 +111,12 @@ extension AlternationExpression : Expression {
 		}
 	}
 	
-	public var bindingClass: BindingClass {
-		return .alternation
-	}
+	public var bindingClass: BindingClass { .alternation }
 	
 }
 
 extension AlternationExpression.Index : Comparable {
-	public static func < (smallerIndex: AlternationExpression.Index, greaterIndex: AlternationExpression.Index) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.inMainExpression(innerIndex: let smallerIndex), .inMainExpression(innerIndex: let greaterIndex)):				return smallerIndex < greaterIndex
 			case (.inMainExpression, _):																							return true
@@ -141,7 +137,7 @@ public struct AlternationDelimiterSymbol : SymbolProtocol {
 	
 	// See protocol.
 	public func serialisation(language: Language) -> String {
-		return "|"
+		"|"
 	}
 	
 }

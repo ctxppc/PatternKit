@@ -8,11 +8,11 @@ public struct Bin<Subject : BidirectionalCollection> where Subject.Element : Equ
 extension Bin : Pattern {
 	
 	public func forwardMatches(enteringFrom base: Match<Subject>) -> EmptyCollection<Match<Subject>> {
-		return EmptyCollection()
+		.init()
 	}
 	
 	public func backwardMatches(recedingFrom base: Match<Subject>) -> EmptyCollection<Match<Subject>> {
-		return EmptyCollection()
+		.init()
 	}
 	
 }

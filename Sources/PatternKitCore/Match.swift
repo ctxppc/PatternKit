@@ -72,7 +72,7 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	///
 	/// - Returns: The elements that are yet to be matched.
 	public func remainingElements(direction: MatchingDirection) -> Subject.SubSequence {
-		return subject[remainingIndices(direction: direction)]
+		subject[remainingIndices(direction: direction)]
 	}
 	
 	/// Returns the elements that have already been matched.
@@ -81,7 +81,7 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	///
 	/// - Returns: The elements that have already been matched.
 	public func matchedElements(direction: MatchingDirection) -> Subject.SubSequence {
-		return subject[completedIndices(direction: direction)]
+		subject[completedIndices(direction: direction)]
 	}
 	
 	/// Marks elements at a given range as matched.
@@ -211,7 +211,7 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	///
 	/// - Returns: The ranges captured by `token`.
 	public func ranges<P>(for token: Token<P>) -> [Range<Subject.Index>] {
-		return capturedRangesByToken[ObjectIdentifier(token)] ?? []
+		capturedRangesByToken[.init(token)] ?? []
 	}
 	
 	/// Returns the subsequences captured by a token.
@@ -220,7 +220,8 @@ public struct Match<Subject : BidirectionalCollection> where Subject.Element : E
 	///
 	/// - Returns: The subsequences captured by `token`.
 	public func captures<P>(for token: Token<P>) -> [Subject.SubSequence] {
-		return ranges(for: token).map { subject[$0] }
+		ranges(for: token)
+			.map { subject[$0] }
 	}
 	
 }

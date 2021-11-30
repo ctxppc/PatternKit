@@ -30,9 +30,7 @@ extension PostfixOperatorExpression where Index == PostfixOperatorExpressionInde
 		
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
@@ -103,7 +101,7 @@ extension PostfixOperatorExpression where Index == PostfixOperatorExpressionInde
 	}
 	
 	private var groupsSubexpression: Bool {
-		return subexpression.bindingClass < self.bindingClass || subexpression.isEmpty
+		subexpression.bindingClass < self.bindingClass || subexpression.isEmpty
 	}
 	
 }
@@ -132,7 +130,7 @@ public enum PostfixOperatorExpressionIndex<Subexpression : Expression> : Equatab
 }
 
 extension PostfixOperatorExpressionIndex : Comparable {
-	public static func < <S>(smallerIndex: PostfixOperatorExpressionIndex<S>, greaterIndex: PostfixOperatorExpressionIndex<S>) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.leadingBoundary, .leadingBoundary):																return false
 			case (.leadingBoundary, _):																				return true

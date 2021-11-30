@@ -32,7 +32,7 @@ public struct ConcatenatedExpressionRealisation<LeadingExpressionRealisation : R
 	
 	// See protocol.
 	public var pattern: Concatenation<LeadingExpressionRealisation.PatternType, TrailingExpressionRealisation.PatternType> {
-		return realisationOfLeadingExpression.pattern • realisationOfTrailingExpression.pattern
+		realisationOfLeadingExpression.pattern • realisationOfTrailingExpression.pattern
 	}
 	
 }

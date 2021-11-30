@@ -26,13 +26,9 @@ extension SingularMatchCollection : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .resultMatch
-	}
+	public var startIndex: Index { .resultMatch }
 	
-	public var endIndex: Index {
-		return resultMatch == nil ? .resultMatch : .afterResultMatch
-	}
+	public var endIndex: Index { resultMatch == nil ? .resultMatch : .afterResultMatch }
 	
 	public subscript (index: Index) -> Match<Subject> {
 		switch index {
@@ -64,7 +60,7 @@ extension SingularMatchCollection : BidirectionalCollection {
 }
 
 extension SingularMatchCollection.Index : Comparable {
-	public static func < <Subject>(left: SingularMatchCollection<Subject>.Index, right: SingularMatchCollection<Subject>.Index) -> Bool {
-		return (left, right) == (.resultMatch, .afterResultMatch)
+	public static func <(left: Self, right: Self) -> Bool {
+		(left, right) == (.resultMatch, .afterResultMatch)
 	}
 }

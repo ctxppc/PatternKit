@@ -18,7 +18,7 @@ extension Expression {
 	///
 	/// - Parameter language: The language in which to serialise the expression.
 	public func serialisation(language: Language) throws -> String {
-		return try map {
+		try map {
 			try $0.serialisation(language: language)
 		}.joined()
 	}

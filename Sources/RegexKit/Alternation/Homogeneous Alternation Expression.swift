@@ -27,9 +27,7 @@ public struct HomogeneousAlternationExpression<Subexpression : Expression> {
 	///
 	/// - Invariant: `subexpressions` contains at least two subexpressions.
 	public var subexpressions: [Subexpression] {
-		willSet {
-			precondition(newValue.count >= 2, "Fewer than 2 subexpressions in alternation")
-		}
+		willSet { precondition(newValue.count >= 2, "Fewer than 2 subexpressions in alternation") }
 	}
 	
 }
@@ -68,9 +66,7 @@ extension HomogeneousAlternationExpression : Expression {
 		}
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
@@ -148,14 +144,12 @@ extension HomogeneousAlternationExpression : Expression {
 		}
 	}
 	
-	public var bindingClass: BindingClass {
-		return .alternation
-	}
+	public var bindingClass: BindingClass { .alternation }
 	
 }
 
 extension HomogeneousAlternationExpression.Index : Comparable {
-	public static func < (smallerIndex: HomogeneousAlternationExpression.Index, greaterIndex: HomogeneousAlternationExpression.Index) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			
 			case (.inSubexpression(subexpressionIndex: let smallerSubexpressionIndex, innerIndex: let smallerInnerIndex), .inSubexpression(subexpressionIndex: let greaterSubexpressionIndex, innerIndex: let greaterInnerIndex)):

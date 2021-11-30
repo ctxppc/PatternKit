@@ -29,29 +29,15 @@ public struct LazilyRepeatingExpression<Subexpression : Expression> {
 }
 
 extension LazilyRepeatingExpression : PostfixOperatorExpression {
-	
 	public typealias Index = PostfixOperatorExpressionIndex<Subexpression>
-	
-	public static var leadingBoundarySymbol: SymbolProtocol {
-		return NoncapturingGroupBoundarySymbol.leading
-	}
-	
-	public static var trailingBoundarySymbol: SymbolProtocol {
-		return NoncapturingGroupBoundarySymbol.trailing
-	}
-	
-	public var postfixOperatorSymbol: SymbolProtocol {
-		return QuantifierSymbol(multiplicityRange: multiplicityRange)
-	}
-	
-	public var bindingClass: BindingClass {
-		return .quantified
-	}
-	
+	public static var leadingBoundarySymbol: SymbolProtocol { NoncapturingGroupBoundarySymbol.leading }
+	public static var trailingBoundarySymbol: SymbolProtocol { NoncapturingGroupBoundarySymbol.trailing }
+	public var postfixOperatorSymbol: SymbolProtocol { QuantifierSymbol(multiplicityRange: multiplicityRange) }
+	public var bindingClass: BindingClass { .quantified }
 }
 
 extension LazilyRepeatingExpression.QuantifierSymbol : SymbolProtocol {
 	public func serialisation(language: Language) throws -> String {
-		return "\(multiplicityRange.serialisation)?"
+		"\(multiplicityRange.serialisation)?"
 	}
 }

@@ -108,7 +108,7 @@ extension Concatenation : BidirectionalCollection {
 }
 
 extension Concatenation.Index : Comparable {
-	public static func < <L, T>(leftIndex: Concatenation<L, T>.Index, rightIndex: Concatenation<L, T>.Index) -> Bool {
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
 		leftIndex.rawValue < rightIndex.rawValue
 	}
 }

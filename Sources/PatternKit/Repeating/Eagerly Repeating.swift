@@ -92,13 +92,9 @@ extension EagerlyRepeating : BidirectionalCollection {
 		
 	}
 	
-	public var startIndex: Index {
-		return .repeatedPattern
-	}
+	public var startIndex: Index { .repeatedPattern }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> RepeatedPattern {
 		precondition(index == .repeatedPattern, "Index out of bounds")
@@ -118,8 +114,8 @@ extension EagerlyRepeating : BidirectionalCollection {
 }
 
 extension EagerlyRepeating.Index : Comparable {
-	public static func < <P>(leftIndex: EagerlyRepeating<P>.Index, rightIndex: EagerlyRepeating<P>.Index) -> Bool {
-		return leftIndex.rawValue < rightIndex.rawValue
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
+		leftIndex.rawValue < rightIndex.rawValue
 	}
 }
 

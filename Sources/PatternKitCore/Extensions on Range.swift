@@ -8,7 +8,7 @@ extension Range {
 	///
 	/// - Returns: `true` if `other` is fully contained within `self`, `false` otherwise.
 	public func contains(_ other: Range) -> Bool {
-		return self.lowerBound <= other.lowerBound && self.upperBound >= other.upperBound
+		self.lowerBound <= other.lowerBound && self.upperBound >= other.upperBound
 	}
 	
 	/// Returns a Boolean value indicating whether a range is fully contained within `self`.
@@ -17,7 +17,7 @@ extension Range {
 	///
 	/// - Returns: `true` if `other` is fully contained within `self`, `false` otherwise.
 	public func contains(_ other: ClosedRange<Bound>) -> Bool {
-		return self.lowerBound <= other.lowerBound && self.upperBound > other.upperBound
+		self.lowerBound <= other.lowerBound && self.upperBound > other.upperBound
 	}
 	
 }
@@ -30,7 +30,7 @@ extension ClosedRange {
 	///
 	/// - Returns: `true` if `other` is fully contained within `self`, `false` otherwise.
 	public func contains(_ other: Range<Bound>) -> Bool {
-		return self.lowerBound <= other.lowerBound && self.upperBound >= other.upperBound
+		self.lowerBound <= other.lowerBound && self.upperBound >= other.upperBound
 	}
 	
 	/// Returns a Boolean value indicating whether a range is fully contained within `self`.
@@ -39,7 +39,7 @@ extension ClosedRange {
 	///
 	/// - Returns: `true` if `other` is fully contained within `self`, `false` otherwise.
 	public func contains(_ other: ClosedRange) -> Bool {
-		return self.lowerBound <= other.lowerBound && self.upperBound > other.upperBound
+		self.lowerBound <= other.lowerBound && self.upperBound > other.upperBound
 	}
 	
 }

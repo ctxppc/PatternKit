@@ -50,15 +50,15 @@ public enum MultiplicityRange : Equatable {
 }
 
 public func ... (lowerBound: Int, upperBound: Int) -> MultiplicityRange {
-	return .closed(lowerBound...upperBound)
+	.closed(lowerBound...upperBound)
 }
 
 public postfix func ... (lowerBound: Int) -> MultiplicityRange {
-	return .partial(lowerBound...)
+	.partial(lowerBound...)
 }
 
 extension PartialRangeFrom : Equatable {
 	public static func == (firstRange: PartialRangeFrom, otherRange: PartialRangeFrom) -> Bool {
-		return firstRange.lowerBound == otherRange.lowerBound
+		firstRange.lowerBound == otherRange.lowerBound
 	}
 }

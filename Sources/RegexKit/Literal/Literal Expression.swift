@@ -20,9 +20,7 @@ public struct LiteralExpression {
 	///
 	/// - Invariant: `literal` is non-empty.
 	public var literal: String {
-		willSet {
-			precondition(!newValue.isEmpty, "Empty literal")
-		}
+		willSet { precondition(!newValue.isEmpty, "Empty literal") }
 	}
 	
 	/// A symbol that represents a literal character in a literal expression.
@@ -36,33 +34,13 @@ public struct LiteralExpression {
 }
 
 extension LiteralExpression : Expression {
-	
 	public typealias Index = String.Index
-	
-	public var startIndex: Index {
-		return literal.startIndex
-	}
-	
-	public var endIndex: Index {
-		return literal.endIndex
-	}
-	
-	public subscript (index: Index) -> SymbolProtocol {
-		return Symbol(character: literal[index])
-	}
-	
-	public func index(before index: Index) -> Index {
-		return literal.index(before: index)
-	}
-	
-	public func index(after index: Index) -> Index {
-		return literal.index(after: index)
-	}
-	
-	public var bindingClass: BindingClass {
-		return .concatenation
-	}
-	
+	public var startIndex: Index { literal.startIndex }
+	public var endIndex: Index { literal.endIndex }
+	public subscript (index: Index) -> SymbolProtocol { Symbol(character: literal[index]) }
+	public func index(before index: Index) -> Index { literal.index(before: index) }
+	public func index(after index: Index) -> Index { literal.index(after: index) }
+	public var bindingClass: BindingClass { .concatenation }
 }
 
 extension LiteralExpression.Symbol : SymbolProtocol {

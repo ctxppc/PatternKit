@@ -19,7 +19,7 @@ public struct HomogeneousAlternationRegularExpressionRealisation<SubexpressionRe
 	
 	// See protocol.
 	public var pattern: HomogeneousAlternation<SubexpressionRealisation.PatternType> {
-		return HomogeneousAlternation(realisationsOfSubexpressions.map { $0.pattern })
+		.init(realisationsOfSubexpressions.map { $0.pattern })
 	}
 	
 }

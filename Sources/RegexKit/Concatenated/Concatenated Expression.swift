@@ -55,9 +55,7 @@ extension ConcatenatedExpression : Expression {
 		}
 	}
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
@@ -116,14 +114,12 @@ extension ConcatenatedExpression : Expression {
 		}
 	}
 	
-	public var bindingClass: BindingClass {
-		return .concatenation
-	}
+	public var bindingClass: BindingClass { .concatenation }
 	
 }
 
 extension ConcatenatedExpression.Index : Comparable {
-	public static func < (smallerIndex: ConcatenatedExpression.Index, greaterIndex: ConcatenatedExpression.Index) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.inLeadingExpression(innerIndex: let smallerIndex), .inLeadingExpression(innerIndex: let greaterIndex)):		return smallerIndex < greaterIndex
 			case (.inLeadingExpression, _):																						return true

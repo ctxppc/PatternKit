@@ -23,13 +23,9 @@ extension BackwardAssertionExpression : BoundedUnaryExpression {
 	
 	public typealias Index = BoundedUnaryExpressionIndex<Subexpression>
 	
-	public static var leadingBoundarySymbol: SymbolProtocol {
-		return BoundarySymbol.leading
-	}
+	public static var leadingBoundarySymbol: SymbolProtocol { BoundarySymbol.leading }
 	
-	public static var trailingBoundarySymbol: SymbolProtocol {
-		return BoundarySymbol.trailing
-	}
+	public static var trailingBoundarySymbol: SymbolProtocol { BoundarySymbol.trailing }
 	
 	public enum BoundarySymbol : SymbolProtocol {
 		

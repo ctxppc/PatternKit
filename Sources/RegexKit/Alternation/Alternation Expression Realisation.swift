@@ -32,7 +32,7 @@ public struct AlternationExpressionRealisation<MainExpressionRealisation : Reali
 	
 	// See protocol.
 	public var pattern: Alternation<MainExpressionRealisation.PatternType, AlternativeExpressionRealisation.PatternType> {
-		return realisationOfMainExpression.pattern | realisationOfAlternativeExpression.pattern
+		realisationOfMainExpression.pattern | realisationOfAlternativeExpression.pattern
 	}
 	
 }

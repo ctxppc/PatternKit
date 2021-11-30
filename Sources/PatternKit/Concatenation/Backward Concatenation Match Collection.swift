@@ -144,7 +144,7 @@ public enum BackwardConcatenationMatchCollectionIndex<LeadingPattern : Pattern, 
 }
 
 extension BackwardConcatenationMatchCollectionIndex : Comparable {
-	public static func < <LeadingPattern, TrailingPattern>(leftIndex: BackwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>, rightIndex: BackwardConcatenationMatchCollectionIndex<LeadingPattern, TrailingPattern>) -> Bool {
+	public static func <(leftIndex: Self, rightIndex: Self) -> Bool {
 		switch (leftIndex, rightIndex) {
 			
 			case (.some(indexForLeadingPattern: let leadingLeft, indexForTrailingPattern: let trailingLeft), .some(indexForLeadingPattern: let leadingRight, indexForTrailingPattern: let trailingRight)):

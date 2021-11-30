@@ -15,13 +15,9 @@ public protocol BoundedUnaryExpression : UnaryExpression {
 
 extension BoundedUnaryExpression where Index == BoundedUnaryExpressionIndex<Subexpression> {
 	
-	public var startIndex: Index {
-		return .leadingBoundary
-	}
+	public var startIndex: Index { .leadingBoundary }
 	
-	public var endIndex: Index {
-		return .end
-	}
+	public var endIndex: Index { .end }
 	
 	public subscript (index: Index) -> SymbolProtocol {
 		switch index {
@@ -73,9 +69,7 @@ extension BoundedUnaryExpression where Index == BoundedUnaryExpressionIndex<Sube
 		}
 	}
 	
-	public var bindingClass: BindingClass {
-		return .atomic
-	}
+	public var bindingClass: BindingClass { .atomic }
 	
 }
 
@@ -100,7 +94,7 @@ public enum BoundedUnaryExpressionIndex<Subexpression : Expression> : Equatable 
 }
 
 extension BoundedUnaryExpressionIndex : Comparable {
-	public static func < (smallerIndex: BoundedUnaryExpressionIndex, greaterIndex: BoundedUnaryExpressionIndex) -> Bool {
+	public static func <(smallerIndex: Self, greaterIndex: Self) -> Bool {
 		switch (smallerIndex, greaterIndex) {
 			case (.leadingBoundary, .leadingBoundary):																return false
 			case (.leadingBoundary, _):																				return true
